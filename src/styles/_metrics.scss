@@ -1,0 +1,39 @@
+.results-panel {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 16px;
+  }
+}
+
+.metric-card {
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: rgba(19, 30, 49, 0.86);
+
+  &--accent {
+    background: linear-gradient(135deg, rgba(8, 145, 178, 0.98), rgba(3, 105, 161, 0.92));
+  }
+
+  &__label,
+  &__value,
+  &__hint {
+    display: block;
+  }
+
+  &__label {
+    color: #d2deed;
+    margin-bottom: 14px;
+  }
+
+  &__value {
+    margin-bottom: 12px;
+    font-size: clamp(1.45rem, 2vw, 2rem);
+    line-height: 1.1;
+  }
+
+  &__hint {
+    color: #97a6ba;
+  }
+}

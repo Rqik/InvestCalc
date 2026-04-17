@@ -1,0 +1,40 @@
+.app {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 34px 20px 48px;
+
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  &__sidebar,
+  &__content {
+    display: grid;
+    gap: 24px;
+    align-content: start;
+  }
+}
+
+.panel {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 28px;
+  background: rgba(10, 18, 32, 0.78);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 28px 80px rgba(2, 6, 23, 0.34);
+  padding: 28px;
+}
+
+.section-header {
+  margin-bottom: 22px;
+
+  &__title {
+    margin: 0 0 6px;
+  }
+
+  &__description {
+    margin: 0;
+    color: #97a6ba;
+  }
+}

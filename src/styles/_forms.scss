@@ -1,0 +1,38 @@
+.form-field {
+  display: grid;
+  gap: 8px;
+
+  &__label {
+    color: #dce8f7;
+    font-size: 0.95rem;
+  }
+
+  &__input {
+    width: 100%;
+    border: 1px solid rgba(125, 211, 252, 0.16);
+    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.94);
+    color: #f8fafc;
+    padding: 15px 16px;
+    outline: none;
+    transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+
+    &:focus {
+      border-color: #38bdf8;
+      background: rgba(15, 23, 42, 1);
+      transform: translateY(-1px);
+    }
+  }
+
+  &__hint {
+    font-size: 0.82rem;
+    color: #97a6ba;
+  }
+}
+
+.input-panel {
+  &__grid {
+    display: grid;
+    gap: 18px;
+  }
+}

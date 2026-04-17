@@ -1,0 +1,44 @@
+.growth-chart {
+  &__plot {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+    gap: 12px;
+    align-items: end;
+    min-height: 320px;
+  }
+
+  &__column {
+    display: grid;
+    gap: 10px;
+    align-content: end;
+  }
+
+  &__bar-wrap {
+    height: 220px;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+    border-radius: 18px;
+    background: rgba(8, 15, 28, 0.7);
+    border: 1px solid rgba(148, 163, 184, 0.08);
+  }
+
+  &__bar {
+    width: 100%;
+    min-height: 8px;
+    border-radius: 14px 14px 6px 6px;
+    background: linear-gradient(180deg, #38bdf8 0%, #0f766e 100%);
+    box-shadow: 0 12px 28px rgba(14, 165, 233, 0.28);
+  }
+
+  &__year {
+    color: #d2deed;
+    font-size: 0.9rem;
+  }
+
+  &__amount {
+    color: #97a6ba;
+    font-size: 0.82rem;
+    line-height: 1.3;
+  }
+}
