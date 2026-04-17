@@ -46,7 +46,9 @@ export function ResultsGrid({
           <strong className="metric-card__value">
             {requiredReturn === null ? 'Больше 100% годовых' : formatPercent(requiredReturn)}
           </strong>
-          <small className="metric-card__hint">Чтобы прийти к цели при текущем ежемесячном взносе</small>
+          <small className="metric-card__hint">
+            Чтобы прийти к цели при текущем ежемесячном взносе
+          </small>
         </article>
 
         <article className="metric-card">

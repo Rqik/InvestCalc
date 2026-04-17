@@ -97,9 +97,9 @@ export function buildYearlyPlan(inputs: Inputs): YearRow[] {
     let contributions = 0;
 
     for (let month = 0; month < MONTHS_IN_YEAR; month += 1) {
+      balance *= 1 + monthlyRate;
       balance += inputs.monthlyContribution;
       contributions += inputs.monthlyContribution;
-      balance *= 1 + monthlyRate;
     }
 
     plan.push({

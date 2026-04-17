@@ -23,7 +23,7 @@ export function ScenarioPanel({
       <div className="section-header">
         <h2 className="section-header__title">Сценарии</h2>
         <p className="section-header__description">
-          Хранятся в localStorage, поэтому останутся доступными в этом браузере.
+          Хранятся в localStorage, поэтому останутся доступными только в этом браузере.
         </p>
       </div>
 
@@ -59,10 +59,18 @@ export function ScenarioPanel({
               </div>
 
               <div className="scenario-card__actions">
-                <button className="button button--secondary" type="button" onClick={() => onLoad(scenario)}>
+                <button
+                  className="button button--secondary"
+                  type="button"
+                  onClick={() => onLoad(scenario)}
+                >
                   Загрузить
                 </button>
-                <button className="button button--danger" type="button" onClick={() => onDelete(scenario.id)}>
+                <button
+                  className="button button--danger"
+                  type="button"
+                  onClick={() => onDelete(scenario.id)}
+                >
                   Удалить
                 </button>
               </div>
