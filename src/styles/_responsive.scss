@@ -7,7 +7,9 @@
 
   .results-panel__grid,
   .yearly-plan__summary,
-  .extra-years-panel__grid {
+  .extra-years-panel__grid,
+  .workspace-panel__grid,
+  .scenario-preview__grid {
     grid-template-columns: 1fr;
   }
 }
@@ -45,6 +47,20 @@
 
   .scenario-card {
     display: grid;
+  }
+
+  .scenario-card__topline {
+    display: grid;
+    gap: 6px;
+    justify-content: flex-start;
+  }
+
+  .scenario-preview__actions {
+    flex-direction: column;
+  }
+
+  .scenario-preview__actions .button {
+    width: 100%;
   }
 
   .results-panel__grid {

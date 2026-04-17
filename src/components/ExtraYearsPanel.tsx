@@ -11,20 +11,27 @@ export function ExtraYearsPanel({ extraYears }: ExtraYearsPanelProps) {
       <div className="section-header">
         <h2 className="section-header__title">Если подождать еще</h2>
         <p className="section-header__description">
-          Дополнительные годы часто дают сильный прирост за счет сложного процента.
+          Горизонты ниже строятся от вашего срока и дальше расширяются по
+          фибоначчи-подобным шагам, чтобы было видно, как время усиливает сложный
+          процент.
         </p>
       </div>
 
       <div className="extra-years-panel__grid">
         {extraYears.map((item) => (
-          <article key={item.years} className="wait-card">
-            <span className="wait-card__years">{item.years} лет</span>
+          <article key={`${item.years}-${item.additionalYears}`} className="wait-card">
+            <span className="wait-card__years">
+              {item.years} лет
+              {item.additionalYears === 0 ? ' · текущий срок' : ` · еще +${item.additionalYears}`}
+            </span>
             <strong className="wait-card__value">{formatMoney(item.finalCapital)}</strong>
             <small className="wait-card__hint">
-              Еще {formatMoney(item.additionalCapital)} к текущему плану
+              {item.additionalYears === 0
+                ? 'Это ваш текущий сценарий без дополнительного ожидания'
+                : `Еще ${formatMoney(item.additionalCapital)} к текущему плану`}
             </small>
             <small className="wait-card__hint">
-              Из них дополнительный рост: {formatMoney(item.additionalGrowth)}
+              Дополнительный рост от времени: {formatMoney(item.additionalGrowth)}
             </small>
           </article>
         ))}

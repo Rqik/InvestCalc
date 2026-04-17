@@ -49,10 +49,10 @@
 4. В разделе `Build and deployment` выбрать `Source: GitHub Actions`.
 5. После следующего пуша GitHub сам соберет и опубликует сайт.
 
-Адрес будет таким:
+Адрес страницы:
 
 ```text
-https://USERNAME.github.io/REPOSITORY/
+https://rqik.github.io/InvestCalc/
 ```
 
 ## Команды для локальной работы

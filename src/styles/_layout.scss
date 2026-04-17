@@ -17,6 +17,14 @@
   }
 }
 
+.workspace-panel {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: 14px;
+  }
+}
+
 .panel {
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: 28px;

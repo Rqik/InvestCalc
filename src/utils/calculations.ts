@@ -4,6 +4,24 @@ import {
 } from '../constants/defaults';
 import type { ExtraYearProjection, Inputs, YearRow } from '../types/finance';
 
+function buildFibonacciLikeOffsets(count: number) {
+  const offsets = [0];
+
+  if (count <= 1) {
+    return offsets;
+  }
+
+  let previous = 1;
+  let current = 2;
+
+  while (offsets.length < count) {
+    offsets.push(previous);
+    [previous, current] = [current, previous + current];
+  }
+
+  return offsets;
+}
+
 export function getMonthlyRate(annualReturn: number) {
   return annualReturn / 100 / MONTHS_IN_YEAR;
 }
@@ -120,14 +138,16 @@ export function buildExtraYearProjections(
   extraYearsCount = EXTRA_YEARS_TO_COMPARE,
 ): ExtraYearProjection[] {
   const baseInvested = getTotalInvested(inputs);
+  const offsets = buildFibonacciLikeOffsets(extraYearsCount);
 
-  return Array.from({ length: extraYearsCount }, (_, index) => {
-    const years = inputs.years + index + 1;
+  return offsets.map((additionalYears) => {
+    const years = inputs.years + additionalYears;
     const projected = getFutureValue({ ...inputs, years });
     const totalInvested = inputs.initialCapital + inputs.monthlyContribution * years * MONTHS_IN_YEAR;
 
     return {
       years,
+      additionalYears,
       finalCapital: projected,
       additionalCapital: projected - baseProjectedCapital,
       additionalGrowth: (projected - totalInvested) - (baseProjectedCapital - baseInvested),

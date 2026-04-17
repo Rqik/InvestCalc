@@ -25,6 +25,7 @@ export type YearRow = {
 
 export type ExtraYearProjection = {
   years: number;
+  additionalYears: number;
   finalCapital: number;
   additionalCapital: number;
   additionalGrowth: number;

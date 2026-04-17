@@ -1,7 +1,7 @@
 .extra-years-panel {
   &__grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 16px;
   }
 }
@@ -21,6 +21,7 @@
   &__years {
     color: #d2deed;
     margin-bottom: 10px;
+    line-height: 1.4;
   }
 
   &__value {
@@ -30,5 +31,10 @@
 
   &__hint {
     color: #97a6ba;
+    line-height: 1.45;
+  }
+
+  &__hint + &__hint {
+    margin-top: 8px;
   }
 }
