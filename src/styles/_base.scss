@@ -7,22 +7,34 @@
     linear-gradient(180deg, #09111f 0%, #0f172a 48%, #111827 100%);
   line-height: 1.5;
   font-weight: 400;
+  text-size-adjust: 100%;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 button,
 input,
 table {
   font: inherit;
+}
+
+input {
+  min-width: 0;
 }
 
 button {

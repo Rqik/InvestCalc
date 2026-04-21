@@ -12,9 +12,11 @@ import {
   buildExtraYearProjections,
   buildYearlyPlan,
   getFutureValue,
+  getRealValue,
   getRequiredAnnualReturn,
   getRequiredMonthlyContribution,
   getTotalInvested,
+  getTotalMonths,
 } from './utils/calculations';
 import { formatDuration, formatMoney, formatPercent } from './utils/format';
 import { createScenarioName, loadScenarios, saveScenarios } from './utils/storage';
@@ -29,12 +31,12 @@ const VIEW_COPY: Record<
   calculator: {
     title: 'Режим калькулятора',
     description:
-      'Здесь удобно быстро оценить итоговый капитал, посмотреть динамику роста и понять, что дадут дополнительные годы.',
+      'Здесь удобно быстро оценить итоговый капитал, инфляцию, динамику роста и эффект дополнительных лет.',
   },
   plan: {
     title: 'Режим плана по годам',
     description:
-      'Этот режим показывает подробную раскладку накоплений по каждому году, чтобы было легче сверять цель и прогресс.',
+      'Этот режим показывает подробную раскладку накоплений, вложений и прибыли по каждому периоду.',
   },
 };
 
@@ -66,7 +68,13 @@ function App() {
     }
   }, [scenarios, selectedScenarioId]);
 
+  const totalMonths = React.useMemo(() => getTotalMonths(inputs), [inputs]);
+  const isDurationInvalid = totalMonths <= 0;
   const projectedCapital = React.useMemo(() => getFutureValue(inputs), [inputs]);
+  const realProjectedCapital = React.useMemo(
+    () => getRealValue(projectedCapital, inputs),
+    [inputs, projectedCapital],
+  );
   const requiredContribution = React.useMemo(
     () => getRequiredMonthlyContribution(inputs),
     [inputs],
@@ -80,11 +88,6 @@ function App() {
     () => buildExtraYearProjections(inputs, projectedCapital),
     [inputs, projectedCapital],
   );
-  const selectedScenario = React.useMemo(
-    () => scenarios.find((scenario) => scenario.id === selectedScenarioId) ?? null,
-    [scenarios, selectedScenarioId],
-  );
-
   const handleSaveScenario = () => {
     const normalizedName = scenarioName.trim() || createScenarioName(scenarios.length);
     const nextScenario: Scenario = {
@@ -100,13 +103,18 @@ function App() {
   };
 
   const handleLoadScenario = (scenario: Scenario) => {
-    setInputs({ ...scenario.inputs });
+    setInputs({ ...DEFAULT_INPUTS, ...scenario.inputs });
     setScenarioName(scenario.name);
     setSelectedScenarioId(scenario.id);
   };
 
   const handleDeleteScenario = (scenarioId: string) => {
     setScenarios((current) => current.filter((scenario) => scenario.id !== scenarioId));
+  };
+
+  const handleReset = () => {
+    setInputs(DEFAULT_INPUTS);
+    setScenarioName(createScenarioName(scenarios.length));
   };
 
   const activeView = VIEW_COPY[viewMode];
@@ -121,14 +129,19 @@ function App() {
 
         <h1 className="hero__title">Калькулятор доходности и накоплений</h1>
         <p className="hero__description">
-          Считайте цель по капиталу, нужный взнос, анализируйте рост и сравнивайте
-          сценарии, не теряя общую картину.
+          Считайте цель по капиталу, нужный взнос, инфляцию, рост пополнений и
+          сравнивайте сценарии без потери общей картины.
         </p>
       </section>
 
       <section className="app__layout">
         <div className="app__sidebar">
-          <InputPanel inputs={inputs} onChange={setInputs} />
+          <InputPanel
+            inputs={inputs}
+            isDurationInvalid={isDurationInvalid}
+            onChange={setInputs}
+            onReset={handleReset}
+          />
           <ScenarioPanel
             scenarioName={scenarioName}
             scenarios={scenarios}
@@ -144,10 +157,12 @@ function App() {
         <div className="app__content">
           <ResultsGrid
             projectedCapital={projectedCapital}
+            realProjectedCapital={realProjectedCapital}
             goalGap={goalGap}
             requiredContribution={requiredContribution}
             requiredReturn={requiredReturn}
             investmentProfit={investmentProfit}
+            isDurationInvalid={isDurationInvalid}
           />
 
           <section className="panel workspace-panel">
@@ -168,13 +183,13 @@ function App() {
                 <strong className="summary-chip__value">{formatMoney(inputs.monthlyContribution)}</strong>
               </div>
               <div className="summary-chip">
-                <span className="summary-chip__label">Ожидаемая доходность</span>
-                <strong className="summary-chip__value">{formatPercent(inputs.annualReturn)}</strong>
+                <span className="summary-chip__label">Инфляция</span>
+                <strong className="summary-chip__value">{formatPercent(inputs.inflationRate)}</strong>
               </div>
               <div className="summary-chip">
-                <span className="summary-chip__label">Сейчас выбрано</span>
+                <span className="summary-chip__label">Индексация взноса</span>
                 <strong className="summary-chip__value">
-                  {selectedScenario ? selectedScenario.name : 'Текущие несохраненные значения'}
+                  {formatPercent(inputs.contributionGrowthRate)}
                 </strong>
               </div>
             </div>
@@ -190,6 +205,7 @@ function App() {
               plan={yearlyPlan}
               targetCapital={inputs.targetCapital}
               projectedCapital={projectedCapital}
+              realProjectedCapital={realProjectedCapital}
               goalGap={goalGap}
             />
           )}

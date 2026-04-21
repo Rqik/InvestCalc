@@ -1,12 +1,16 @@
-import { STORAGE_KEY } from '../constants/defaults';
+import { DEFAULT_INPUTS, STORAGE_KEY } from '../constants/defaults';
 import type { Scenario } from '../types/finance';
 
 function normalizeScenario(scenario: Scenario): Scenario {
   return {
     ...scenario,
     inputs: {
+      ...DEFAULT_INPUTS,
       ...scenario.inputs,
       months: scenario.inputs.months ?? 0,
+      inflationRate: scenario.inputs.inflationRate ?? DEFAULT_INPUTS.inflationRate,
+      contributionGrowthRate:
+        scenario.inputs.contributionGrowthRate ?? DEFAULT_INPUTS.contributionGrowthRate,
     },
   };
 }

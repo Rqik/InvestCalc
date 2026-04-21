@@ -38,8 +38,8 @@ export function ScenarioPanel({
       <div className="section-header">
         <h2 className="section-header__title">Сохраненные сценарии</h2>
         <p className="section-header__description">
-          Сохраняйте варианты, просматривайте их параметры и выбирайте нужный
-          сценарий из списка перед загрузкой в форму.
+          Сохраняйте варианты, просматривайте параметры и выбирайте нужный сценарий
+          из списка перед загрузкой в форму.
         </p>
       </div>
 
@@ -140,6 +140,18 @@ export function ScenarioPanel({
               <span className="scenario-preview__label">Доходность</span>
               <strong className="scenario-preview__value">
                 {formatPercent(selectedScenario.inputs.annualReturn)}
+              </strong>
+            </div>
+            <div className="scenario-preview__item">
+              <span className="scenario-preview__label">Инфляция</span>
+              <strong className="scenario-preview__value">
+                {formatPercent(selectedScenario.inputs.inflationRate)}
+              </strong>
+            </div>
+            <div className="scenario-preview__item">
+              <span className="scenario-preview__label">Индексация взноса</span>
+              <strong className="scenario-preview__value">
+                {formatPercent(selectedScenario.inputs.contributionGrowthRate)}
               </strong>
             </div>
           </div>

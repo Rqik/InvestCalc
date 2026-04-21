@@ -5,6 +5,8 @@ export type Inputs = {
   years: number;
   months: number;
   annualReturn: number;
+  inflationRate: number;
+  contributionGrowthRate: number;
 };
 
 export type Scenario = {
@@ -18,10 +20,15 @@ export type ViewMode = 'calculator' | 'plan';
 
 export type YearRow = {
   year: number;
+  label: string;
+  monthsInPeriod: number;
   startBalance: number;
   contributions: number;
+  totalInvested: number;
   growth: number;
+  profit: number;
   endBalance: number;
+  realEndBalance: number;
 };
 
 export type ExtraYearProjection = {

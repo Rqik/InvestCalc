@@ -1,12 +1,15 @@
 .app {
-  max-width: 1320px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   padding: 34px 20px 48px;
+  overflow-x: hidden;
 
   &__layout {
     display: grid;
     grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
     gap: 24px;
+    min-width: 0;
   }
 
   &__sidebar,
@@ -14,6 +17,7 @@
     display: grid;
     gap: 24px;
     align-content: start;
+    min-width: 0;
   }
 }
 
@@ -26,6 +30,8 @@
 }
 
 .panel {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: 28px;
   background: rgba(10, 18, 32, 0.78);

@@ -11,4 +11,6 @@ export const DEFAULT_INPUTS: Inputs = {
   years: 10,
   months: 0,
   annualReturn: 12,
+  inflationRate: 6,
+  contributionGrowthRate: 5,
 };

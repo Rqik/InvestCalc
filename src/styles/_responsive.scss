@@ -16,12 +16,18 @@
 
 @media (max-width: 720px) {
   .app {
-    padding: 18px 14px 28px;
+    padding: 14px 10px 24px;
+
+    &__sidebar,
+    &__content {
+      gap: 14px;
+    }
   }
 
   .panel {
-    padding: 22px;
-    border-radius: 22px;
+    padding: 18px;
+    border-radius: 18px;
+    box-shadow: 0 16px 42px rgba(2, 6, 23, 0.24);
   }
 
   .hero {
@@ -33,9 +39,13 @@
 
   .view-switcher {
     width: 100%;
+    gap: 4px;
+    padding: 4px;
 
     &__button {
       flex: 1;
+      padding: 10px 8px;
+      line-height: 1.2;
     }
   }
 
@@ -43,6 +53,10 @@
     &__creator {
       grid-template-columns: 1fr;
     }
+  }
+
+  .input-panel__header {
+    display: grid;
   }
 
   .scenario-card {
@@ -65,5 +79,134 @@
 
   .results-panel__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 430px) {
+  .app {
+    padding: 8px 6px 20px;
+  }
+
+  .panel {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .hero {
+    margin-bottom: 12px;
+
+    &__topline {
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    &__eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+    }
+
+    &__title {
+      font-size: 1.7rem;
+      line-height: 1.05;
+      margin-bottom: 10px;
+    }
+
+    &__description {
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+  }
+
+  .section-header {
+    margin-bottom: 14px;
+  }
+
+  .section-header__title {
+    font-size: 1.28rem;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+
+  .section-header__description {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .input-panel__grid {
+    gap: 14px;
+  }
+
+  .form-field,
+  .duration-field {
+    gap: 6px;
+  }
+
+  .form-field__label,
+  .duration-field__label {
+    font-size: 0.88rem;
+  }
+
+  .form-field__input,
+  .scenario-panel__name-input {
+    min-height: 48px;
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+
+  .form-field__hint {
+    font-size: 0.76rem;
+  }
+
+  .duration-field__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .button {
+    min-height: 46px;
+    border-radius: 12px;
+    padding: 10px 14px;
+  }
+
+  .scenario-panel__creator {
+    gap: 10px;
+  }
+
+  .scenario-card,
+  .scenario-preview,
+  .metric-card,
+  .summary-chip,
+  .wait-card {
+    border-radius: 14px;
+  }
+
+  .scenario-card,
+  .metric-card,
+  .wait-card {
+    padding: 14px;
+  }
+
+  .metric-card__label {
+    margin-bottom: 8px;
+    font-size: 0.86rem;
+  }
+
+  .metric-card__value {
+    font-size: 1.35rem;
+    margin-bottom: 8px;
+  }
+
+  .metric-card__hint,
+  .scenario-card__meta,
+  .scenario-preview__label,
+  .scenario-preview__value {
+    font-size: 0.82rem;
+  }
+
+  .workspace-panel__grid,
+  .results-panel__grid,
+  .scenario-preview__grid,
+  .extra-years-panel__grid {
+    gap: 10px;
   }
 }

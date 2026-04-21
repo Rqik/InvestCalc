@@ -1,53 +1,41 @@
 .growth-chart {
   &__frame {
-    overflow-x: auto;
+    min-height: 360px;
     border-radius: 24px;
     border: 1px solid rgba(148, 163, 184, 0.12);
     background:
       radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 42%),
       rgba(8, 15, 28, 0.78);
+    padding: 14px;
   }
 
-  &__svg {
+  &__tooltip {
+    display: grid;
+    gap: 8px;
+    min-width: 210px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(8, 15, 28, 0.96);
+    box-shadow: 0 18px 40px rgba(2, 6, 23, 0.28);
+  }
+
+  &__tooltip-title,
+  &__tooltip-row {
     display: block;
-    width: 100%;
-    min-width: 720px;
-    height: auto;
   }
 
-  &__grid-line {
-    stroke: rgba(148, 163, 184, 0.16);
-    stroke-dasharray: 4 8;
+  &__tooltip-row {
+    color: #d2deed;
+    font-size: 0.9rem;
   }
 
-  &__grid-label {
-    fill: #7f93ac;
-    font-size: 12px;
-  }
-
-  &__area {
-    fill: url(#growth-chart-area);
-  }
-
-  &__line {
-    fill: none;
-    stroke: url(#growth-chart-line);
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    filter: drop-shadow(0 10px 20px rgba(14, 165, 233, 0.16));
-  }
-
-  &__point {
-    fill: #f8fafc;
-    stroke: #38bdf8;
-    stroke-width: 3;
-  }
-
-  &__x-label {
-    fill: #d2deed;
-    font-size: 13px;
-    text-anchor: middle;
+  &__tooltip-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 8px;
+    border-radius: 999px;
   }
 
   &__legend {
@@ -69,14 +57,5 @@
     width: 26px;
     height: 10px;
     border-radius: 999px;
-
-    &--line {
-      background: linear-gradient(90deg, #38bdf8, #34d399);
-    }
-
-    &--area {
-      background: rgba(56, 189, 248, 0.24);
-      border: 1px solid rgba(56, 189, 248, 0.36);
-    }
   }
 }

@@ -22,10 +22,17 @@
     color: #fff4f4;
     background: rgba(185, 28, 28, 0.82);
   }
+
+  &--ghost {
+    color: #d2deed;
+    background: rgba(148, 163, 184, 0.12);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+  }
 }
 
 .view-switcher {
   display: inline-flex;
+  width: fit-content;
   padding: 6px;
   border-radius: 18px;
   background: rgba(15, 23, 42, 0.9);
@@ -37,6 +44,7 @@
     padding: 11px 16px;
     background: transparent;
     color: #b8c5d8;
+    min-width: 0;
     transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
 
     &:hover {

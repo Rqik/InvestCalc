@@ -10,22 +10,16 @@ type DurationInputProps = {
 
 export function DurationInput({ years, months, onChange }: DurationInputProps) {
   const handleYearsChange = (nextYears: number) => {
-    const normalizedYears = normalizeYears(nextYears);
-    const nextMonths = normalizedYears === 0 && months === 0 ? 1 : months;
-
     onChange({
-      years: normalizedYears,
-      months: nextMonths,
+      years: normalizeYears(nextYears),
+      months,
     });
   };
 
   const handleMonthsChange = (nextMonths: number) => {
-    const normalizedMonths = normalizeMonths(nextMonths);
-    const nextYears = years === 0 && normalizedMonths === 0 ? 1 : years;
-
     onChange({
-      years: nextYears,
-      months: normalizedMonths,
+      years,
+      months: normalizeMonths(nextMonths),
     });
   };
 

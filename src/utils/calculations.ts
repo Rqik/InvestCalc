@@ -3,6 +3,7 @@ import {
   MONTHS_IN_YEAR,
 } from '../constants/defaults';
 import type { ExtraYearProjection, Inputs, YearRow } from '../types/finance';
+import { formatDuration } from './format';
 
 function buildFibonacciLikeOffsets(count: number) {
   const offsets = [0];
@@ -22,8 +23,21 @@ function buildFibonacciLikeOffsets(count: number) {
   return offsets;
 }
 
+function getIndexedContribution(
+  monthlyContribution: number,
+  contributionGrowthRate: number,
+  monthIndex: number,
+) {
+  const completedYears = Math.floor(monthIndex / MONTHS_IN_YEAR);
+  return monthlyContribution * Math.pow(1 + contributionGrowthRate / 100, completedYears);
+}
+
 export function getMonthlyRate(annualReturn: number) {
   return annualReturn / 100 / MONTHS_IN_YEAR;
+}
+
+export function getMonthlyInflationRate(inflationRate: number) {
+  return inflationRate / 100 / MONTHS_IN_YEAR;
 }
 
 export function getTotalMonths(inputs: Inputs) {
@@ -37,59 +51,79 @@ export function getNormalizedDuration(totalMonths: number) {
   };
 }
 
-export function getFutureValue({
-  initialCapital,
-  monthlyContribution,
-  years,
-  months = 0,
-  annualReturn,
-}: Inputs) {
-  const totalMonths = years * MONTHS_IN_YEAR + months;
-  const monthlyRate = getMonthlyRate(annualReturn);
+export function getRealValue(value: number, inputs: Inputs) {
+  const totalMonths = getTotalMonths(inputs);
+  const monthlyInflationRate = getMonthlyInflationRate(inputs.inflationRate ?? 0);
 
-  if (monthlyRate === 0) {
-    return initialCapital + monthlyContribution * totalMonths;
+  if (monthlyInflationRate === 0 || totalMonths <= 0) {
+    return value;
   }
 
-  const growth = Math.pow(1 + monthlyRate, totalMonths);
-  const investedInitial = initialCapital * growth;
-  const investedMonthly = monthlyContribution * ((growth - 1) / monthlyRate);
+  return value / Math.pow(1 + monthlyInflationRate, totalMonths);
+}
 
-  return investedInitial + investedMonthly;
+export function getFutureValue(inputs: Inputs) {
+  const totalMonths = getTotalMonths(inputs);
+  const monthlyRate = getMonthlyRate(inputs.annualReturn);
+  let balance = inputs.initialCapital;
+
+  for (let month = 0; month < totalMonths; month += 1) {
+    balance *= 1 + monthlyRate;
+    balance += getIndexedContribution(
+      inputs.monthlyContribution,
+      inputs.contributionGrowthRate ?? 0,
+      month,
+    );
+  }
+
+  return balance;
 }
 
 export function getTotalInvested(inputs: Inputs) {
-  return inputs.initialCapital + inputs.monthlyContribution * getTotalMonths(inputs);
+  const totalMonths = getTotalMonths(inputs);
+  let totalInvested = inputs.initialCapital;
+
+  for (let month = 0; month < totalMonths; month += 1) {
+    totalInvested += getIndexedContribution(
+      inputs.monthlyContribution,
+      inputs.contributionGrowthRate ?? 0,
+      month,
+    );
+  }
+
+  return totalInvested;
 }
 
 export function getRequiredMonthlyContribution(inputs: Inputs) {
-  const { targetCapital, initialCapital, annualReturn } = inputs;
   const totalMonths = getTotalMonths(inputs);
-  const monthlyRate = getMonthlyRate(annualReturn);
 
   if (totalMonths <= 0) {
     return 0;
   }
 
-  if (monthlyRate === 0) {
-    return Math.max((targetCapital - initialCapital) / totalMonths, 0);
-  }
+  const futureInitial = getFutureValue({ ...inputs, monthlyContribution: 0 });
+  const contributionCoefficient = getFutureValue({
+    ...inputs,
+    initialCapital: 0,
+    monthlyContribution: 1,
+  });
 
-  const growth = Math.pow(1 + monthlyRate, totalMonths);
-  const futureInitial = initialCapital * growth;
-  const annuityFactor = (growth - 1) / monthlyRate;
-
-  if (annuityFactor <= 0) {
+  if (contributionCoefficient <= 0) {
     return 0;
   }
 
-  return Math.max((targetCapital - futureInitial) / annuityFactor, 0);
+  return Math.max((inputs.targetCapital - futureInitial) / contributionCoefficient, 0);
 }
 
 export function getRequiredAnnualReturn(inputs: Inputs) {
+  const totalMonths = getTotalMonths(inputs);
   const tolerance = 0.5;
   let low = 0;
   let high = 100;
+
+  if (totalMonths <= 0) {
+    return 0;
+  }
 
   if (getFutureValue({ ...inputs, annualReturn: low }) >= inputs.targetCapital) {
     return 0;
@@ -120,27 +154,49 @@ export function getRequiredAnnualReturn(inputs: Inputs) {
 export function buildYearlyPlan(inputs: Inputs): YearRow[] {
   const plan: YearRow[] = [];
   let balance = inputs.initialCapital;
+  let totalInvested = inputs.initialCapital;
   const monthlyRate = getMonthlyRate(inputs.annualReturn);
+  const monthlyInflationRate = getMonthlyInflationRate(inputs.inflationRate ?? 0);
   const totalMonths = getTotalMonths(inputs);
   const rowCount = Math.ceil(totalMonths / MONTHS_IN_YEAR);
 
   for (let year = 1; year <= rowCount; year += 1) {
     const startBalance = balance;
     let contributions = 0;
-    const monthsInRow = Math.min(MONTHS_IN_YEAR, totalMonths - (year - 1) * MONTHS_IN_YEAR);
+    const monthsBeforePeriod = (year - 1) * MONTHS_IN_YEAR;
+    const monthsInPeriod = Math.min(MONTHS_IN_YEAR, totalMonths - monthsBeforePeriod);
 
-    for (let month = 0; month < monthsInRow; month += 1) {
+    for (let month = 0; month < monthsInPeriod; month += 1) {
+      const monthIndex = monthsBeforePeriod + month;
+      const contribution = getIndexedContribution(
+        inputs.monthlyContribution,
+        inputs.contributionGrowthRate ?? 0,
+        monthIndex,
+      );
+
       balance *= 1 + monthlyRate;
-      balance += inputs.monthlyContribution;
-      contributions += inputs.monthlyContribution;
+      balance += contribution;
+      contributions += contribution;
+      totalInvested += contribution;
     }
+
+    const duration = getNormalizedDuration(monthsBeforePeriod + monthsInPeriod);
+    const realEndBalance =
+      monthlyInflationRate === 0
+        ? balance
+        : balance / Math.pow(1 + monthlyInflationRate, monthsBeforePeriod + monthsInPeriod);
 
     plan.push({
       year,
+      label: monthsInPeriod === MONTHS_IN_YEAR ? `${year} год` : formatDuration(duration.years, duration.months),
+      monthsInPeriod,
       startBalance,
       contributions,
+      totalInvested,
       growth: balance - startBalance - contributions,
+      profit: balance - totalInvested,
       endBalance: balance,
+      realEndBalance,
     });
   }
 
@@ -160,7 +216,7 @@ export function buildExtraYearProjections(
     const totalMonths = baseTotalMonths + additionalYears * MONTHS_IN_YEAR;
     const { years, months } = getNormalizedDuration(totalMonths);
     const projected = getFutureValue({ ...inputs, years, months });
-    const totalInvested = inputs.initialCapital + inputs.monthlyContribution * totalMonths;
+    const totalInvested = getTotalInvested({ ...inputs, years, months });
 
     return {
       years,
