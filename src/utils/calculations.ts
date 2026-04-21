@@ -26,13 +26,25 @@ export function getMonthlyRate(annualReturn: number) {
   return annualReturn / 100 / MONTHS_IN_YEAR;
 }
 
+export function getTotalMonths(inputs: Inputs) {
+  return inputs.years * MONTHS_IN_YEAR + (inputs.months ?? 0);
+}
+
+export function getNormalizedDuration(totalMonths: number) {
+  return {
+    years: Math.floor(totalMonths / MONTHS_IN_YEAR),
+    months: totalMonths % MONTHS_IN_YEAR,
+  };
+}
+
 export function getFutureValue({
   initialCapital,
   monthlyContribution,
   years,
+  months = 0,
   annualReturn,
 }: Inputs) {
-  const totalMonths = years * MONTHS_IN_YEAR;
+  const totalMonths = years * MONTHS_IN_YEAR + months;
   const monthlyRate = getMonthlyRate(annualReturn);
 
   if (monthlyRate === 0) {
@@ -47,12 +59,12 @@ export function getFutureValue({
 }
 
 export function getTotalInvested(inputs: Inputs) {
-  return inputs.initialCapital + inputs.monthlyContribution * inputs.years * MONTHS_IN_YEAR;
+  return inputs.initialCapital + inputs.monthlyContribution * getTotalMonths(inputs);
 }
 
 export function getRequiredMonthlyContribution(inputs: Inputs) {
-  const { targetCapital, initialCapital, years, annualReturn } = inputs;
-  const totalMonths = years * MONTHS_IN_YEAR;
+  const { targetCapital, initialCapital, annualReturn } = inputs;
+  const totalMonths = getTotalMonths(inputs);
   const monthlyRate = getMonthlyRate(annualReturn);
 
   if (totalMonths <= 0) {
@@ -109,12 +121,15 @@ export function buildYearlyPlan(inputs: Inputs): YearRow[] {
   const plan: YearRow[] = [];
   let balance = inputs.initialCapital;
   const monthlyRate = getMonthlyRate(inputs.annualReturn);
+  const totalMonths = getTotalMonths(inputs);
+  const rowCount = Math.ceil(totalMonths / MONTHS_IN_YEAR);
 
-  for (let year = 1; year <= inputs.years; year += 1) {
+  for (let year = 1; year <= rowCount; year += 1) {
     const startBalance = balance;
     let contributions = 0;
+    const monthsInRow = Math.min(MONTHS_IN_YEAR, totalMonths - (year - 1) * MONTHS_IN_YEAR);
 
-    for (let month = 0; month < MONTHS_IN_YEAR; month += 1) {
+    for (let month = 0; month < monthsInRow; month += 1) {
       balance *= 1 + monthlyRate;
       balance += inputs.monthlyContribution;
       contributions += inputs.monthlyContribution;
@@ -139,14 +154,17 @@ export function buildExtraYearProjections(
 ): ExtraYearProjection[] {
   const baseInvested = getTotalInvested(inputs);
   const offsets = buildFibonacciLikeOffsets(extraYearsCount);
+  const baseTotalMonths = getTotalMonths(inputs);
 
   return offsets.map((additionalYears) => {
-    const years = inputs.years + additionalYears;
-    const projected = getFutureValue({ ...inputs, years });
-    const totalInvested = inputs.initialCapital + inputs.monthlyContribution * years * MONTHS_IN_YEAR;
+    const totalMonths = baseTotalMonths + additionalYears * MONTHS_IN_YEAR;
+    const { years, months } = getNormalizedDuration(totalMonths);
+    const projected = getFutureValue({ ...inputs, years, months });
+    const totalInvested = inputs.initialCapital + inputs.monthlyContribution * totalMonths;
 
     return {
       years,
+      months,
       additionalYears,
       finalCapital: projected,
       additionalCapital: projected - baseProjectedCapital,

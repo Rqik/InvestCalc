@@ -1,5 +1,6 @@
 import type { Inputs } from '../types/finance';
-import { normalizeAnnualReturn, normalizeMoney, normalizeYears } from '../utils/normalize';
+import { normalizeAnnualReturn, normalizeMoney } from '../utils/normalize';
+import { DurationInput } from './DurationInput';
 import { MoneyInput } from './MoneyInput';
 import { NumberInput } from './NumberInput';
 
@@ -21,7 +22,8 @@ export function InputPanel({ inputs, onChange }: InputPanelProps) {
       <div className="section-header">
         <h2 className="section-header__title">Входные данные</h2>
         <p className="section-header__description">
-          Суммы форматируются пробелами, чтобы большие числа было проще читать.
+          Суммы форматируются пробелами, а срок можно задать точнее: отдельно годы
+          и месяцы.
         </p>
       </div>
 
@@ -44,13 +46,10 @@ export function InputPanel({ inputs, onChange }: InputPanelProps) {
           hint="Регулярное пополнение"
           onChange={(value) => update('monthlyContribution', normalizeMoney(value))}
         />
-        <NumberInput
-          label="Срок, лет"
-          value={inputs.years}
-          min={1}
-          step={1}
-          hint="Горизонт планирования"
-          onChange={(value) => update('years', normalizeYears(value))}
+        <DurationInput
+          years={inputs.years}
+          months={inputs.months ?? 0}
+          onChange={(duration) => onChange({ ...inputs, ...duration })}
         />
         <NumberInput
           label="Ожидаемая доходность, %"

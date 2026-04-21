@@ -1,6 +1,16 @@
 import { STORAGE_KEY } from '../constants/defaults';
 import type { Scenario } from '../types/finance';
 
+function normalizeScenario(scenario: Scenario): Scenario {
+  return {
+    ...scenario,
+    inputs: {
+      ...scenario.inputs,
+      months: scenario.inputs.months ?? 0,
+    },
+  };
+}
+
 export function loadScenarios(): Scenario[] {
   if (typeof window === 'undefined') {
     return [];
@@ -13,7 +23,7 @@ export function loadScenarios(): Scenario[] {
     }
 
     const parsed = JSON.parse(raw) as Scenario[];
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) ? parsed.map(normalizeScenario) : [];
   } catch {
     return [];
   }

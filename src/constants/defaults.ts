@@ -9,5 +9,6 @@ export const DEFAULT_INPUTS: Inputs = {
   initialCapital: 300_000,
   monthlyContribution: 35_000,
   years: 10,
+  months: 0,
   annualReturn: 12,
 };

@@ -1,5 +1,5 @@
 import type { ExtraYearProjection } from '../types/finance';
-import { formatMoney } from '../utils/format';
+import { formatAdditionalYears, formatDuration, formatMoney } from '../utils/format';
 
 type ExtraYearsPanelProps = {
   extraYears: ExtraYearProjection[];
@@ -19,16 +19,18 @@ export function ExtraYearsPanel({ extraYears }: ExtraYearsPanelProps) {
 
       <div className="extra-years-panel__grid">
         {extraYears.map((item) => (
-          <article key={`${item.years}-${item.additionalYears}`} className="wait-card">
+          <article key={`${item.years}-${item.months}-${item.additionalYears}`} className="wait-card">
             <span className="wait-card__years">
-              {item.years} лет
-              {item.additionalYears === 0 ? ' · текущий срок' : ` · еще +${item.additionalYears}`}
+              {formatDuration(item.years, item.months)}
+              <span className="wait-card__period-note">
+                {formatAdditionalYears(item.additionalYears)}
+              </span>
             </span>
             <strong className="wait-card__value">{formatMoney(item.finalCapital)}</strong>
             <small className="wait-card__hint">
               {item.additionalYears === 0
                 ? 'Это ваш текущий сценарий без дополнительного ожидания'
-                : `Еще ${formatMoney(item.additionalCapital)} к текущему плану`}
+                : `${formatMoney(item.additionalCapital)} сверх текущего плана`}
             </small>
             <small className="wait-card__hint">
               Дополнительный рост от времени: {formatMoney(item.additionalGrowth)}

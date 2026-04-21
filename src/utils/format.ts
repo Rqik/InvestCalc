@@ -39,3 +39,44 @@ export function formatScenarioDate(value: string) {
     timeStyle: 'short',
   }).format(new Date(value));
 }
+
+function pluralize(value: number, one: string, few: string, many: string) {
+  const normalized = Math.abs(value) % 100;
+  const lastDigit = normalized % 10;
+
+  if (normalized > 10 && normalized < 20) {
+    return many;
+  }
+
+  if (lastDigit === 1) {
+    return one;
+  }
+
+  if (lastDigit >= 2 && lastDigit <= 4) {
+    return few;
+  }
+
+  return many;
+}
+
+export function formatDuration(years: number, months = 0) {
+  const parts: string[] = [];
+
+  if (years > 0) {
+    parts.push(`${years} ${pluralize(years, 'год', 'года', 'лет')}`);
+  }
+
+  if (months > 0) {
+    parts.push(`${months} ${pluralize(months, 'месяц', 'месяца', 'месяцев')}`);
+  }
+
+  return parts.length > 0 ? parts.join(' ') : '0 месяцев';
+}
+
+export function formatAdditionalYears(years: number) {
+  if (years === 0) {
+    return 'текущий срок';
+  }
+
+  return `срок больше на ${years} ${pluralize(years, 'год', 'года', 'лет')}`;
+}

@@ -16,7 +16,7 @@ import {
   getRequiredMonthlyContribution,
   getTotalInvested,
 } from './utils/calculations';
-import { formatMoney, formatPercent } from './utils/format';
+import { formatDuration, formatMoney, formatPercent } from './utils/format';
 import { createScenarioName, loadScenarios, saveScenarios } from './utils/storage';
 
 const VIEW_COPY: Record<
@@ -159,7 +159,9 @@ function App() {
             <div className="workspace-panel__grid">
               <div className="summary-chip">
                 <span className="summary-chip__label">Горизонт</span>
-                <strong className="summary-chip__value">{inputs.years} лет</strong>
+                <strong className="summary-chip__value">
+                  {formatDuration(inputs.years, inputs.months)}
+                </strong>
               </div>
               <div className="summary-chip">
                 <span className="summary-chip__label">Ежемесячный взнос</span>

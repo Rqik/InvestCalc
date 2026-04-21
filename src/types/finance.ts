@@ -3,6 +3,7 @@ export type Inputs = {
   initialCapital: number;
   monthlyContribution: number;
   years: number;
+  months: number;
   annualReturn: number;
 };
 
@@ -25,6 +26,7 @@ export type YearRow = {
 
 export type ExtraYearProjection = {
   years: number;
+  months: number;
   additionalYears: number;
   finalCapital: number;
   additionalCapital: number;

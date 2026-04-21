@@ -1,6 +1,6 @@
 import type { KeyboardEvent } from 'react';
 import type { Scenario } from '../types/finance';
-import { formatMoney, formatPercent, formatScenarioDate } from '../utils/format';
+import { formatDuration, formatMoney, formatPercent, formatScenarioDate } from '../utils/format';
 
 type ScenarioPanelProps = {
   scenarioName: string;
@@ -38,8 +38,8 @@ export function ScenarioPanel({
       <div className="section-header">
         <h2 className="section-header__title">Сохраненные сценарии</h2>
         <p className="section-header__description">
-          Сохраняйте варианты, просматривайте их параметры и выбирайте нужный сценарий из
-          списка перед загрузкой в форму.
+          Сохраняйте варианты, просматривайте их параметры и выбирайте нужный
+          сценарий из списка перед загрузкой в форму.
         </p>
       </div>
 
@@ -65,6 +65,7 @@ export function ScenarioPanel({
         ) : (
           scenarios.map((scenario) => {
             const isActive = scenario.id === selectedScenario?.id;
+            const scenarioMonths = scenario.inputs.months ?? 0;
 
             return (
               <article
@@ -83,7 +84,8 @@ export function ScenarioPanel({
                     </span>
                   </div>
                   <small className="scenario-card__meta">
-                    Цель {formatMoney(scenario.inputs.targetCapital)} за {scenario.inputs.years} лет
+                    Цель {formatMoney(scenario.inputs.targetCapital)} за{' '}
+                    {formatDuration(scenario.inputs.years, scenarioMonths)}
                   </small>
                   <small className="scenario-card__meta">
                     Сохранено {formatScenarioDate(scenario.createdAt)}
@@ -131,7 +133,7 @@ export function ScenarioPanel({
             <div className="scenario-preview__item">
               <span className="scenario-preview__label">Срок</span>
               <strong className="scenario-preview__value">
-                {selectedScenario.inputs.years} лет
+                {formatDuration(selectedScenario.inputs.years, selectedScenario.inputs.months ?? 0)}
               </strong>
             </div>
             <div className="scenario-preview__item">

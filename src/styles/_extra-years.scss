@@ -24,6 +24,13 @@
     line-height: 1.4;
   }
 
+  &__period-note {
+    display: block;
+    color: #7dd3fc;
+    font-size: 0.86rem;
+    margin-top: 4px;
+  }
+
   &__value {
     font-size: 1.5rem;
     margin-bottom: 10px;
