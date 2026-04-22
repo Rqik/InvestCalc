@@ -9,7 +9,9 @@
   .yearly-plan__summary,
   .extra-years-panel__grid,
   .workspace-panel__grid,
-  .scenario-preview__grid {
+  .scenario-inspector__highlights,
+  .retirement-advice__grid,
+  .retirement-timeline__steps {
     grid-template-columns: 1fr;
   }
 }
@@ -35,9 +37,14 @@
       display: grid;
       grid-template-columns: 1fr;
     }
+
+    &__actions {
+      justify-content: stretch;
+    }
   }
 
-  .view-switcher {
+  .view-switcher,
+  .page-switcher {
     width: 100%;
     gap: 4px;
     padding: 4px;
@@ -49,7 +56,15 @@
     }
   }
 
+  .hero__actions {
+    display: grid;
+  }
+
   .scenario-panel {
+    &__header {
+      align-items: center;
+    }
+
     &__creator {
       grid-template-columns: 1fr;
     }
@@ -60,21 +75,19 @@
   }
 
   .scenario-card {
-    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .scenario-card__topline {
+    flex-wrap: wrap;
+  }
+
+  .scenario-card__date {
+    white-space: normal;
+  }
+
+  .scenario-inspector__topline {
     display: grid;
-    gap: 6px;
-    justify-content: flex-start;
-  }
-
-  .scenario-preview__actions {
-    flex-direction: column;
-  }
-
-  .scenario-preview__actions .button {
-    width: 100%;
   }
 
   .results-panel__grid {
@@ -136,6 +149,11 @@
     gap: 14px;
   }
 
+  .input-panel__group {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
   .form-field,
   .duration-field {
     gap: 6px;
@@ -173,7 +191,7 @@
   }
 
   .scenario-card,
-  .scenario-preview,
+  .scenario-inspector,
   .metric-card,
   .summary-chip,
   .wait-card {
@@ -198,15 +216,26 @@
 
   .metric-card__hint,
   .scenario-card__meta,
-  .scenario-preview__label,
-  .scenario-preview__value {
+  .scenario-inspector__details,
+  .scenario-inspector__highlights {
     font-size: 0.82rem;
   }
 
   .workspace-panel__grid,
   .results-panel__grid,
-  .scenario-preview__grid,
-  .extra-years-panel__grid {
+  .scenario-inspector__highlights,
+  .extra-years-panel__grid,
+  .retirement-advice__grid,
+  .retirement-timeline__steps {
     gap: 10px;
+  }
+
+  .scenario-inspector__details div {
+    display: grid;
+    gap: 4px;
+  }
+
+  .scenario-inspector__details dd {
+    text-align: left;
   }
 }

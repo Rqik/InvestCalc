@@ -9,6 +9,13 @@
     margin-bottom: 16px;
   }
 
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
   &__eyebrow {
     margin: 0;
     text-transform: uppercase;

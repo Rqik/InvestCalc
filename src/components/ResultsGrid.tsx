@@ -22,9 +22,9 @@ export function ResultsGrid({
   return (
     <section className="panel results-panel">
       <div className="section-header">
-        <h2 className="section-header__title">Что получится</h2>
+        <h2 className="section-header__title">Итоги</h2>
         <p className="section-header__description">
-          Ключевые цифры по текущему сценарию с учетом инфляции и индексации взноса.
+          Главное по текущему сценарию: капитал, покупательная способность и разрыв с целью.
         </p>
       </div>
 
@@ -36,7 +36,7 @@ export function ResultsGrid({
             {isDurationInvalid
               ? 'Укажите срок больше нуля, чтобы получить прогноз'
               : goalGap >= 0
-                ? `Цель перевыполнена на ${formatMoney(goalGap)}`
+                ? `Цель выше плана на ${formatMoney(goalGap)}`
                 : `До цели не хватает ${formatMoney(Math.abs(goalGap))}`}
           </small>
         </article>
@@ -44,17 +44,13 @@ export function ResultsGrid({
         <article className="metric-card">
           <span className="metric-card__label">В сегодняшних деньгах</span>
           <strong className="metric-card__value">{formatMoney(realProjectedCapital)}</strong>
-          <small className="metric-card__hint">
-            Показывает покупательную способность будущего капитала с учетом инфляции
-          </small>
+          <small className="metric-card__hint">С учетом инфляции</small>
         </article>
 
         <article className="metric-card">
-          <span className="metric-card__label">Нужно откладывать в месяц</span>
+          <span className="metric-card__label">Нужно откладывать</span>
           <strong className="metric-card__value">{formatMoney(requiredContribution)}</strong>
-          <small className="metric-card__hint">
-            Стартовый взнос для достижения цели при текущей доходности и индексации
-          </small>
+          <small className="metric-card__hint">Стартовый ежемесячный взнос</small>
         </article>
 
         <article className="metric-card">
@@ -65,16 +61,14 @@ export function ResultsGrid({
           <small className="metric-card__hint">
             {requiredReturn === null
               ? 'Цель выглядит нереалистичной при текущем взносе и сроке'
-              : 'Чтобы прийти к цели при текущем ежемесячном взносе'}
+              : 'При текущем ежемесячном взносе'}
           </small>
         </article>
 
         <article className="metric-card">
-          <span className="metric-card__label">Прибыль от роста капитала</span>
+          <span className="metric-card__label">Прибыль от роста</span>
           <strong className="metric-card__value">{formatMoney(investmentProfit)}</strong>
-          <small className="metric-card__hint">
-            Разница между итогом и всеми вложенными деньгами
-          </small>
+          <small className="metric-card__hint">Итог минус все вложенные деньги</small>
         </article>
       </div>
     </section>

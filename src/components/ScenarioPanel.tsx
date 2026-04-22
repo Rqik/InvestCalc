@@ -35,12 +35,14 @@ export function ScenarioPanel({
 
   return (
     <section className="panel scenario-panel">
-      <div className="section-header">
-        <h2 className="section-header__title">Сохраненные сценарии</h2>
-        <p className="section-header__description">
-          Сохраняйте варианты, просматривайте параметры и выбирайте нужный сценарий
-          из списка перед загрузкой в форму.
-        </p>
+      <div className="section-header scenario-panel__header">
+        <div>
+          <h2 className="section-header__title">Сценарии</h2>
+          <p className="section-header__description">
+            Сохраняйте варианты расчета и быстро возвращайтесь к нужному плану.
+          </p>
+        </div>
+        <span className="scenario-panel__counter">{scenarios.length}</span>
       </div>
 
       <div className="scenario-panel__creator">
@@ -56,14 +58,13 @@ export function ScenarioPanel({
         </button>
       </div>
 
-      <div className="scenario-panel__list">
-        {scenarios.length === 0 ? (
-          <div className="scenario-panel__empty">
-            Пока нет сохраненных сценариев. Сохраните первый вариант расчета, и он
-            появится в списке ниже.
-          </div>
-        ) : (
-          scenarios.map((scenario) => {
+      {scenarios.length === 0 ? (
+        <div className="scenario-panel__empty">
+          Сохраните первый вариант, и он появится здесь для сравнения и повторной загрузки.
+        </div>
+      ) : (
+        <div className="scenario-panel__list" aria-label="Список сохраненных сценариев">
+          {scenarios.map((scenario) => {
             const isActive = scenario.id === selectedScenario?.id;
             const scenarioMonths = scenario.inputs.months ?? 0;
 
@@ -83,95 +84,79 @@ export function ScenarioPanel({
                       {isActive ? 'Выбран' : 'Открыть'}
                     </span>
                   </div>
-                  <small className="scenario-card__meta">
-                    Цель {formatMoney(scenario.inputs.targetCapital)} за{' '}
+                  <span className="scenario-card__meta">
+                    {formatMoney(scenario.inputs.targetCapital)} за{' '}
                     {formatDuration(scenario.inputs.years, scenarioMonths)}
-                  </small>
-                  <small className="scenario-card__meta">
-                    Сохранено {formatScenarioDate(scenario.createdAt)}
-                  </small>
+                  </span>
                 </div>
+                <time className="scenario-card__date" dateTime={scenario.createdAt}>
+                  {formatScenarioDate(scenario.createdAt)}
+                </time>
               </article>
             );
-          })
-        )}
-      </div>
+          })}
+        </div>
+      )}
 
       {selectedScenario && (
-        <section className="scenario-preview">
-          <div className="section-header">
-            <h3 className="section-header__title">Просмотр сценария</h3>
-            <p className="section-header__description">
-              Проверьте значения и примените выбранный сценарий в калькулятор одним
-              нажатием.
-            </p>
-          </div>
-
-          <div className="scenario-preview__grid">
-            <div className="scenario-preview__item">
-              <span className="scenario-preview__label">Название</span>
-              <strong className="scenario-preview__value">{selectedScenario.name}</strong>
+        <section className="scenario-inspector">
+          <div className="scenario-inspector__topline">
+            <div>
+              <span className="scenario-inspector__eyebrow">Выбранный сценарий</span>
+              <h3 className="scenario-inspector__title">{selectedScenario.name}</h3>
             </div>
-            <div className="scenario-preview__item">
-              <span className="scenario-preview__label">Цель по капиталу</span>
-              <strong className="scenario-preview__value">
-                {formatMoney(selectedScenario.inputs.targetCapital)}
-              </strong>
-            </div>
-            <div className="scenario-preview__item">
-              <span className="scenario-preview__label">Уже накоплено</span>
-              <strong className="scenario-preview__value">
-                {formatMoney(selectedScenario.inputs.initialCapital)}
-              </strong>
-            </div>
-            <div className="scenario-preview__item">
-              <span className="scenario-preview__label">Ежемесячный взнос</span>
-              <strong className="scenario-preview__value">
-                {formatMoney(selectedScenario.inputs.monthlyContribution)}
-              </strong>
-            </div>
-            <div className="scenario-preview__item">
-              <span className="scenario-preview__label">Срок</span>
-              <strong className="scenario-preview__value">
-                {formatDuration(selectedScenario.inputs.years, selectedScenario.inputs.months ?? 0)}
-              </strong>
-            </div>
-            <div className="scenario-preview__item">
-              <span className="scenario-preview__label">Доходность</span>
-              <strong className="scenario-preview__value">
-                {formatPercent(selectedScenario.inputs.annualReturn)}
-              </strong>
-            </div>
-            <div className="scenario-preview__item">
-              <span className="scenario-preview__label">Инфляция</span>
-              <strong className="scenario-preview__value">
-                {formatPercent(selectedScenario.inputs.inflationRate)}
-              </strong>
-            </div>
-            <div className="scenario-preview__item">
-              <span className="scenario-preview__label">Индексация взноса</span>
-              <strong className="scenario-preview__value">
-                {formatPercent(selectedScenario.inputs.contributionGrowthRate)}
-              </strong>
-            </div>
-          </div>
-
-          <div className="scenario-preview__actions">
             <button
               className="button button--secondary"
               type="button"
               onClick={() => onLoad(selectedScenario)}
             >
-              Применить в форму
-            </button>
-            <button
-              className="button button--danger"
-              type="button"
-              onClick={() => onDelete(selectedScenario.id)}
-            >
-              Удалить сценарий
+              Применить
             </button>
           </div>
+
+          <div className="scenario-inspector__highlights">
+            <div>
+              <span>Цель</span>
+              <strong>{formatMoney(selectedScenario.inputs.targetCapital)}</strong>
+            </div>
+            <div>
+              <span>Срок</span>
+              <strong>
+                {formatDuration(selectedScenario.inputs.years, selectedScenario.inputs.months ?? 0)}
+              </strong>
+            </div>
+          </div>
+
+          <dl className="scenario-inspector__details">
+            <div>
+              <dt>Стартовый капитал</dt>
+              <dd>{formatMoney(selectedScenario.inputs.initialCapital)}</dd>
+            </div>
+            <div>
+              <dt>Ежемесячный взнос</dt>
+              <dd>{formatMoney(selectedScenario.inputs.monthlyContribution)}</dd>
+            </div>
+            <div>
+              <dt>Доходность</dt>
+              <dd>{formatPercent(selectedScenario.inputs.annualReturn)}</dd>
+            </div>
+            <div>
+              <dt>Инфляция</dt>
+              <dd>{formatPercent(selectedScenario.inputs.inflationRate)}</dd>
+            </div>
+            <div>
+              <dt>Индексация взноса</dt>
+              <dd>{formatPercent(selectedScenario.inputs.contributionGrowthRate)}</dd>
+            </div>
+          </dl>
+
+          <button
+            className="button button--danger scenario-inspector__delete"
+            type="button"
+            onClick={() => onDelete(selectedScenario.id)}
+          >
+            Удалить сценарий
+          </button>
         </section>
       )}
     </section>

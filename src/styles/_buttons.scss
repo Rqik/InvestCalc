@@ -57,3 +57,31 @@
     }
   }
 }
+
+.page-switcher {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px;
+  border-radius: 18px;
+  background: rgba(8, 15, 28, 0.92);
+  border: 1px solid rgba(125, 211, 252, 0.14);
+
+  &__button {
+    border: 0;
+    border-radius: 14px;
+    padding: 11px 16px;
+    background: transparent;
+    color: #b8c5d8;
+    min-width: 0;
+    transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &--active {
+      background: linear-gradient(135deg, #16a34a, #0f766e);
+      color: #f8fbff;
+    }
+  }
+}
