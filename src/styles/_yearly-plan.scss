@@ -8,9 +8,9 @@
 
   &__table-wrap {
     overflow-x: auto;
-    border-radius: 20px;
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    background: rgba(8, 15, 28, 0.7);
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
   }
 
   &__table {
@@ -25,26 +25,26 @@
     }
 
     thead th {
-      color: #d6e3f4;
+      color: hsl(var(--muted-foreground));
       font-size: 0.9rem;
-      background: rgba(15, 23, 42, 0.96);
+      background: hsl(var(--muted));
     }
 
     tbody tr {
-      border-top: 1px solid rgba(148, 163, 184, 0.1);
+      border-top: 1px solid hsl(var(--border));
     }
 
     tbody tr:hover {
-      background: rgba(30, 41, 59, 0.45);
+      background: hsl(var(--muted) / 0.5);
     }
   }
 }
 
 .summary-chip {
   padding: 16px 18px;
-  border-radius: 20px;
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  background: rgba(19, 30, 49, 0.86);
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
 
   &__label,
   &__value {
@@ -52,7 +52,7 @@
   }
 
   &__label {
-    color: #97a6ba;
+    color: hsl(var(--muted-foreground));
   }
 
   &__value {

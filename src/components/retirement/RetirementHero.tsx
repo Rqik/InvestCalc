@@ -1,19 +1,8 @@
-import type { AppPage } from '../../types/navigation';
-import { PageSwitcher } from '../PageSwitcher';
-
-type RetirementHeroProps = {
-  activePage: AppPage;
-  onPageChange: (page: AppPage) => void;
-};
-
-export function RetirementHero({ activePage, onPageChange }: RetirementHeroProps) {
+export function RetirementHero() {
   return (
-    <section className="hero panel retirement-hero">
+    <section className="hero retirement-hero">
       <div className="hero__topline">
         <p className="hero__eyebrow">Пенсионный план</p>
-        <div className="hero__actions">
-          <PageSwitcher activePage={activePage} onChange={onPageChange} />
-        </div>
       </div>
 
       <h1 className="hero__title">План спокойного будущего</h1>

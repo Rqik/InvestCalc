@@ -8,9 +8,9 @@
 
 .wait-card {
   padding: 20px;
-  border-radius: 20px;
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  background: rgba(19, 30, 49, 0.86);
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
 
   &__years,
   &__value,
@@ -19,14 +19,14 @@
   }
 
   &__years {
-    color: #d2deed;
+    color: hsl(var(--muted-foreground));
     margin-bottom: 10px;
     line-height: 1.4;
   }
 
   &__period-note {
     display: block;
-    color: #7dd3fc;
+    color: hsl(var(--primary));
     font-size: 0.86rem;
     margin-top: 4px;
   }
@@ -37,7 +37,7 @@
   }
 
   &__hint {
-    color: #97a6ba;
+    color: hsl(var(--muted-foreground));
     line-height: 1.45;
   }
 

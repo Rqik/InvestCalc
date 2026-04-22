@@ -3,6 +3,23 @@
     &__layout {
       grid-template-columns: 1fr;
     }
+
+    &__sidebar {
+      position: static;
+      max-height: none;
+    }
+  }
+
+  .app-header {
+    position: static;
+  }
+
+  .workspace-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .settings-drawer .input-panel__grid {
+    grid-template-columns: 1fr;
   }
 
   .results-panel__grid,
@@ -28,8 +45,22 @@
 
   .panel {
     padding: 18px;
-    border-radius: 18px;
-    box-shadow: 0 16px 42px rgba(2, 6, 23, 0.24);
+    border-radius: var(--radius-panel);
+  }
+
+  .app-header {
+    align-items: stretch;
+    flex-direction: column;
+
+    &__actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  .workspace-nav,
+  .help-card__example-grid {
+    grid-template-columns: 1fr;
   }
 
   .hero {
@@ -58,6 +89,10 @@
 
   .hero__actions {
     display: grid;
+  }
+
+  .theme-toggle__label {
+    display: none;
   }
 
   .scenario-panel {
@@ -102,7 +137,7 @@
 
   .panel {
     padding: 14px;
-    border-radius: 14px;
+    border-radius: var(--radius-panel);
   }
 
   .hero {
@@ -151,7 +186,7 @@
 
   .input-panel__group {
     padding: 12px;
-    border-radius: 14px;
+    border-radius: var(--radius);
   }
 
   .form-field,
@@ -167,7 +202,7 @@
   .form-field__input,
   .scenario-panel__name-input {
     min-height: 48px;
-    border-radius: 12px;
+    border-radius: var(--radius);
     padding: 12px 14px;
   }
 
@@ -182,7 +217,7 @@
 
   .button {
     min-height: 46px;
-    border-radius: 12px;
+    border-radius: var(--radius);
     padding: 10px 14px;
   }
 
@@ -195,7 +230,7 @@
   .metric-card,
   .summary-chip,
   .wait-card {
-    border-radius: 14px;
+    border-radius: var(--radius);
   }
 
   .scenario-card,

@@ -31,12 +31,12 @@ const chartLines = [
   {
     dataKey: 'endBalance',
     label: 'Итоговый капитал',
-    color: '#38bdf8',
+    color: 'hsl(var(--chart-1))',
   },
   {
     dataKey: 'totalInvested',
     label: 'Вложено',
-    color: '#fbbf24',
+    color: 'hsl(var(--chart-3))',
   },
 ];
 
@@ -79,19 +79,19 @@ export function GrowthChart({ plan }: GrowthChartProps) {
       <div className="growth-chart__frame">
         <ResponsiveContainer width="100%" height={360}>
           <LineChart data={chartData} margin={{ top: 18, right: 24, bottom: 8, left: 8 }}>
-            <CartesianGrid stroke="rgba(148, 163, 184, 0.16)" strokeDasharray="4 8" />
+            <CartesianGrid stroke="hsl(var(--border))" strokeDasharray="4 8" />
             <XAxis
               dataKey="period"
-              stroke="#97a6ba"
+              stroke="hsl(var(--muted-foreground))"
               tickLine={false}
-              axisLine={{ stroke: 'rgba(148, 163, 184, 0.18)' }}
-              tick={{ fill: '#97a6ba', fontSize: 12 }}
+              axisLine={{ stroke: 'hsl(var(--border))' }}
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
             />
             <YAxis
-              stroke="#97a6ba"
+              stroke="hsl(var(--muted-foreground))"
               tickLine={false}
               axisLine={false}
-              tick={{ fill: '#97a6ba', fontSize: 12 }}
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
               tickFormatter={(value) => formatMoney(Number(value))}
               width={92}
             />
@@ -104,7 +104,7 @@ export function GrowthChart({ plan }: GrowthChartProps) {
                 name={line.label}
                 stroke={line.color}
                 strokeWidth={3}
-                dot={{ r: 4, strokeWidth: 2, fill: '#0f172a' }}
+                dot={{ r: 4, strokeWidth: 2, fill: 'hsl(var(--background))' }}
                 activeDot={{ r: 6, strokeWidth: 2 }}
               />
             ))}

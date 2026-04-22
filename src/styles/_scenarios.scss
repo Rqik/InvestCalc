@@ -13,9 +13,9 @@
     height: 38px;
     place-items: center;
     border-radius: 999px;
-    border: 1px solid rgba(56, 189, 248, 0.28);
-    background: rgba(8, 145, 178, 0.14);
-    color: #7dd3fc;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
     font-weight: 800;
   }
 
@@ -29,12 +29,19 @@
 
   &__name-input {
     width: 100%;
-    border: 1px solid rgba(125, 211, 252, 0.16);
-    border-radius: 16px;
-    background: rgba(15, 23, 42, 0.94);
-    color: #f8fafc;
-    padding: 15px 16px;
+    min-height: 40px;
+    border: 1px solid hsl(var(--input));
+    border-radius: var(--radius);
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    padding: 0 12px;
     outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus {
+      border-color: hsl(var(--ring));
+      box-shadow: 0 0 0 2px hsl(var(--ring) / 0.16);
+    }
   }
 
   &__list {
@@ -43,15 +50,15 @@
     max-height: 258px;
     overflow: auto;
     padding-right: 2px;
-    scrollbar-color: rgba(56, 189, 248, 0.42) transparent;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.42) transparent;
   }
 
   &__empty {
     padding: 18px;
-    border-radius: 20px;
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    background: rgba(19, 30, 49, 0.86);
-    color: #97a6ba;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--muted) / 0.32);
+    color: hsl(var(--muted-foreground));
   }
 }
 
@@ -63,27 +70,27 @@
   width: 100%;
   min-width: 0;
   padding: 12px 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  background: rgba(19, 30, 49, 0.86);
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
   color: inherit;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 
   &:hover {
-    transform: translateX(2px);
-    border-color: rgba(56, 189, 248, 0.34);
+    background: hsl(var(--accent));
+    border-color: hsl(var(--border));
   }
 
   &:focus-visible {
-    outline: 2px solid rgba(56, 189, 248, 0.78);
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.32);
   }
 
   &--active {
-    border-color: rgba(56, 189, 248, 0.56);
-    background: linear-gradient(135deg, rgba(8, 145, 178, 0.22), rgba(19, 30, 49, 0.9));
+    border-color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.06);
   }
 
   &__content {
@@ -106,7 +113,7 @@
 
   &__meta {
     display: block;
-    color: #97a6ba;
+    color: hsl(var(--muted-foreground));
     overflow-wrap: anywhere;
   }
 
@@ -115,15 +122,15 @@
     align-items: center;
     border-radius: 999px;
     padding: 3px 8px;
-    background: rgba(56, 189, 248, 0.12);
-    color: #7dd3fc;
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
     font-size: 0.72rem;
     font-weight: 800;
     white-space: nowrap;
   }
 
   &__date {
-    color: #718096;
+    color: hsl(var(--muted-foreground));
     font-size: 0.78rem;
     white-space: nowrap;
   }
@@ -133,9 +140,9 @@
   margin-top: 16px;
   min-width: 0;
   padding: 18px;
-  border-radius: 20px;
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  background: rgba(8, 15, 28, 0.68);
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted) / 0.32);
 
   &__topline {
     display: flex;
@@ -145,7 +152,7 @@
 
   &__eyebrow,
   dt {
-    color: #97a6ba;
+    color: hsl(var(--muted-foreground));
   }
 
   &__eyebrow {
@@ -170,9 +177,9 @@
     div {
       min-width: 0;
       padding: 13px 14px;
-      border-radius: 15px;
-      border: 1px solid rgba(56, 189, 248, 0.12);
-      background: rgba(19, 30, 49, 0.92);
+      border-radius: var(--radius);
+      border: 1px solid hsl(var(--border));
+      background: hsl(var(--background));
     }
 
     span,
@@ -181,7 +188,7 @@
     }
 
     span {
-      color: #97a6ba;
+      color: hsl(var(--muted-foreground));
       margin-bottom: 7px;
     }
 
@@ -200,12 +207,12 @@
       justify-content: space-between;
       gap: 14px;
       padding: 10px 0;
-      border-top: 1px solid rgba(148, 163, 184, 0.1);
+      border-top: 1px solid hsl(var(--border));
     }
 
     dd {
       margin: 0;
-      color: #f8fafc;
+      color: hsl(var(--foreground));
       font-weight: 800;
       text-align: right;
     }

@@ -3,31 +3,88 @@ import { CalculatorPage } from './pages/CalculatorPage';
 import { RetirementPage } from './pages/RetirementPage';
 import type { AppPage } from './types/navigation';
 
-function getPageFromHash(): AppPage {
-  return window.location.hash === '#retirement' ? 'retirement' : 'calculator';
+type ThemeMode = 'dark' | 'light';
+
+function getPageFromHash(): AppPage | null {
+  if (window.location.hash === '#retirement') {
+    return 'retirement';
+  }
+
+  if (window.location.hash === '#calculator') {
+    return 'calculator';
+  }
+
+  return null;
+}
+
+function getInitialTheme(): ThemeMode {
+  const savedTheme = window.localStorage.getItem('investcalc-theme');
+
+  if (savedTheme === 'dark' || savedTheme === 'light') {
+    return savedTheme;
+  }
+
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 }
 
 function App() {
-  const [activePage, setActivePage] = React.useState<AppPage>(() => getPageFromHash());
+  const [activePage, setActivePage] = React.useState<AppPage>(() => getPageFromHash() ?? 'calculator');
+  const [theme, setTheme] = React.useState<ThemeMode>(() => getInitialTheme());
 
   React.useEffect(() => {
-    const handleHashChange = () => setActivePage(getPageFromHash());
+    window.history.scrollRestoration = 'manual';
 
-    window.addEventListener('hashchange', handleHashChange);
+    const handleLocationChange = () => {
+      const pageFromHash = getPageFromHash();
 
-    return () => window.removeEventListener('hashchange', handleHashChange);
+      if (pageFromHash) {
+        setActivePage(pageFromHash);
+      }
+    };
+
+    window.addEventListener('hashchange', handleLocationChange);
+    window.addEventListener('popstate', handleLocationChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleLocationChange);
+      window.removeEventListener('popstate', handleLocationChange);
+    };
   }, []);
+
+  React.useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem('investcalc-theme', theme);
+  }, [theme]);
 
   const handlePageChange = (page: AppPage) => {
     setActivePage(page);
-    window.location.hash = page === 'retirement' ? 'retirement' : 'calculator';
+    window.history.pushState(null, '', page === 'retirement' ? '#retirement' : '#calculator');
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  };
+
+  const handleThemeToggle = () => {
+    setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
   };
 
   if (activePage === 'retirement') {
-    return <RetirementPage activePage={activePage} onPageChange={handlePageChange} />;
+    return (
+      <RetirementPage
+        activePage={activePage}
+        theme={theme}
+        onPageChange={handlePageChange}
+        onThemeToggle={handleThemeToggle}
+      />
+    );
   }
 
-  return <CalculatorPage activePage={activePage} onPageChange={handlePageChange} />;
+  return (
+    <CalculatorPage
+      activePage={activePage}
+      theme={theme}
+      onPageChange={handlePageChange}
+      onThemeToggle={handleThemeToggle}
+    />
+  );
 }
 
 export default App;

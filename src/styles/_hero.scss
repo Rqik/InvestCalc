@@ -1,5 +1,5 @@
 .hero {
-  margin-bottom: 24px;
+  padding: 10px 2px 2px;
 
   &__topline {
     display: flex;
@@ -20,13 +20,13 @@
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 0.18em;
-    color: #7dd3fc;
+    color: var(--brand);
     font-size: 0.75rem;
   }
 
   &__title {
     margin: 0 0 14px;
-    font-size: clamp(2rem, 3rem, 3.4rem);
+    font-size: clamp(2rem, 4vw, 3.25rem);
     line-height: 1.02;
     max-width: 880px;
   }
@@ -35,6 +35,6 @@
     max-width: 760px;
     font-size: 1.02rem;
     margin: 0;
-    color: #97a6ba;
+    color: var(--text-secondary);
   }
 }

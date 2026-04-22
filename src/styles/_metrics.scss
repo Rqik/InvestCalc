@@ -8,13 +8,20 @@
 
 .metric-card {
   min-width: 0;
-  padding: 22px;
-  border-radius: 20px;
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  background: rgba(19, 30, 49, 0.86);
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
 
   &--accent {
-    background: linear-gradient(135deg, rgba(8, 145, 178, 0.98), rgba(3, 105, 161, 0.92));
+    border-color: hsl(var(--primary));
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+
+    .metric-card__label,
+    .metric-card__hint {
+      color: hsl(var(--primary-foreground) / 0.72);
+    }
   }
 
   &__label,
@@ -24,8 +31,9 @@
   }
 
   &__label {
-    color: #d2deed;
+    color: hsl(var(--muted-foreground));
     margin-bottom: 14px;
+    font-size: 0.875rem;
   }
 
   &__value {
@@ -36,6 +44,6 @@
   }
 
   &__hint {
-    color: #97a6ba;
+    color: hsl(var(--muted-foreground));
   }
 }
