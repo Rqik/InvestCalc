@@ -55,6 +55,7 @@ export function AppMeta({ page, theme }: AppMetaProps) {
     const meta = META_BY_PAGE[page];
     const pageUrl = `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`;
     const themeColor = theme === 'dark' ? '#111827' : '#ffffff';
+    const faviconUrl = `${import.meta.env.BASE_URL}brand-mark.svg`;
 
     document.title = meta.title;
     document.documentElement.lang = 'ru';
@@ -78,7 +79,7 @@ export function AppMeta({ page, theme }: AppMetaProps) {
       content: meta.description,
     });
     upsertLink('link[rel="canonical"]', { rel: 'canonical', href: pageUrl });
-    upsertLink('link[rel="icon"]', { rel: 'icon', type: 'image/svg+xml', href: '/brand-mark.svg' });
+    upsertLink('link[rel="icon"]', { rel: 'icon', type: 'image/svg+xml', href: faviconUrl });
 
     return undefined;
   }, [page, theme]);

@@ -26,6 +26,8 @@ export function AppLayout({
   onPageChange,
   onThemeToggle,
 }: AppLayoutProps) {
+  const brandMarkSrc = `${import.meta.env.BASE_URL}brand-mark.svg`;
+
   return (
     <main className="app">
       <header className="app-header">
@@ -38,7 +40,7 @@ export function AppLayout({
             onPageChange('calculator');
           }}
         >
-          <img className="app-header__logo" src="/brand-mark.svg" alt="" aria-hidden="true" />
+          <img className="app-header__logo" src={brandMarkSrc} alt="" aria-hidden="true" />
           <span>InvestCalc</span>
         </a>
         <div className="app-header__actions">
