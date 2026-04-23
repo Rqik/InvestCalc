@@ -13,7 +13,7 @@ import { DEFAULT_INPUTS } from '../constants/defaults';
 import { useFinanceModel } from '../hooks/useFinanceModel';
 import { useScenarios } from '../hooks/useScenarios';
 import { AppLayout } from '../layouts/AppLayout';
-import type { Inputs, ViewMode } from '../types/finance';
+import type { Inputs } from '../types/finance';
 import type { AppPage } from '../types/navigation';
 
 type CalculatorPageProps = {
@@ -30,7 +30,6 @@ export function CalculatorPage({
   onThemeToggle,
 }: CalculatorPageProps) {
   const [inputs, setInputs] = React.useState<Inputs>(DEFAULT_INPUTS);
-  const [viewMode, setViewMode] = React.useState<ViewMode>('calculator');
   const finance = useFinanceModel(inputs);
   const scenarios = useScenarios(inputs, setInputs);
 
@@ -45,10 +44,8 @@ export function CalculatorPage({
       theme={theme}
       onPageChange={onPageChange}
       onThemeToggle={onThemeToggle}
-      hero={
-        <AppHero />
-      }
-      navigation={<WorkspaceNav viewMode={viewMode} onViewModeChange={setViewMode} />}
+      hero={<AppHero />}
+      navigation={<WorkspaceNav />}
       controls={
         <InputPanel
           inputs={inputs}
@@ -59,23 +56,32 @@ export function CalculatorPage({
       }
       content={
         <>
-          <ResultsGrid
-            projectedCapital={finance.projectedCapital}
-            realProjectedCapital={finance.realProjectedCapital}
-            goalGap={finance.goalGap}
-            requiredContribution={finance.requiredContribution}
-            requiredReturn={finance.requiredReturn}
-            investmentProfit={finance.investmentProfit}
-            isDurationInvalid={finance.isDurationInvalid}
-          />
+          <div id="results">
+            <ResultsGrid
+              projectedCapital={finance.projectedCapital}
+              realProjectedCapital={finance.realProjectedCapital}
+              goalGap={finance.goalGap}
+              requiredContribution={finance.requiredContribution}
+              requiredReturn={finance.requiredReturn}
+              investmentProfit={finance.investmentProfit}
+              isDurationInvalid={finance.isDurationInvalid}
+            />
+          </div>
 
-          <WorkspaceSummary inputs={inputs} viewMode={viewMode} />
+          <div id="growth-chart">
+            <GrowthChart plan={finance.yearlyPlan} />
+          </div>
+
+          <WorkspaceSummary inputs={inputs} />
+
+          <ExtraYearsPanel extraYears={finance.extraYears} />
 
           <div id="scenarios">
             <ScenarioPanel
               scenarioName={scenarios.scenarioName}
               scenarios={scenarios.scenarios}
               selectedScenarioId={scenarios.selectedScenarioId}
+              storageError={scenarios.storageError}
               onScenarioNameChange={scenarios.setScenarioName}
               onSave={scenarios.saveScenario}
               onSelect={scenarios.setSelectedScenarioId}
@@ -84,12 +90,7 @@ export function CalculatorPage({
             />
           </div>
 
-          {viewMode === 'calculator' ? (
-            <>
-              <GrowthChart plan={finance.yearlyPlan} />
-              <ExtraYearsPanel extraYears={finance.extraYears} />
-            </>
-          ) : (
+          <div id="yearly-plan">
             <YearlyPlanTable
               plan={finance.yearlyPlan}
               targetCapital={inputs.targetCapital}
@@ -97,7 +98,7 @@ export function CalculatorPage({
               realProjectedCapital={finance.realProjectedCapital}
               goalGap={finance.goalGap}
             />
-          )}
+          </div>
 
           <HelpPanels />
         </>

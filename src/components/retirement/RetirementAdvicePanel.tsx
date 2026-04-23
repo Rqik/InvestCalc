@@ -1,5 +1,6 @@
 import type { RetirementInputs, RetirementPlan } from '../../types/retirement';
 import { formatMoney } from '../../utils/format';
+import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 
 type RetirementAdvicePanelProps = {
   inputs: RetirementInputs;
@@ -37,22 +38,22 @@ export function RetirementAdvicePanel({ inputs, plan }: RetirementAdvicePanelPro
     : `Можно начать с прибавки около ${formatMoney(monthlyDelta)} к ежемесячному взносу или частично компенсировать разницу более поздним сроком/меньшим допдоходом.`;
 
   return (
-    <section className="panel retirement-advice">
-      <div className="section-header">
-        <h2 className="section-header__title">Мягкие рекомендации</h2>
-        <p className="section-header__description">
+    <Card as="section" className="retirement-advice">
+      <CardHeader>
+        <CardTitle>Мягкие рекомендации</CardTitle>
+        <CardDescription>
           Это не финансовый приговор, а спокойная навигация: что можно улучшить первым делом.
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
       <div className="retirement-advice__grid">
-        <article className="retirement-advice__card retirement-advice__card--highlight">
+        <Card as="article" className="retirement-advice__card retirement-advice__card--highlight">
           <span className="retirement-advice__eyebrow">По вашему возрасту</span>
           <h3>{ageMessage.title}</h3>
           <p>{ageMessage.text}</p>
-        </article>
+        </Card>
 
-        <article className="retirement-advice__card">
+        <Card as="article" className="retirement-advice__card">
           <span className="retirement-advice__eyebrow">Первый шаг</span>
           <h3>{plan.isOnTrack ? 'Сохраняйте темп' : 'Подкрутите план мягко'}</h3>
           <p>
@@ -60,18 +61,18 @@ export function RetirementAdvicePanel({ inputs, plan }: RetirementAdvicePanelPro
               ? 'Текущий маршрут уже выглядит достойно. Следующий уровень — запас на здоровье, непредвиденные расходы и более низкий риск ближе к пенсии.'
               : firstStepText}
           </p>
-        </article>
+        </Card>
 
-        <article className="retirement-advice__card">
+        <Card as="article" className="retirement-advice__card">
           <span className="retirement-advice__eyebrow">Очень важно</span>
           <h3>Подушка отдельно от инвестиций</h3>
           <p>
             Держите 3-6 месяцев расходов в доступном резерве. Тогда инвестиции не придется
             продавать в плохой момент, и план будет психологически легче выдержать.
           </p>
-        </article>
+        </Card>
 
-        <article className="retirement-advice__card">
+        <Card as="article" className="retirement-advice__card">
           <span className="retirement-advice__eyebrow">Продолжительность жизни</span>
           <h3>Планируйте с запасом</h3>
           <p>
@@ -83,12 +84,12 @@ export function RetirementAdvicePanel({ inputs, plan }: RetirementAdvicePanelPro
             className="retirement-advice__link"
             href="https://www.rosstat.gov.ru/folder/313/document/220709"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             Источник: демографический прогноз Росстата
           </a>
-        </article>
+        </Card>
       </div>
-    </section>
+    </Card>
   );
 }

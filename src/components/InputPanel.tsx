@@ -1,8 +1,12 @@
+import { MAX_RATE_PERCENT } from '../constants/limits';
 import type { Inputs } from '../types/finance';
 import { normalizeAnnualReturn, normalizeMoney } from '../utils/normalize';
 import { DurationInput } from './DurationInput';
 import { MoneyInput } from './MoneyInput';
 import { NumberInput } from './NumberInput';
+import { Alert, AlertDescription } from './ui/alert';
+import { Button } from './ui/button';
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 type InputPanelProps = {
   inputs: Inputs;
@@ -20,22 +24,20 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
   };
 
   return (
-    <section className="panel input-panel">
-      <div className="section-header input-panel__header">
+    <Card as="section" className="input-panel">
+      <CardHeader className="input-panel__header">
         <div>
-          <h2 className="section-header__title">Входные данные</h2>
-          <p className="section-header__description">
-            Заполните цель, срок и параметры пополнений. Все расчеты обновляются сразу.
-          </p>
+          <CardTitle>Входные данные</CardTitle>
+          <CardDescription>
+            Меняйте цель, срок и допущения. Результаты, график и план по годам
+            обновляются сразу.
+          </CardDescription>
         </div>
-        <button className="button button--ghost" type="button" onClick={onReset}>
-          Сбросить
-        </button>
-      </div>
+      </CardHeader>
 
       <div className="input-panel__grid">
         <fieldset className="input-panel__group">
-          <legend>Цель</legend>
+          <legend>Цель и старт</legend>
           <MoneyInput
             label="Цель по капиталу"
             value={inputs.targetCapital}
@@ -45,7 +47,7 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
           <MoneyInput
             label="Уже накоплено"
             value={inputs.initialCapital}
-            hint="Стартовая сумма"
+            hint="Стартовый капитал"
             onChange={(value) => update('initialCapital', normalizeMoney(value))}
           />
         </fieldset>
@@ -55,7 +57,7 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
           <MoneyInput
             label="Откладываете в месяц"
             value={inputs.monthlyContribution}
-            hint="Взнос в первый год"
+            hint="Базовый ежемесячный взнос"
             onChange={(value) => update('monthlyContribution', normalizeMoney(value))}
           />
           <DurationInput
@@ -64,18 +66,21 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
             onChange={(duration) => onChange({ ...inputs, ...duration })}
           />
           {isDurationInvalid && (
-            <p className="input-panel__warning">
-              Укажите срок больше нуля: например, 1 месяц или 1 год.
-            </p>
+            <Alert className="input-panel__warning" variant="warning">
+              <AlertDescription>
+                Укажите срок больше нуля: например, 1 месяц или 1 год.
+              </AlertDescription>
+            </Alert>
           )}
         </fieldset>
 
         <fieldset className="input-panel__group">
-          <legend>Допущения</legend>
+          <legend>Допущения расчета</legend>
           <NumberInput
             label="Ожидаемая доходность, %"
             value={inputs.annualReturn}
             min={0}
+            max={MAX_RATE_PERCENT}
             step={0.1}
             hint="Средняя годовая доходность"
             onChange={(value) => update('annualReturn', normalizeAnnualReturn(value))}
@@ -84,20 +89,28 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
             label="Инфляция, %"
             value={inputs.inflationRate}
             min={0}
+            max={MAX_RATE_PERCENT}
             step={0.1}
-            hint="Для оценки в сегодняшних деньгах"
+            hint="Чтобы видеть сумму в сегодняшних деньгах"
             onChange={(value) => update('inflationRate', normalizeAnnualReturn(value))}
           />
           <NumberInput
             label="Индексация взноса, %"
             value={inputs.contributionGrowthRate}
             min={0}
+            max={MAX_RATE_PERCENT}
             step={0.1}
-            hint="Ежегодный рост пополнений"
+            hint="Ежегодное увеличение ежемесячного взноса"
             onChange={(value) => update('contributionGrowthRate', normalizeAnnualReturn(value))}
           />
         </fieldset>
       </div>
-    </section>
+
+      <div className="input-panel__footer">
+        <Button variant="outline" type="button" onClick={onReset}>
+          Сбросить к значениям по умолчанию
+        </Button>
+      </div>
+    </Card>
   );
 }

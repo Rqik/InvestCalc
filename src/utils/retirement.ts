@@ -1,11 +1,9 @@
+import { MONTHS_IN_YEAR } from '../constants/defaults';
 import type { RetirementAgeGroup, RetirementInputs, RetirementPlan } from '../types/retirement';
+import { isBirthYearInRange } from './age';
+import { getMonthlyRateFromAnnual, projectMonthlyBalance, toRate } from './projection';
 
-const MONTHS_IN_YEAR = 12;
 const MAX_WITHDRAWAL_YEARS = 80;
-
-function toRate(value: number) {
-  return Math.max(0, value) / 100;
-}
 
 function getAgeGroup(currentAge: number, retirementAge: number): RetirementAgeGroup {
   if (currentAge >= retirementAge) {
@@ -31,21 +29,14 @@ function projectCapital(
   contributionGrowthRate: number,
 ) {
   const months = Math.max(0, Math.round(years * MONTHS_IN_YEAR));
-  const monthlyReturn = toRate(annualReturn) / MONTHS_IN_YEAR;
-  const contributionGrowth = toRate(contributionGrowthRate);
-  let balance = Math.max(0, currentSavings);
-  let contribution = Math.max(0, monthlyInvestment);
 
-  for (let month = 0; month < months; month += 1) {
-    balance *= 1 + monthlyReturn;
-    balance += contribution;
-
-    if ((month + 1) % MONTHS_IN_YEAR === 0) {
-      contribution *= 1 + contributionGrowth;
-    }
-  }
-
-  return balance;
+  return projectMonthlyBalance({
+    initialCapital: currentSavings,
+    monthlyContribution: monthlyInvestment,
+    totalMonths: months,
+    annualReturn,
+    contributionGrowthRate,
+  });
 }
 
 function getRequiredCapitalToday(
@@ -123,7 +114,7 @@ function estimateWithdrawalYears(
 ) {
   let balance = Math.max(0, capital);
   let withdrawal = Math.max(0, desiredMonthlyIncome) * (1 + toRate(inflationRate)) ** yearsToRetirement;
-  const monthlyReturn = toRate(annualReturn) / MONTHS_IN_YEAR;
+  const monthlyReturn = getMonthlyRateFromAnnual(annualReturn);
   const annualInflation = toRate(inflationRate);
   const maxMonths = MAX_WITHDRAWAL_YEARS * MONTHS_IN_YEAR;
 
@@ -151,7 +142,7 @@ export function calculateRetirementPlan(
   inputs: RetirementInputs,
   currentYear = new Date().getFullYear(),
 ): RetirementPlan {
-  const isBirthYearValid = inputs.birthYear >= currentYear - 100 && inputs.birthYear <= currentYear;
+  const isBirthYearValid = isBirthYearInRange(inputs.birthYear, currentYear);
   const currentAge = Math.max(0, currentYear - inputs.birthYear);
   const yearsToRetirement = Math.max(0, inputs.retirementAge - currentAge);
   const retirementYears = Math.max(0, inputs.planningAge - inputs.retirementAge);

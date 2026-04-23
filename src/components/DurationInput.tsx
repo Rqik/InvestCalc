@@ -1,4 +1,5 @@
 import type { Inputs } from '../types/finance';
+import { MAX_PLAN_YEARS } from '../constants/limits';
 import { normalizeMonths, normalizeYears } from '../utils/normalize';
 import { NumberInput } from './NumberInput';
 
@@ -31,6 +32,7 @@ export function DurationInput({ years, months, onChange }: DurationInputProps) {
           label="Годы"
           value={years}
           min={0}
+          max={MAX_PLAN_YEARS}
           step={1}
           hint="Полных лет"
           onChange={handleYearsChange}

@@ -16,8 +16,6 @@ export type Scenario = {
   createdAt: string;
 };
 
-export type ViewMode = 'calculator' | 'plan';
-
 export type YearRow = {
   year: number;
   label: string;

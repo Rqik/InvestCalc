@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import type { AppPage } from '../types/navigation';
 import { PageSwitcher } from '../components/PageSwitcher';
 import { ThemeToggle } from '../components/ThemeToggle';
+import type { AppPage } from '../types/navigation';
 
 type ThemeMode = 'dark' | 'light';
 
@@ -48,27 +48,18 @@ export function AppLayout({
       </header>
 
       <section className="app__layout">
-        <aside className="app__sidebar">
-          {navigation}
-        </aside>
         <div className="app__content">
-          {hero}
-          {controls && (
-            <details className="settings-drawer">
-              <summary className="settings-drawer__summary">
-                <span>
-                  <strong>Входные параметры</strong>
-                  <small>Цель, срок, взносы и допущения</small>
-                </span>
-                <span className="settings-drawer__chevron" aria-hidden="true">
-                  ▾
-                </span>
-              </summary>
-              <div className="settings-drawer__content">{controls}</div>
-            </details>
-          )}
-          {content}
+          <div className="app__hero">{hero}</div>
+          <div className="app__workspace">
+            {controls && (
+              <aside className="app__controls" aria-label="Входные параметры">
+                {controls}
+              </aside>
+            )}
+            <div className="app__main">{content}</div>
+          </div>
         </div>
+        <aside className="app__sidebar">{navigation}</aside>
       </section>
     </main>
   );

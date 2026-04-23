@@ -34,36 +34,87 @@
 }
 
 .input-panel {
+  max-height: calc(100dvh - 92px);
+  overflow-y: auto;
+  overflow-x: clip;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: hsl(var(--border));
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+
   &__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
+    display: grid;
+    gap: 8px;
+    padding-bottom: 18px;
+  }
+
+  &__header [data-slot='card-title'] {
+    font-size: 1.4rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  &__header [data-slot='card-description'] {
+    max-width: 34ch;
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 
   &__grid {
     display: grid;
-    gap: 14px;
+    gap: 16px;
   }
 
   &__group {
     display: grid;
-    gap: 14px;
+    gap: 16px;
     min-width: 0;
     margin: 0;
-    padding: 16px;
+    padding: 18px;
     border: 1px solid hsl(var(--border));
-    border-radius: var(--radius);
-    background: hsl(var(--muted) / 0.32);
+    border-radius: calc(var(--radius) + 2px);
+    background: linear-gradient(
+      180deg,
+      hsl(var(--muted) / 0.18) 0%,
+      hsl(var(--muted) / 0.34) 100%
+    );
 
     legend {
-      padding: 0 7px;
+      padding: 0 10px 0 4px;
       color: hsl(var(--muted-foreground));
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-transform: none;
     }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: stretch;
+    padding-top: 18px;
+    margin-top: 18px;
+    border-top: 1px solid hsl(var(--border) / 0.9);
+  }
+
+  &__footer [data-slot='button'] {
+    width: 100%;
   }
 
   &__warning {

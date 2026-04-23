@@ -21,12 +21,17 @@ export function formatInputNumber(value: number) {
 }
 
 export function parseFormattedNumber(value: string) {
-  const digitsOnly = value.replace(/[^\d]/g, '');
-  if (!digitsOnly) {
+  const normalizedValue = value.replace(/\s/g, '');
+
+  if (!normalizedValue) {
     return 0;
   }
 
-  return Number(digitsOnly);
+  if (!/^\d+$/.test(normalizedValue)) {
+    return null;
+  }
+
+  return Number(normalizedValue);
 }
 
 export function formatPercent(value: number) {
@@ -40,7 +45,7 @@ export function formatScenarioDate(value: string) {
   }).format(new Date(value));
 }
 
-function pluralize(value: number, one: string, few: string, many: string) {
+export function pluralize(value: number, one: string, few: string, many: string) {
   const normalized = Math.abs(value) % 100;
   const lastDigit = normalized % 10;
 
@@ -57,6 +62,12 @@ function pluralize(value: number, one: string, few: string, many: string) {
   }
 
   return many;
+}
+
+export function formatYears(value: number) {
+  const rounded = Math.max(0, Math.round(value));
+
+  return `${rounded} ${pluralize(rounded, 'год', 'года', 'лет')}`;
 }
 
 export function formatDuration(years: number, months = 0) {

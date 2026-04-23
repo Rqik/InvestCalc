@@ -1,5 +1,6 @@
 import type { ExtraYearProjection } from '../types/finance';
 import { formatAdditionalYears, formatDuration, formatMoney } from '../utils/format';
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 type ExtraYearsPanelProps = {
   extraYears: ExtraYearProjection[];
@@ -7,19 +8,23 @@ type ExtraYearsPanelProps = {
 
 export function ExtraYearsPanel({ extraYears }: ExtraYearsPanelProps) {
   return (
-    <section className="panel extra-years-panel">
-      <div className="section-header">
-        <h2 className="section-header__title">Если подождать еще</h2>
-        <p className="section-header__description">
+    <Card as="section" className="extra-years-panel">
+      <CardHeader>
+        <CardTitle>Если подождать еще</CardTitle>
+        <CardDescription>
           Горизонты ниже строятся от вашего срока и дальше расширяются по
           фибоначчи-подобным шагам, чтобы было видно, как время усиливает сложный
           процент.
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
       <div className="extra-years-panel__grid">
         {extraYears.map((item) => (
-          <article key={`${item.years}-${item.months}-${item.additionalYears}`} className="wait-card">
+          <Card
+            as="article"
+            key={`${item.years}-${item.months}-${item.additionalYears}`}
+            className="wait-card"
+          >
             <span className="wait-card__years">
               {formatDuration(item.years, item.months)}
               <span className="wait-card__period-note">
@@ -35,9 +40,9 @@ export function ExtraYearsPanel({ extraYears }: ExtraYearsPanelProps) {
             <small className="wait-card__hint">
               Дополнительный рост от времени: {formatMoney(item.additionalGrowth)}
             </small>
-          </article>
+          </Card>
         ))}
       </div>
-    </section>
+    </Card>
   );
 }

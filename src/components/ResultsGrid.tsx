@@ -1,4 +1,5 @@
 import { formatMoney, formatPercent } from '../utils/format';
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 type ResultsGridProps = {
   projectedCapital: number;
@@ -20,40 +21,40 @@ export function ResultsGrid({
   isDurationInvalid,
 }: ResultsGridProps) {
   return (
-    <section className="panel results-panel">
-      <div className="section-header">
-        <h2 className="section-header__title">Итоги</h2>
-        <p className="section-header__description">
+    <Card as="section" className="results-panel">
+      <CardHeader>
+        <CardTitle>Итоги</CardTitle>
+        <CardDescription>
           Главное по текущему сценарию: капитал, покупательная способность и разрыв с целью.
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
       <div className="results-panel__grid">
-        <article className="metric-card metric-card--accent">
+        <Card as="article" className="metric-card metric-card--accent">
           <span className="metric-card__label">Капитал к концу срока</span>
           <strong className="metric-card__value">{formatMoney(projectedCapital)}</strong>
           <small className="metric-card__hint">
             {isDurationInvalid
               ? 'Укажите срок больше нуля, чтобы получить прогноз'
               : goalGap >= 0
-                ? `Цель выше плана на ${formatMoney(goalGap)}`
+                ? `Запас сверх цели ${formatMoney(goalGap)}`
                 : `До цели не хватает ${formatMoney(Math.abs(goalGap))}`}
           </small>
-        </article>
+        </Card>
 
-        <article className="metric-card">
+        <Card as="article" className="metric-card">
           <span className="metric-card__label">В сегодняшних деньгах</span>
           <strong className="metric-card__value">{formatMoney(realProjectedCapital)}</strong>
           <small className="metric-card__hint">С учетом инфляции</small>
-        </article>
+        </Card>
 
-        <article className="metric-card">
+        <Card as="article" className="metric-card">
           <span className="metric-card__label">Нужно откладывать</span>
           <strong className="metric-card__value">{formatMoney(requiredContribution)}</strong>
           <small className="metric-card__hint">Стартовый ежемесячный взнос</small>
-        </article>
+        </Card>
 
-        <article className="metric-card">
+        <Card as="article" className="metric-card">
           <span className="metric-card__label">Нужная доходность</span>
           <strong className="metric-card__value">
             {requiredReturn === null ? 'Больше 100% годовых' : formatPercent(requiredReturn)}
@@ -63,14 +64,14 @@ export function ResultsGrid({
               ? 'Цель выглядит нереалистичной при текущем взносе и сроке'
               : 'При текущем ежемесячном взносе'}
           </small>
-        </article>
+        </Card>
 
-        <article className="metric-card">
+        <Card as="article" className="metric-card">
           <span className="metric-card__label">Прибыль от роста</span>
           <strong className="metric-card__value">{formatMoney(investmentProfit)}</strong>
           <small className="metric-card__hint">Итог минус все вложенные деньги</small>
-        </article>
+        </Card>
       </div>
-    </section>
+    </Card>
   );
 }

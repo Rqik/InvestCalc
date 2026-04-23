@@ -1,5 +1,6 @@
 import type { YearRow } from '../types/finance';
 import { formatMoney } from '../utils/format';
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 type YearlyPlanTableProps = {
   plan: YearRow[];
@@ -17,32 +18,32 @@ export function YearlyPlanTable({
   goalGap,
 }: YearlyPlanTableProps) {
   return (
-    <section className="panel yearly-plan">
-      <div className="section-header">
-        <h2 className="section-header__title">План накоплений по годам</h2>
-        <p className="section-header__description">
+    <Card as="section" className="yearly-plan">
+      <CardHeader>
+        <CardTitle>План накоплений по годам</CardTitle>
+        <CardDescription>
           Таблица показывает пополнения, накопленную сумму вложений, прибыль и итог с
           поправкой на инфляцию.
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
       <div className="yearly-plan__summary">
-        <div className="summary-chip">
+        <Card className="summary-chip">
           <span className="summary-chip__label">Цель</span>
           <strong className="summary-chip__value">{formatMoney(targetCapital)}</strong>
-        </div>
-        <div className="summary-chip">
+        </Card>
+        <Card className="summary-chip">
           <span className="summary-chip__label">Итог по плану</span>
           <strong className="summary-chip__value">{formatMoney(projectedCapital)}</strong>
-        </div>
-        <div className="summary-chip">
+        </Card>
+        <Card className="summary-chip">
           <span className="summary-chip__label">В сегодняшних деньгах</span>
           <strong className="summary-chip__value">{formatMoney(realProjectedCapital)}</strong>
-        </div>
-        <div className="summary-chip">
+        </Card>
+        <Card className="summary-chip">
           <span className="summary-chip__label">Разница с целью</span>
           <strong className="summary-chip__value">{formatMoney(goalGap)}</strong>
-        </div>
+        </Card>
       </div>
 
       <div className="yearly-plan__table-wrap">
@@ -75,6 +76,6 @@ export function YearlyPlanTable({
           </tbody>
         </table>
       </div>
-    </section>
+    </Card>
   );
 }

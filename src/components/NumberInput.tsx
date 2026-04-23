@@ -1,4 +1,6 @@
 import React from 'react';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 
 type NumberInputProps = {
   label: string;
@@ -12,6 +14,13 @@ type NumberInputProps = {
 
 function formatNumberValue(value: number) {
   return Number.isFinite(value) ? String(value) : '';
+}
+
+function clampValue(value: number, min?: number, max?: number) {
+  const lowerBound = min ?? Number.NEGATIVE_INFINITY;
+  const upperBound = max ?? Number.POSITIVE_INFINITY;
+
+  return Math.min(Math.max(value, lowerBound), upperBound);
 }
 
 export function NumberInput({
@@ -44,13 +53,16 @@ export function NumberInput({
       return;
     }
 
-    onChange(parsedValue);
+    const clampedValue = clampValue(parsedValue, min, max);
+
+    setDraftValue(formatNumberValue(clampedValue));
+    onChange(clampedValue);
   };
 
   return (
-    <label className="form-field">
+    <Label className="form-field">
       <span className="form-field__label">{label}</span>
-      <input
+      <Input
         className="form-field__input"
         type="number"
         min={min}
@@ -68,12 +80,12 @@ export function NumberInput({
           const parsedValue = Number(nextValue);
 
           if (Number.isFinite(parsedValue)) {
-            onChange(parsedValue);
+            onChange(clampValue(parsedValue, min, max));
           }
         }}
         onBlur={(event) => commitValue(event.target.value)}
       />
       <small className="form-field__hint">{hint}</small>
-    </label>
+    </Label>
   );
 }

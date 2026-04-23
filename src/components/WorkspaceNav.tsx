@@ -1,111 +1,153 @@
 import React from 'react';
-import type { ViewMode } from '../types/finance';
+import { Button } from './ui/button';
 
 type WorkspaceNavProps = {
-  viewMode?: ViewMode;
-  onViewModeChange?: (viewMode: ViewMode) => void;
+  isRetirement?: boolean;
 };
 
-export function WorkspaceNav({ viewMode, onViewModeChange }: WorkspaceNavProps) {
-  const isCalculator = Boolean(onViewModeChange);
-  const [activeItem, setActiveItem] = React.useState(
-    isCalculator ? (viewMode ?? 'calculator') : 'retirement-results',
-  );
+function scrollToSection(sectionId: string) {
+  document.getElementById(sectionId)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  });
+}
 
-  React.useEffect(() => {
-    if (viewMode) {
-      setActiveItem(viewMode);
-    }
-  }, [viewMode]);
+export function WorkspaceNav({ isRetirement = false }: WorkspaceNavProps) {
+  const [activeItem, setActiveItem] = React.useState(
+    isRetirement ? 'retirement-results' : 'results',
+  );
 
   const getItemClassName = (itemId: string) =>
     `workspace-nav__item ${activeItem === itemId ? 'workspace-nav__item--active' : ''}`;
 
   return (
-    <nav className="workspace-nav panel" aria-label="Навигация по рабочей области">
+    <nav className="workspace-nav" aria-label="Навигация по рабочей области">
       <div className="workspace-nav__group">
         <span className="workspace-nav__heading">План</span>
-        {isCalculator ? (
+        {!isRetirement ? (
           <>
-            <button
-              className={getItemClassName('calculator')}
+            <Button
+              className={getItemClassName('results')}
+              variant="ghost"
               type="button"
               onClick={() => {
-                setActiveItem('calculator');
-                onViewModeChange?.('calculator');
+                setActiveItem('results');
+                scrollToSection('results');
               }}
             >
-              Расчет
-            </button>
-            <a
+              Итоги
+            </Button>
+            <Button
               className={getItemClassName('scenarios')}
-              href="#scenarios"
-              onClick={() => setActiveItem('scenarios')}
-            >
-              Сценарии
-            </a>
-            <button
-              className={getItemClassName('plan')}
+              variant="ghost"
               type="button"
               onClick={() => {
-                setActiveItem('plan');
-                onViewModeChange?.('plan');
+                setActiveItem('scenarios');
+                scrollToSection('scenarios');
+              }}
+            >
+              Сценарии
+            </Button>
+            <Button
+              className={getItemClassName('growth-chart')}
+              variant="ghost"
+              type="button"
+              onClick={() => {
+                setActiveItem('growth-chart');
+                scrollToSection('growth-chart');
+              }}
+            >
+              График
+            </Button>
+            <Button
+              className={getItemClassName('yearly-plan')}
+              variant="ghost"
+              type="button"
+              onClick={() => {
+                setActiveItem('yearly-plan');
+                scrollToSection('yearly-plan');
               }}
             >
               План по годам
-            </button>
+            </Button>
           </>
         ) : (
           <>
-            <a
+            <Button
               className={getItemClassName('retirement-results')}
-              href="#retirement-results"
-              onClick={() => setActiveItem('retirement-results')}
+              variant="ghost"
+              type="button"
+              onClick={() => {
+                setActiveItem('retirement-results');
+                scrollToSection('retirement-results');
+              }}
             >
               Расчет
-            </a>
-            <a
+            </Button>
+            <Button
               className={getItemClassName('retirement-timeline')}
-              href="#retirement-timeline"
-              onClick={() => setActiveItem('retirement-timeline')}
+              variant="ghost"
+              type="button"
+              onClick={() => {
+                setActiveItem('retirement-timeline');
+                scrollToSection('retirement-timeline');
+              }}
             >
               Маршрут
-            </a>
-            <a
+            </Button>
+            <Button
               className={getItemClassName('retirement-advice')}
-              href="#retirement-advice"
-              onClick={() => setActiveItem('retirement-advice')}
+              variant="ghost"
+              type="button"
+              onClick={() => {
+                setActiveItem('retirement-advice');
+                scrollToSection('retirement-advice');
+              }}
             >
               Рекомендации
-            </a>
+            </Button>
           </>
         )}
       </div>
 
-      <div className="workspace-nav__group">
-        <span className="workspace-nav__heading">Справка</span>
-        <a
-          className={getItemClassName('methodology')}
-          href="#methodology"
-          onClick={() => setActiveItem('methodology')}
-        >
-          Методика
-        </a>
-        <a
-          className={getItemClassName('examples')}
-          href="#examples"
-          onClick={() => setActiveItem('examples')}
-        >
-          Примеры
-        </a>
-        <a
-          className={getItemClassName('faq')}
-          href="#faq"
-          onClick={() => setActiveItem('faq')}
-        >
-          FAQ
-        </a>
-      </div>
+      {!isRetirement && (
+        <div className="workspace-nav__group">
+          <span className="workspace-nav__heading">Справка</span>
+          <Button
+            className={getItemClassName('methodology')}
+            variant="ghost"
+            type="button"
+            onClick={() => {
+              setActiveItem('methodology');
+              scrollToSection('methodology');
+            }}
+          >
+            Методика
+          </Button>
+          <Button
+            className={getItemClassName('examples')}
+            variant="ghost"
+            type="button"
+            onClick={() => {
+              setActiveItem('examples');
+              scrollToSection('examples');
+            }}
+          >
+            Примеры
+          </Button>
+          <Button
+            className={getItemClassName('faq')}
+            variant="ghost"
+            type="button"
+            onClick={() => {
+              setActiveItem('faq');
+              scrollToSection('faq');
+            }}
+          >
+            FAQ
+          </Button>
+        </div>
+      )}
     </nav>
   );
 }

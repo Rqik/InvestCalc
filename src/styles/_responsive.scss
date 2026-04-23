@@ -1,12 +1,53 @@
+@media (max-width: 1240px) {
+  .app__workspace {
+    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 980px) {
   .app {
+    padding-left: 20px;
+
     &__layout {
+      display: grid;
       grid-template-columns: 1fr;
+      grid-template-areas:
+        'content'
+        'sidebar';
     }
 
     &__sidebar {
       position: static;
+      inset: auto;
+      width: auto;
+      height: auto;
+      padding: 0;
+      overflow: visible;
+      background: transparent;
       max-height: none;
+
+      &::after {
+        display: none;
+      }
+    }
+
+    &__workspace {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    &__controls {
+      position: static;
+      top: auto;
+      order: 1;
+    }
+
+    &__main {
+      order: 2;
+    }
+
+    &__hero {
+      margin-left: 0;
     }
   }
 
@@ -15,21 +56,15 @@
   }
 
   .workspace-nav {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    align-content: start;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .settings-drawer .input-panel__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .results-panel__grid,
-  .yearly-plan__summary,
-  .extra-years-panel__grid,
-  .workspace-panel__grid,
-  .scenario-inspector__highlights,
-  .retirement-advice__grid,
   .retirement-timeline__steps {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -38,7 +73,12 @@
     padding: 14px 10px 24px;
 
     &__sidebar,
-    &__content {
+    &__content,
+    &__main {
+      gap: 14px;
+    }
+
+    &__workspace {
       gap: 14px;
     }
   }
@@ -63,6 +103,10 @@
     grid-template-columns: 1fr;
   }
 
+  .workspace-nav {
+    width: 100%;
+  }
+
   .hero {
     &__topline {
       display: grid;
@@ -74,7 +118,6 @@
     }
   }
 
-  .view-switcher,
   .page-switcher {
     width: 100%;
     gap: 4px;
@@ -109,6 +152,18 @@
     display: grid;
   }
 
+  .input-panel {
+    position: static;
+    top: auto;
+    max-height: none;
+    padding-right: 0;
+    overflow: visible;
+
+    &::after {
+      display: none;
+    }
+  }
+
   .scenario-card {
     grid-template-columns: 1fr;
   }
@@ -127,6 +182,20 @@
 
   .results-panel__grid {
     grid-template-columns: 1fr;
+  }
+
+  .yearly-plan__summary,
+  .extra-years-panel__grid,
+  .workspace-panel__grid,
+  .scenario-inspector__highlights,
+  .retirement-advice__grid,
+  .retirement-timeline__steps {
+    grid-template-columns: 1fr;
+  }
+
+  .scenario-panel__list {
+    max-height: none;
+    overflow: visible;
   }
 }
 
@@ -189,6 +258,19 @@
     border-radius: var(--radius);
   }
 
+  .input-panel__header [data-slot='card-title'] {
+    font-size: 1.22rem;
+  }
+
+  .input-panel__header [data-slot='card-description'] {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .input-panel__group legend {
+    font-size: 0.9rem;
+  }
+
   .form-field,
   .duration-field {
     gap: 6px;
@@ -215,7 +297,7 @@
     gap: 10px;
   }
 
-  .button {
+  [data-slot='button'] {
     min-height: 46px;
     border-radius: var(--radius);
     padding: 10px 14px;
@@ -254,6 +336,16 @@
   .scenario-inspector__details,
   .scenario-inspector__highlights {
     font-size: 0.82rem;
+  }
+
+  .growth-chart__frame {
+    min-height: 300px;
+    padding: 8px;
+  }
+
+  .growth-chart__tooltip {
+    min-width: 0;
+    padding: 10px;
   }
 
   .workspace-panel__grid,

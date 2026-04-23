@@ -1,10 +1,10 @@
 import React from 'react';
+import { WorkspaceNav } from '../components/WorkspaceNav';
 import { RetirementAdvicePanel } from '../components/retirement/RetirementAdvicePanel';
 import { RetirementHero } from '../components/retirement/RetirementHero';
 import { RetirementInputPanel } from '../components/retirement/RetirementInputPanel';
 import { RetirementResultsGrid } from '../components/retirement/RetirementResultsGrid';
 import { RetirementTimeline } from '../components/retirement/RetirementTimeline';
-import { WorkspaceNav } from '../components/WorkspaceNav';
 import { DEFAULT_RETIREMENT_INPUTS } from '../constants/defaults';
 import { useRetirementPlan } from '../hooks/useRetirementPlan';
 import { AppLayout } from '../layouts/AppLayout';
@@ -35,7 +35,7 @@ export function RetirementPage({
       onPageChange={onPageChange}
       onThemeToggle={onThemeToggle}
       hero={<RetirementHero />}
-      navigation={<WorkspaceNav />}
+      navigation={<WorkspaceNav isRetirement />}
       controls={
         <RetirementInputPanel
           inputs={inputs}

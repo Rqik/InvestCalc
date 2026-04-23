@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   CartesianGrid,
   Line,
@@ -9,6 +10,7 @@ import {
 } from 'recharts';
 import type { YearRow } from '../types/finance';
 import { formatMoney } from '../utils/format';
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 type GrowthChartProps = {
   plan: YearRow[];
@@ -40,6 +42,40 @@ const chartLines = [
   },
 ];
 
+function formatCompactMoney(value: number) {
+  const absValue = Math.abs(value);
+
+  if (absValue >= 1_000_000_000) {
+    return `${Math.round(value / 1_000_000_000)} млрд`;
+  }
+
+  if (absValue >= 1_000_000) {
+    return `${Math.round(value / 1_000_000)} млн`;
+  }
+
+  if (absValue >= 1_000) {
+    return `${Math.round(value / 1_000)} тыс`;
+  }
+
+  return String(Math.round(value));
+}
+
+function useCompactChart() {
+  const [isCompact, setIsCompact] = React.useState(false);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 430px)');
+    const handleChange = () => setIsCompact(mediaQuery.matches);
+
+    handleChange();
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return isCompact;
+}
+
 function ChartTooltip({ active, label, payload }: TooltipProps) {
   if (!active || !payload?.length) {
     return null;
@@ -62,23 +98,29 @@ function ChartTooltip({ active, label, payload }: TooltipProps) {
 }
 
 export function GrowthChart({ plan }: GrowthChartProps) {
+  const isCompactChart = useCompactChart();
   const chartData = plan.map((row) => ({
     ...row,
     period: row.label,
   }));
 
   return (
-    <section className="panel growth-chart">
-      <div className="section-header">
-        <h2 className="section-header__title">График роста по годам</h2>
-        <p className="section-header__description">
+    <Card as="section" className="growth-chart">
+      <CardHeader>
+        <CardTitle>График роста по годам</CardTitle>
+        <CardDescription>
           Две линии показывают разницу между вложенными деньгами и итоговым капиталом.
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
       <div className="growth-chart__frame">
-        <ResponsiveContainer width="100%" height={360}>
-          <LineChart data={chartData} margin={{ top: 18, right: 24, bottom: 8, left: 8 }}>
+        <ResponsiveContainer width="100%" height={isCompactChart ? 300 : 360}>
+          <LineChart
+            data={chartData}
+            margin={isCompactChart
+              ? { top: 12, right: 8, bottom: 4, left: 0 }
+              : { top: 18, right: 24, bottom: 8, left: 8 }}
+          >
             <CartesianGrid stroke="hsl(var(--border))" strokeDasharray="4 8" />
             <XAxis
               dataKey="period"
@@ -86,14 +128,17 @@ export function GrowthChart({ plan }: GrowthChartProps) {
               tickLine={false}
               axisLine={{ stroke: 'hsl(var(--border))' }}
               tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+              minTickGap={isCompactChart ? 22 : 8}
             />
             <YAxis
               stroke="hsl(var(--muted-foreground))"
               tickLine={false}
               axisLine={false}
               tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-              tickFormatter={(value) => formatMoney(Number(value))}
-              width={92}
+              tickFormatter={(value) =>
+                isCompactChart ? formatCompactMoney(Number(value)) : formatMoney(Number(value))
+              }
+              width={isCompactChart ? 54 : 92}
             />
             <Tooltip content={<ChartTooltip />} />
             {chartLines.map((line) => (
@@ -123,6 +168,6 @@ export function GrowthChart({ plan }: GrowthChartProps) {
           </div>
         ))}
       </div>
-    </section>
+    </Card>
   );
 }

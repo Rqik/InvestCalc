@@ -1,14 +1,16 @@
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
+
 export function HelpPanels() {
   return (
     <section className="help-panels" aria-label="Справка по расчету">
-      <article id="methodology" className="panel help-card">
-        <div className="section-header">
-          <h2 className="section-header__title">Методика</h2>
-          <p className="section-header__description">
+      <Card as="article" id="methodology" className="help-card">
+        <CardHeader>
+          <CardTitle>Методика</CardTitle>
+          <CardDescription>
             Расчет строится на ежегодной капитализации, регулярных пополнениях,
             индексации взноса и поправке результата на инфляцию.
-          </p>
-        </div>
+          </CardDescription>
+        </CardHeader>
         <dl className="help-card__list">
           <div>
             <dt>Прогноз</dt>
@@ -23,38 +25,38 @@ export function HelpPanels() {
             <dd>Средняя годовая доходность, при которой текущий взнос достигает цели.</dd>
           </div>
         </dl>
-      </article>
+      </Card>
 
-      <article id="examples" className="panel help-card">
-        <div className="section-header">
-          <h2 className="section-header__title">Примеры</h2>
-          <p className="section-header__description">
+      <Card as="article" id="examples" className="help-card">
+        <CardHeader>
+          <CardTitle>Примеры</CardTitle>
+          <CardDescription>
             Сравнивайте базовый, осторожный и агрессивный сценарии, чтобы видеть
             чувствительность плана к сроку, доходности и размеру взноса.
-          </p>
-        </div>
+          </CardDescription>
+        </CardHeader>
         <div className="help-card__example-grid">
           <span>Осторожный: ниже доходность, выше запас по сроку.</span>
           <span>Базовый: реалистичные ожидания и регулярная индексация.</span>
           <span>Ускоренный: больший взнос при том же горизонте.</span>
         </div>
-      </article>
+      </Card>
 
-      <article id="faq" className="panel help-card">
-        <div className="section-header">
-          <h2 className="section-header__title">FAQ</h2>
-          <p className="section-header__description">
+      <Card as="article" id="faq" className="help-card">
+        <CardHeader>
+          <CardTitle>FAQ</CardTitle>
+          <CardDescription>
             Главное правило: смотрите не только на итоговую сумму, но и на разрыв
             с целью, реальную стоимость денег и требуемый ежемесячный шаг.
-          </p>
-        </div>
+          </CardDescription>
+        </CardHeader>
         <div className="help-card__qa">
           <h3>Почему прогноз и сегодняшние деньги отличаются?</h3>
           <p>Инфляция снижает покупательную способность будущего капитала.</p>
           <h3>Что делать, если цель недостижима?</h3>
           <p>Увеличить срок, поднять регулярный взнос или снизить целевую сумму.</p>
         </div>
-      </article>
+      </Card>
     </section>
   );
 }

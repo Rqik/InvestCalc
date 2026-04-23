@@ -1,21 +1,10 @@
 import React from 'react';
+import { getHashForPage, getPageFromHash as getRoutePageFromHash } from './constants/routes';
 import { CalculatorPage } from './pages/CalculatorPage';
 import { RetirementPage } from './pages/RetirementPage';
 import type { AppPage } from './types/navigation';
 
 type ThemeMode = 'dark' | 'light';
-
-function getPageFromHash(): AppPage | null {
-  if (window.location.hash === '#retirement') {
-    return 'retirement';
-  }
-
-  if (window.location.hash === '#calculator') {
-    return 'calculator';
-  }
-
-  return null;
-}
 
 function getInitialTheme(): ThemeMode {
   const savedTheme = window.localStorage.getItem('investcalc-theme');
@@ -28,14 +17,16 @@ function getInitialTheme(): ThemeMode {
 }
 
 function App() {
-  const [activePage, setActivePage] = React.useState<AppPage>(() => getPageFromHash() ?? 'calculator');
+  const [activePage, setActivePage] = React.useState<AppPage>(
+    () => getRoutePageFromHash(window.location.hash) ?? 'calculator',
+  );
   const [theme, setTheme] = React.useState<ThemeMode>(() => getInitialTheme());
 
   React.useEffect(() => {
     window.history.scrollRestoration = 'manual';
 
     const handleLocationChange = () => {
-      const pageFromHash = getPageFromHash();
+      const pageFromHash = getRoutePageFromHash(window.location.hash);
 
       if (pageFromHash) {
         setActivePage(pageFromHash);
@@ -58,7 +49,7 @@ function App() {
 
   const handlePageChange = (page: AppPage) => {
     setActivePage(page);
-    window.history.pushState(null, '', page === 'retirement' ? '#retirement' : '#calculator');
+    window.history.pushState(null, '', getHashForPage(page));
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   };
 

@@ -1,7 +1,23 @@
+import {
+  MAX_PLANNING_AGE,
+  MAX_RATE_PERCENT,
+  MAX_RETIREMENT_AGE,
+  MIN_RETIREMENT_AGE,
+} from '../../constants/limits';
 import type { RetirementInputs } from '../../types/retirement';
-import { normalizeAnnualReturn, normalizeMoney } from '../../utils/normalize';
+import { getBirthYearRange } from '../../utils/age';
+import {
+  normalizeAnnualReturn,
+  normalizeBirthYear,
+  normalizeMoney,
+  normalizePlanningAge,
+  normalizeRetirementAge,
+} from '../../utils/normalize';
 import { MoneyInput } from '../MoneyInput';
 import { NumberInput } from '../NumberInput';
+import { Alert, AlertDescription } from '../ui/alert';
+import { Button } from '../ui/button';
+import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 
 type RetirementInputPanelProps = {
   inputs: RetirementInputs;
@@ -11,14 +27,6 @@ type RetirementInputPanelProps = {
   onReset: () => void;
 };
 
-function normalizePositiveInteger(value: number) {
-  if (!Number.isFinite(value)) {
-    return 0;
-  }
-
-  return Math.max(0, Math.trunc(value));
-}
-
 export function RetirementInputPanel({
   inputs,
   isBirthYearValid,
@@ -26,6 +34,8 @@ export function RetirementInputPanel({
   onChange,
   onReset,
 }: RetirementInputPanelProps) {
+  const birthYearRange = getBirthYearRange();
+
   const update = <K extends keyof RetirementInputs>(field: K, value: RetirementInputs[K]) => {
     onChange({
       ...inputs,
@@ -34,18 +44,15 @@ export function RetirementInputPanel({
   };
 
   return (
-    <section className="panel input-panel retirement-input">
-      <div className="section-header input-panel__header">
+    <Card as="section" className="input-panel retirement-input">
+      <CardHeader className="input-panel__header">
         <div>
-          <h2 className="section-header__title">Ваш план</h2>
-          <p className="section-header__description">
+          <CardTitle>Ваш план</CardTitle>
+          <CardDescription>
             Заполните возраст, цель по допдоходу и текущий темп накоплений.
-          </p>
+          </CardDescription>
         </div>
-        <button className="button button--ghost" type="button" onClick={onReset}>
-          Сбросить
-        </button>
-      </div>
+      </CardHeader>
 
       <div className="input-panel__grid">
         <fieldset className="input-panel__group">
@@ -53,39 +60,43 @@ export function RetirementInputPanel({
           <NumberInput
             label="Год рождения"
             value={inputs.birthYear}
-            min={1926}
-            max={new Date().getFullYear()}
+            min={birthYearRange.min}
+            max={birthYearRange.max}
             step={1}
             hint="Например: 1990"
-            onChange={(value) => update('birthYear', normalizePositiveInteger(value))}
+            onChange={(value) => update('birthYear', normalizeBirthYear(value))}
           />
           {!isBirthYearValid && (
-            <p className="input-panel__warning">
-              Проверьте год рождения: расчету нужен реальный возраст.
-            </p>
+            <Alert className="input-panel__warning" variant="warning">
+              <AlertDescription>
+                Проверьте год рождения: расчету нужен реалистичный возраст.
+              </AlertDescription>
+            </Alert>
           )}
           <NumberInput
             label="Во сколько лет выйти на пенсию"
             value={inputs.retirementAge}
-            min={18}
-            max={100}
+            min={MIN_RETIREMENT_AGE}
+            max={MAX_RETIREMENT_AGE}
             step={1}
             hint="Возраст, когда хотите получать допдоход"
-            onChange={(value) => update('retirementAge', normalizePositiveInteger(value))}
+            onChange={(value) => update('retirementAge', normalizeRetirementAge(value))}
           />
           <NumberInput
             label="Планировать накопления до возраста"
             value={inputs.planningAge}
             min={inputs.retirementAge}
-            max={110}
+            max={MAX_PLANNING_AGE}
             step={1}
             hint="Лучше брать с запасом: 85-90 лет"
-            onChange={(value) => update('planningAge', normalizePositiveInteger(value))}
+            onChange={(value) => update('planningAge', normalizePlanningAge(value))}
           />
           {!isRetirementPeriodValid && (
-            <p className="input-panel__warning">
-              Возраст планирования должен быть больше возраста выхода на пенсию.
-            </p>
+            <Alert className="input-panel__warning" variant="warning">
+              <AlertDescription>
+                Возраст планирования должен быть больше возраста выхода на пенсию.
+              </AlertDescription>
+            </Alert>
           )}
         </fieldset>
 
@@ -117,6 +128,7 @@ export function RetirementInputPanel({
             label="Ожидаемая доходность, %"
             value={inputs.annualReturn}
             min={0}
+            max={MAX_RATE_PERCENT}
             step={0.1}
             hint="Средняя годовая доходность портфеля"
             onChange={(value) => update('annualReturn', normalizeAnnualReturn(value))}
@@ -125,6 +137,7 @@ export function RetirementInputPanel({
             label="Инфляция, %"
             value={inputs.inflationRate}
             min={0}
+            max={MAX_RATE_PERCENT}
             step={0.1}
             hint="Чтобы считать покупательную способность"
             onChange={(value) => update('inflationRate', normalizeAnnualReturn(value))}
@@ -133,12 +146,19 @@ export function RetirementInputPanel({
             label="Индексация взноса, %"
             value={inputs.contributionGrowthRate}
             min={0}
+            max={MAX_RATE_PERCENT}
             step={0.1}
             hint="Как растет взнос вместе с доходом"
             onChange={(value) => update('contributionGrowthRate', normalizeAnnualReturn(value))}
           />
         </fieldset>
       </div>
-    </section>
+
+      <div className="input-panel__footer">
+        <Button variant="outline" type="button" onClick={onReset}>
+          Сбросить к значениям по умолчанию
+        </Button>
+      </div>
+    </Card>
   );
 }

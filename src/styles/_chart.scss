@@ -11,6 +11,7 @@
     display: grid;
     gap: 8px;
     min-width: 210px;
+    max-width: min(260px, calc(100vw - 48px));
     padding: 12px 14px;
     border-radius: var(--radius);
     border: 1px solid hsl(var(--border));

@@ -1,11 +1,18 @@
 import type { KeyboardEvent } from 'react';
+import { MAX_SCENARIO_NAME_LENGTH } from '../constants/limits';
 import type { Scenario } from '../types/finance';
 import { formatDuration, formatMoney, formatPercent, formatScenarioDate } from '../utils/format';
+import { Alert, AlertDescription } from './ui/alert';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Input } from './ui/input';
 
 type ScenarioPanelProps = {
   scenarioName: string;
   scenarios: Scenario[];
   selectedScenarioId: string | null;
+  storageError?: string | null;
   onScenarioNameChange: (value: string) => void;
   onSave: () => void;
   onSelect: (scenarioId: string) => void;
@@ -17,6 +24,7 @@ export function ScenarioPanel({
   scenarioName,
   scenarios,
   selectedScenarioId,
+  storageError,
   onScenarioNameChange,
   onSave,
   onSelect,
@@ -34,29 +42,40 @@ export function ScenarioPanel({
   };
 
   return (
-    <section className="panel scenario-panel">
-      <div className="section-header scenario-panel__header">
+    <Card as="section" className="scenario-panel">
+      <CardHeader className="scenario-panel__header">
         <div>
-          <h2 className="section-header__title">Сценарии</h2>
-          <p className="section-header__description">
+          <CardTitle>Сценарии</CardTitle>
+          <CardDescription>
             Сохраняйте варианты расчета и быстро возвращайтесь к нужному плану.
-          </p>
+          </CardDescription>
         </div>
-        <span className="scenario-panel__counter">{scenarios.length}</span>
-      </div>
+        <Badge className="scenario-panel__counter" variant="secondary">
+          {scenarios.length}
+        </Badge>
+      </CardHeader>
 
       <div className="scenario-panel__creator">
-        <input
+        <Input
           className="scenario-panel__name-input"
           type="text"
           value={scenarioName}
+          maxLength={MAX_SCENARIO_NAME_LENGTH}
           onChange={(event) => onScenarioNameChange(event.target.value)}
           placeholder="Название сценария"
         />
-        <button className="button button--primary" type="button" onClick={onSave}>
-          Сохранить
-        </button>
+        <div className="scenario-panel__actions">
+          <Button variant="primary" type="button" onClick={onSave}>
+            Сохранить
+          </Button>
+        </div>
       </div>
+
+      {storageError && (
+        <Alert className="input-panel__warning" variant="warning">
+          <AlertDescription>{storageError}</AlertDescription>
+        </Alert>
+      )}
 
       {scenarios.length === 0 ? (
         <div className="scenario-panel__empty">
@@ -69,7 +88,8 @@ export function ScenarioPanel({
             const scenarioMonths = scenario.inputs.months ?? 0;
 
             return (
-              <article
+              <Card
+                as="article"
                 key={scenario.id}
                 className={`scenario-card ${isActive ? 'scenario-card--active' : ''}`}
                 role="button"
@@ -80,9 +100,9 @@ export function ScenarioPanel({
                 <div className="scenario-card__content">
                   <div className="scenario-card__topline">
                     <strong className="scenario-card__title">{scenario.name}</strong>
-                    <span className="scenario-card__state">
+                    <Badge className="scenario-card__state" variant="secondary">
                       {isActive ? 'Выбран' : 'Открыть'}
-                    </span>
+                    </Badge>
                   </div>
                   <span className="scenario-card__meta">
                     {formatMoney(scenario.inputs.targetCapital)} за{' '}
@@ -92,26 +112,19 @@ export function ScenarioPanel({
                 <time className="scenario-card__date" dateTime={scenario.createdAt}>
                   {formatScenarioDate(scenario.createdAt)}
                 </time>
-              </article>
+              </Card>
             );
           })}
         </div>
       )}
 
       {selectedScenario && (
-        <section className="scenario-inspector">
+        <Card as="section" className="scenario-inspector">
           <div className="scenario-inspector__topline">
             <div>
               <span className="scenario-inspector__eyebrow">Выбранный сценарий</span>
               <h3 className="scenario-inspector__title">{selectedScenario.name}</h3>
             </div>
-            <button
-              className="button button--secondary"
-              type="button"
-              onClick={() => onLoad(selectedScenario)}
-            >
-              Применить
-            </button>
           </div>
 
           <div className="scenario-inspector__highlights">
@@ -150,15 +163,25 @@ export function ScenarioPanel({
             </div>
           </dl>
 
-          <button
-            className="button button--danger scenario-inspector__delete"
-            type="button"
-            onClick={() => onDelete(selectedScenario.id)}
-          >
-            Удалить сценарий
-          </button>
-        </section>
+          <div className="scenario-inspector__actions">
+            <Button
+              variant="secondary"
+              type="button"
+              onClick={() => onLoad(selectedScenario)}
+            >
+              Применить
+            </Button>
+            <Button
+              className="scenario-inspector__delete"
+              variant="destructive"
+              type="button"
+              onClick={() => onDelete(selectedScenario.id)}
+            >
+              Удалить сценарий
+            </Button>
+          </div>
+        </Card>
       )}
-    </section>
+    </Card>
   );
 }

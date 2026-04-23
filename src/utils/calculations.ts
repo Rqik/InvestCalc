@@ -4,6 +4,11 @@ import {
 } from '../constants/defaults';
 import type { ExtraYearProjection, Inputs, YearRow } from '../types/finance';
 import { formatDuration } from './format';
+import {
+  getIndexedContribution,
+  getMonthlyRateFromAnnual,
+  projectMonthlyBalance,
+} from './projection';
 
 function buildFibonacciLikeOffsets(count: number) {
   const offsets = [0];
@@ -23,17 +28,8 @@ function buildFibonacciLikeOffsets(count: number) {
   return offsets;
 }
 
-function getIndexedContribution(
-  monthlyContribution: number,
-  contributionGrowthRate: number,
-  monthIndex: number,
-) {
-  const completedYears = Math.floor(monthIndex / MONTHS_IN_YEAR);
-  return monthlyContribution * Math.pow(1 + contributionGrowthRate / 100, completedYears);
-}
-
 export function getMonthlyRate(annualReturn: number) {
-  return annualReturn / 100 / MONTHS_IN_YEAR;
+  return getMonthlyRateFromAnnual(annualReturn);
 }
 
 export function getMonthlyInflationRate(inflationRate: number) {
@@ -63,20 +59,13 @@ export function getRealValue(value: number, inputs: Inputs) {
 }
 
 export function getFutureValue(inputs: Inputs) {
-  const totalMonths = getTotalMonths(inputs);
-  const monthlyRate = getMonthlyRate(inputs.annualReturn);
-  let balance = inputs.initialCapital;
-
-  for (let month = 0; month < totalMonths; month += 1) {
-    balance *= 1 + monthlyRate;
-    balance += getIndexedContribution(
-      inputs.monthlyContribution,
-      inputs.contributionGrowthRate ?? 0,
-      month,
-    );
-  }
-
-  return balance;
+  return projectMonthlyBalance({
+    initialCapital: inputs.initialCapital,
+    monthlyContribution: inputs.monthlyContribution,
+    totalMonths: getTotalMonths(inputs),
+    annualReturn: inputs.annualReturn,
+    contributionGrowthRate: inputs.contributionGrowthRate ?? 0,
+  });
 }
 
 export function getTotalInvested(inputs: Inputs) {
