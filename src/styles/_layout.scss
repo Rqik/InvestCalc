@@ -78,6 +78,10 @@
   &__main > [id] {
     scroll-margin-top: 92px;
   }
+
+  &__inline-nav {
+    display: none;
+  }
 }
 
 .app-header {
@@ -104,7 +108,7 @@
   }
 
   &__brand {
-    min-width: max-content;
+    min-width: 0;
     color: hsl(var(--foreground));
     font-size: 1.02rem;
     font-weight: 800;
@@ -344,6 +348,7 @@
 .help-card__insight-description {
   color: hsl(var(--muted-foreground));
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .comparison-card {
@@ -393,6 +398,7 @@
   &__adjustment,
   &__current-note {
     color: hsl(var(--muted-foreground));
+    overflow-wrap: anywhere;
   }
 
   &__description {

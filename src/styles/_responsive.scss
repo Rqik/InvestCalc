@@ -1,70 +1,125 @@
-@media (max-width: 1240px) {
-  .app__workspace {
-    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
-  }
-}
-
-@media (max-width: 980px) {
+@media (max-width: 1279px) {
   .app {
     padding-left: 20px;
 
     &__layout {
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-areas:
-        'content'
-        'sidebar';
     }
 
     &__sidebar {
-      position: static;
-      inset: auto;
-      width: auto;
-      height: auto;
-      padding: 0;
-      overflow: visible;
-      background: transparent;
-      max-height: none;
+      display: none;
+    }
 
-      &::after {
-        display: none;
-      }
+    &__inline-nav {
+      display: grid;
     }
 
     &__workspace {
-      display: grid;
       grid-template-columns: 1fr;
+      gap: 18px;
     }
 
     &__controls {
       position: static;
       top: auto;
-      order: 1;
-    }
-
-    &__main {
-      order: 2;
-    }
-
-    &__hero {
-      margin-left: 0;
     }
   }
 
   .app-header {
-    position: static;
+    align-items: flex-start;
+    flex-wrap: wrap;
   }
 
-  .workspace-nav {
+  .app-header__actions {
     width: 100%;
+    justify-content: space-between;
+  }
+
+  .app__inline-nav .workspace-nav {
+    width: 100%;
+    min-height: auto;
     margin: 0;
     padding: 0;
     align-content: start;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
   }
 
+  .app__inline-nav .workspace-nav__group {
+    gap: 8px;
+  }
+
+  .results-panel__grid,
+  .workspace-panel__grid,
+  .help-card__insights,
+  .help-card__comparison-grid,
+  .retirement-advice__grid,
+  .scenario-inspector__highlights {
+    grid-template-columns: 1fr;
+  }
+
+  .yearly-plan__summary,
   .retirement-timeline__steps {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .scenario-card {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .scenario-card__date {
+    justify-self: start;
+  }
+
+  .extra-years-panel__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .app-header {
+    position: static;
+  }
+
+  .app__inline-nav .workspace-nav,
+  .retirement-timeline__steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .growth-chart {
+    &__controls {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    &__series-toggles {
+      width: 100%;
+    }
+
+    &__toggle {
+      flex: 1 1 calc(50% - 8px);
+      justify-content: center;
+    }
+
+    &__mode-control {
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+
+  .scenario-inspector__actions,
+  .yearly-plan__summary,
+  .extra-years-panel__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .retirement-timeline__steps,
+  .help-card__comparison-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -104,10 +159,23 @@
     grid-template-columns: 1fr;
   }
 
+  .app__inline-nav .workspace-nav {
+    grid-template-columns: 1fr;
+  }
+
   .growth-chart {
     &__controls {
       align-items: stretch;
       flex-direction: column;
+    }
+
+    &__series-toggles {
+      width: 100%;
+    }
+
+    &__toggle {
+      flex: 1 1 100%;
+      justify-content: center;
     }
 
     &__mode-control {
@@ -153,7 +221,7 @@
 
   .scenario-panel {
     &__header {
-      align-items: center;
+      align-items: start;
     }
 
     &__creator {
@@ -202,7 +270,6 @@
   }
 
   .yearly-plan__summary,
-  .extra-years-panel__grid,
   .workspace-panel__grid,
   .scenario-inspector__highlights,
   .retirement-advice__grid,
@@ -219,6 +286,21 @@
 @media (max-width: 430px) {
   .app {
     padding: 8px 6px 20px;
+  }
+
+  .app-header {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .app-header__brand {
+    width: 100%;
+  }
+
+  .app-header__actions {
+    grid-template-columns: minmax(0, 1fr) auto;
+    width: 100%;
+    min-width: 0;
   }
 
   .panel {
@@ -318,6 +400,9 @@
     min-height: 46px;
     border-radius: var(--radius);
     padding: 10px 14px;
+    min-width: 0;
+    white-space: normal;
+    line-height: 1.25;
   }
 
   .scenario-panel__creator {
@@ -357,12 +442,20 @@
 
   .growth-chart__frame {
     min-height: 300px;
-    padding: 8px;
+    padding: 6px;
   }
 
   .growth-chart__mode-control {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .growth-chart__series-toggles {
+    gap: 6px;
+  }
+
+  .growth-chart__toggle {
+    width: 100%;
   }
 
   .growth-chart__mode-label {
@@ -374,6 +467,33 @@
     padding: 10px;
   }
 
+  .growth-chart__legend {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .growth-chart__legend-item {
+    font-size: 0.82rem;
+  }
+
+  .help-card__insight,
+  .comparison-card {
+    padding: 14px;
+  }
+
+  .comparison-card__title,
+  .help-card__insight-title {
+    font-size: 0.96rem;
+  }
+
+  .comparison-card__description,
+  .comparison-card__adjustment,
+  .comparison-card__current-note,
+  .help-card__insight-description {
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
   .workspace-panel__grid,
   .results-panel__grid,
   .scenario-inspector__highlights,
@@ -383,6 +503,11 @@
     gap: 10px;
   }
 
+  .scenario-panel__title-row {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
   .scenario-inspector__details div {
     display: grid;
     gap: 4px;
@@ -390,5 +515,9 @@
 
   .scenario-inspector__details dd {
     text-align: left;
+  }
+
+  .yearly-plan__table-wrap {
+    margin-inline: -2px;
   }
 }

@@ -52,6 +52,9 @@ export function AppLayout({
       <section className="app__layout">
         <div className="app__content">
           <div className="app__hero">{hero}</div>
+          <div className="app__inline-nav">
+            {navigation}
+          </div>
           <div className="app__workspace">
             {controls && (
               <aside className="app__controls" aria-label="Входные параметры">

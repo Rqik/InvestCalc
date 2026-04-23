@@ -52,7 +52,7 @@
     color: hsl(var(--muted-foreground));
     font-size: 0.82rem;
     font-weight: 600;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   &__frame {
@@ -106,18 +106,20 @@
   }
 
   &__legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
     margin-top: 16px;
   }
 
   &__legend-item {
-    display: inline-flex;
-    align-items: center;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 10px;
     color: hsl(var(--muted-foreground));
     font-size: 0.92rem;
+    min-width: 0;
   }
 
   &__legend-swatch {
