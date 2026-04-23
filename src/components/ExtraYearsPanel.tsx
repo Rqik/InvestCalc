@@ -6,6 +6,22 @@ type ExtraYearsPanelProps = {
   extraYears: ExtraYearProjection[];
 };
 
+function getWaitCardTone(item: ExtraYearProjection) {
+  if (item.additionalYears === 0) {
+    return '';
+  }
+
+  if (item.additionalCapital >= 10_000_000 || item.additionalGrowth >= 8_000_000) {
+    return 'wait-card--excellent';
+  }
+
+  if (item.additionalCapital >= 2_000_000 || item.additionalGrowth >= 1_500_000) {
+    return 'wait-card--good';
+  }
+
+  return '';
+}
+
 export function ExtraYearsPanel({ extraYears }: ExtraYearsPanelProps) {
   return (
     <Card as="section" className="extra-years-panel">
@@ -23,7 +39,7 @@ export function ExtraYearsPanel({ extraYears }: ExtraYearsPanelProps) {
           <Card
             as="article"
             key={`${item.years}-${item.months}-${item.additionalYears}`}
-            className="wait-card"
+            className={`wait-card ${getWaitCardTone(item)}`}
           >
             <span className="wait-card__years">
               {formatDuration(item.years, item.months)}
@@ -34,8 +50,8 @@ export function ExtraYearsPanel({ extraYears }: ExtraYearsPanelProps) {
             <strong className="wait-card__value">{formatMoney(item.finalCapital)}</strong>
             <small className="wait-card__hint">
               {item.additionalYears === 0
-                ? 'Это ваш текущий сценарий без дополнительного ожидания'
-                : `${formatMoney(item.additionalCapital)} сверх текущего плана`}
+                ? 'Это ваш текущий сценарий без дополнительного ожидания.'
+                : `${formatMoney(item.additionalCapital)} сверх текущего плана.`}
             </small>
             <small className="wait-card__hint">
               Дополнительный рост от времени: {formatMoney(item.additionalGrowth)}

@@ -44,15 +44,17 @@ export function ScenarioPanel({
   return (
     <Card as="section" className="scenario-panel">
       <CardHeader className="scenario-panel__header">
-        <div>
-          <CardTitle>Сценарии</CardTitle>
+        <div className="scenario-panel__heading">
+          <div className="scenario-panel__title-row">
+            <CardTitle>Сценарии</CardTitle>
+            <Badge className="scenario-panel__counter" variant="secondary">
+              {scenarios.length} {scenarios.length === 1 ? 'сценарий' : 'сценария'}
+            </Badge>
+          </div>
           <CardDescription>
             Сохраняйте варианты расчета и быстро возвращайтесь к нужному плану.
           </CardDescription>
         </div>
-        <Badge className="scenario-panel__counter" variant="secondary">
-          {scenarios.length}
-        </Badge>
       </CardHeader>
 
       <div className="scenario-panel__creator">

@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="10" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#172033"/>
+      <stop offset="1" stop-color="#0C1220"/>
+    </linearGradient>
+    <linearGradient id="growth" x1="14" y1="42" x2="48" y2="18" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2FCB7A"/>
+      <stop offset="1" stop-color="#6CE1A6"/>
+    </linearGradient>
+    <linearGradient id="coin" x1="39" y1="12" x2="53" y2="25" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE7A3"/>
+      <stop offset="1" stop-color="#E9B949"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#bg)"/>
+  <rect x="4.5" y="4.5" width="55" height="55" rx="15.5" stroke="#31405F" stroke-opacity="0.72"/>
+  <path d="M17 44V25.5" stroke="#26324D" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M26.5 44V31" stroke="#304262" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M36 44V22.5" stroke="#355078" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M15 40.5L25.25 33.5L34.25 35.75L45.5 23" stroke="url(#growth)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M40.25 23H45.5V28.25" stroke="url(#growth)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="47" cy="18" r="7" fill="url(#coin)"/>
+  <path d="M47 14.5V21.5" stroke="#7F5A14" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M44.5 16.5C45.1 15.5 46 15 47.15 15C48.7 15 49.75 15.9 49.75 17.05C49.75 19.45 44.5 18.15 44.5 20.7C44.5 21.85 45.65 22.75 47.15 22.75C48.35 22.75 49.35 22.25 49.95 21.25" stroke="#7F5A14" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

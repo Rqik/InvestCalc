@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppMeta } from './components/AppMeta';
 import { getHashForPage, getPageFromHash as getRoutePageFromHash } from './constants/routes';
 import { CalculatorPage } from './pages/CalculatorPage';
 import { RetirementPage } from './pages/RetirementPage';
@@ -59,22 +60,28 @@ function App() {
 
   if (activePage === 'retirement') {
     return (
-      <RetirementPage
+      <>
+        <AppMeta page={activePage} theme={theme} />
+        <RetirementPage
+          activePage={activePage}
+          theme={theme}
+          onPageChange={handlePageChange}
+          onThemeToggle={handleThemeToggle}
+        />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <AppMeta page={activePage} theme={theme} />
+      <CalculatorPage
         activePage={activePage}
         theme={theme}
         onPageChange={handlePageChange}
         onThemeToggle={handleThemeToggle}
       />
-    );
-  }
-
-  return (
-    <CalculatorPage
-      activePage={activePage}
-      theme={theme}
-      onPageChange={handlePageChange}
-      onThemeToggle={handleThemeToggle}
-    />
+    </>
   );
 }
 

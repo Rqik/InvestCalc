@@ -38,7 +38,7 @@ export function AppLayout({
             onPageChange('calculator');
           }}
         >
-          <span className="app-header__mark">IC</span>
+          <img className="app-header__logo" src="/brand-mark.svg" alt="" aria-hidden="true" />
           <span>InvestCalc</span>
         </a>
         <div className="app-header__actions">

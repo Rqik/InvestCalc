@@ -99,8 +99,21 @@
   }
 
   .workspace-nav,
-  .help-card__example-grid {
+  .help-card__comparison-grid,
+  .help-card__insights {
     grid-template-columns: 1fr;
+  }
+
+  .growth-chart {
+    &__controls {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    &__mode-control {
+      justify-content: space-between;
+      width: 100%;
+    }
   }
 
   .workspace-nav {
@@ -174,6 +187,10 @@
 
   .scenario-card__date {
     white-space: normal;
+  }
+
+  .comparison-card__stats {
+    grid-template-columns: 1fr;
   }
 
   .scenario-inspector__topline {
@@ -341,6 +358,15 @@
   .growth-chart__frame {
     min-height: 300px;
     padding: 8px;
+  }
+
+  .growth-chart__mode-control {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .growth-chart__mode-label {
+    font-size: 0.78rem;
   }
 
   .growth-chart__tooltip {

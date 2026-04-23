@@ -1,22 +1,36 @@
 .scenario-panel {
   &__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
+    display: grid;
+    gap: 10px;
     margin-bottom: 18px;
   }
 
-  &__counter {
+  &__heading {
     display: grid;
-    min-width: 38px;
-    height: 38px;
-    place-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__counter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 0 10px;
     border-radius: 999px;
     border: 1px solid hsl(var(--border));
     background: hsl(var(--secondary));
     color: hsl(var(--secondary-foreground));
+    font-size: 0.78rem;
     font-weight: 800;
+    white-space: nowrap;
   }
 
   &__creator {
@@ -59,6 +73,24 @@
     overflow: auto;
     padding-right: 2px;
     scrollbar-color: hsl(var(--muted-foreground) / 0.42) transparent;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: hsl(var(--muted-foreground) / 0.34);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: hsl(var(--muted-foreground) / 0.5);
+    }
   }
 
   &__empty {

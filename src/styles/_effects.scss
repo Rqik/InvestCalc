@@ -1,0 +1,46 @@
+@mixin gold-shimmer-border($padding: 2px, $duration: 5.6s) {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: $padding;
+    border-radius: inherit;
+    background: linear-gradient(
+      115deg,
+      hsl(45 86% 56% / 0.08) 0%,
+      hsl(48 100% 82% / 0.95) 12.5%,
+      hsl(43 92% 56% / 0.32) 25%,
+      hsl(50 100% 96% / 1) 37.5%,
+      hsl(43 92% 56% / 0.34) 50%,
+      hsl(49 100% 78% / 0.95) 62.5%,
+      hsl(50 100% 96% / 1) 75%,
+      hsl(43 92% 56% / 0.3) 87.5%,
+      hsl(45 86% 56% / 0.08) 100%
+    );
+    background-size: 200% 200%;
+    filter: saturate(1.08) brightness(1.03);
+    animation: gold-shimmer 5.6s linear infinite;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+@keyframes gold-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}

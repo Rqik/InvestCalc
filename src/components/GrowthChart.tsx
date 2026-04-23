@@ -1,19 +1,23 @@
 import React from 'react';
 import {
+  Area,
   CartesianGrid,
+  ComposedChart,
   Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
 import type { YearRow } from '../types/finance';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
 import { formatMoney } from '../utils/format';
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 type GrowthChartProps = {
   plan: YearRow[];
+  inflationRate: number;
 };
 
 type TooltipPayload = {
@@ -21,6 +25,7 @@ type TooltipPayload = {
   dataKey?: string;
   name?: string;
   value?: number;
+  yAxisId?: string;
 };
 
 type TooltipProps = {
@@ -29,18 +34,115 @@ type TooltipProps = {
   payload?: TooltipPayload[];
 };
 
-const chartLines = [
+type CursorPoint = {
+  x?: number;
+  y?: number;
+};
+
+type CursorViewBox = {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+};
+
+type CrosshairCursorProps = {
+  points?: CursorPoint[];
+  viewBox?: CursorViewBox;
+};
+
+const capitalLines = [
   {
     dataKey: 'endBalance',
+    realDataKey: 'realEndBalance',
     label: 'Итоговый капитал',
-    color: 'hsl(var(--chart-1))',
+    color: 'hsl(146 46% 42%)',
+    fill: 'url(#growth-total-fill)',
+    yAxisId: 'capital',
   },
   {
     dataKey: 'totalInvested',
+    realDataKey: 'realTotalInvested',
     label: 'Вложено',
-    color: 'hsl(var(--chart-3))',
+    color: 'hsl(var(--foreground) / 0.76)',
+    fill: 'url(#growth-invested-fill)',
+    yAxisId: 'capital',
   },
 ];
+
+const contributionLine = {
+  dataKey: 'monthlyContribution',
+  realDataKey: 'realMonthlyContribution',
+  label: 'Ежемесячный взнос',
+  color: 'hsl(221 70% 56%)',
+  yAxisId: 'contribution',
+};
+
+function getRealValueAtMonths(value: number, inflationRate: number, months: number) {
+  const monthlyInflationRate = inflationRate / 100 / 12;
+
+  if (monthlyInflationRate <= 0 || months <= 0) {
+    return value;
+  }
+
+  return value / Math.pow(1 + monthlyInflationRate, months);
+}
+
+function getYearlyMonthlyContribution(planRow: YearRow) {
+  if (planRow.monthsInPeriod <= 0) {
+    return 0;
+  }
+
+  return planRow.contributions / planRow.monthsInPeriod;
+}
+
+function getToggleClassName(isActive: boolean) {
+  return `growth-chart__toggle ${isActive ? 'growth-chart__toggle--active' : ''}`;
+}
+
+type VisibleSeries = 'capital' | 'invested' | 'contribution';
+
+const seriesLabels: Record<VisibleSeries, string> = {
+  capital: 'Капитал',
+  invested: 'Вложено',
+  contribution: 'Взнос',
+};
+
+const seriesToColorMap: Record<VisibleSeries, string> = {
+  capital: capitalLines[0].color,
+  invested: capitalLines[1].color,
+  contribution: contributionLine.color,
+};
+
+function formatAxisMoney(value: number, isCompactChart: boolean) {
+  return isCompactChart ? formatCompactMoney(Number(value)) : formatMoney(Number(value));
+}
+
+function formatTooltipValue(item: TooltipPayload) {
+  return formatMoney(item.value ?? 0);
+}
+
+function getTooltipItemStyle(item: TooltipPayload) {
+  return {
+    backgroundColor: item.color,
+  };
+}
+
+function getTooltipTitle(isRealMoneyMode: boolean) {
+  return isRealMoneyMode ? 'Сегодняшние деньги' : 'Номинальный план';
+}
+
+function getTooltipSuffix(item: TooltipPayload) {
+  return item.yAxisId === 'contribution' ? ' / мес' : '';
+}
+
+function getDefaultVisibleSeries(): Record<VisibleSeries, boolean> {
+  return {
+    capital: true,
+    invested: true,
+    contribution: true,
+  };
+}
 
 function formatCompactMoney(value: number) {
   const absValue = Math.abs(value);
@@ -76,51 +178,205 @@ function useCompactChart() {
   return isCompact;
 }
 
-function ChartTooltip({ active, label, payload }: TooltipProps) {
+function ChartTooltip({
+  active,
+  label,
+  payload,
+  isRealMoneyMode,
+}: TooltipProps & { isRealMoneyMode: boolean }) {
   if (!active || !payload?.length) {
     return null;
   }
 
+  const uniquePayload = payload.reduce<TooltipPayload[]>((items, item) => {
+    if (!item.dataKey) {
+      return items;
+    }
+
+    const existingItemIndex = items.findIndex(
+      (existingItem) => existingItem.dataKey === item.dataKey,
+    );
+
+    if (existingItemIndex === -1) {
+      items.push(item);
+      return items;
+    }
+
+    if (item.name && item.name !== item.dataKey) {
+      items[existingItemIndex] = item;
+    }
+
+    return items;
+  }, []);
+
   return (
     <div className="growth-chart__tooltip">
-      <strong className="growth-chart__tooltip-title">{label}</strong>
-      {payload.map((item) => (
+      <strong className="growth-chart__tooltip-title">
+        {label}
+        <span className="growth-chart__tooltip-mode">{getTooltipTitle(isRealMoneyMode)}</span>
+      </strong>
+      {uniquePayload.map((item) => (
         <span key={item.dataKey} className="growth-chart__tooltip-row">
           <span
             className="growth-chart__tooltip-dot"
-            style={{ backgroundColor: item.color }}
+            style={getTooltipItemStyle(item)}
           />
-          {item.name}: {formatMoney(item.value ?? 0)}
+          {item.name}: {formatTooltipValue(item)}
+          {getTooltipSuffix(item)}
         </span>
       ))}
     </div>
   );
 }
 
-export function GrowthChart({ plan }: GrowthChartProps) {
+function CrosshairCursor({ points, viewBox }: CrosshairCursorProps) {
+  if (!viewBox || !points?.length) {
+    return null;
+  }
+
+  const x = points[0]?.x;
+  const { x: viewBoxX, y: viewBoxY, width: viewBoxWidth, height: viewBoxHeight } = viewBox;
+  const uniqueY = Array.from(
+    new Set(points.map((point) => point.y).filter((value): value is number => value != null)),
+  );
+
+  if (x == null || viewBoxX == null || viewBoxY == null || viewBoxWidth == null || viewBoxHeight == null) {
+    return null;
+  }
+
+  return (
+    <g className="growth-chart__crosshair" pointerEvents="none">
+      <line
+        x1={x}
+        y1={viewBoxY}
+        x2={x}
+        y2={viewBoxY + viewBoxHeight}
+        className="growth-chart__crosshair-line"
+      />
+      {uniqueY.map((y) => (
+        <line
+          key={y}
+          x1={viewBoxX}
+          y1={y}
+          x2={viewBoxX + viewBoxWidth}
+          y2={y}
+          className="growth-chart__crosshair-line growth-chart__crosshair-line--horizontal"
+        />
+      ))}
+    </g>
+  );
+}
+
+export function GrowthChart({ plan, inflationRate }: GrowthChartProps) {
   const isCompactChart = useCompactChart();
-  const chartData = plan.map((row) => ({
-    ...row,
-    period: row.label,
-  }));
+  const [visibleSeries, setVisibleSeries] = React.useState<Record<VisibleSeries, boolean>>(
+    getDefaultVisibleSeries,
+  );
+  const [isRealMoneyMode, setIsRealMoneyMode] = React.useState(false);
+
+  const chartData = React.useMemo(() => {
+    let elapsedMonths = 0;
+
+    return plan.map((row) => {
+      elapsedMonths += row.monthsInPeriod;
+      const monthlyContribution = getYearlyMonthlyContribution(row);
+
+      return {
+        ...row,
+        period: row.label,
+        monthlyContribution,
+        realTotalInvested: row.realTotalInvested,
+        realMonthlyContribution: getRealValueAtMonths(monthlyContribution, inflationRate, elapsedMonths),
+      };
+    });
+  }, [inflationRate, plan]);
+
+  const contributionAxisVisible = visibleSeries.contribution;
+
+  const toggleSeries = (series: VisibleSeries) => {
+    setVisibleSeries((currentState) => {
+      const nextState = {
+        ...currentState,
+        [series]: !currentState[series],
+      };
+
+      if (Object.values(nextState).some(Boolean)) {
+        return nextState;
+      }
+
+      return currentState;
+    });
+  };
 
   return (
     <Card as="section" className="growth-chart">
       <CardHeader>
-        <CardTitle>График роста по годам</CardTitle>
-        <CardDescription>
-          Две линии показывают разницу между вложенными деньгами и итоговым капиталом.
-        </CardDescription>
+        <div className="growth-chart__header">
+          <div className="growth-chart__heading">
+            <CardTitle>График роста по годам</CardTitle>
+            <CardDescription>
+              Можно скрывать отдельные линии, смотреть ежемесячный взнос и переключать
+              график в режим сегодняшних денег.
+            </CardDescription>
+          </div>
+
+          <div className="growth-chart__controls">
+            <div className="growth-chart__series-toggles" aria-label="Показать линии графика">
+              {(Object.keys(seriesLabels) as VisibleSeries[]).map((series) => (
+                <Button
+                  key={series}
+                  className={getToggleClassName(visibleSeries[series])}
+                  variant={visibleSeries[series] ? 'secondary' : 'outline'}
+                  size="sm"
+                  type="button"
+                  onClick={() => toggleSeries(series)}
+                >
+                  <span
+                    className="growth-chart__toggle-dot"
+                    style={{ backgroundColor: seriesToColorMap[series] }}
+                  />
+                  {seriesLabels[series]}
+                </Button>
+              ))}
+            </div>
+
+            <div className="growth-chart__mode-control">
+              <span className="growth-chart__mode-label">Режим графика</span>
+              <Button
+                className={getToggleClassName(isRealMoneyMode)}
+                variant={isRealMoneyMode ? 'secondary' : 'outline'}
+                size="sm"
+                type="button"
+                onClick={() => setIsRealMoneyMode((currentState) => !currentState)}
+              >
+                {isRealMoneyMode ? 'Сегодняшние деньги' : 'Номинальные значения'}
+              </Button>
+            </div>
+          </div>
+        </div>
       </CardHeader>
 
       <div className="growth-chart__frame">
         <ResponsiveContainer width="100%" height={isCompactChart ? 300 : 360}>
-          <LineChart
+          <ComposedChart
             data={chartData}
-            margin={isCompactChart
-              ? { top: 12, right: 8, bottom: 4, left: 0 }
-              : { top: 18, right: 24, bottom: 8, left: 8 }}
+            margin={
+              isCompactChart
+                ? { top: 12, right: contributionAxisVisible ? 16 : 8, bottom: 4, left: 0 }
+                : { top: 18, right: contributionAxisVisible ? 32 : 24, bottom: 8, left: 8 }
+            }
           >
+            <defs>
+              <linearGradient id="growth-total-fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(146 46% 42% / 0.22)" />
+                <stop offset="100%" stopColor="hsl(146 46% 42% / 0.02)" />
+              </linearGradient>
+              <linearGradient id="growth-invested-fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="hsl(var(--foreground) / 0.14)" />
+                <stop offset="100%" stopColor="hsl(var(--foreground) / 0.01)" />
+              </linearGradient>
+            </defs>
+
             <CartesianGrid stroke="hsl(var(--border))" strokeDasharray="4 8" />
             <XAxis
               dataKey="period"
@@ -131,34 +387,77 @@ export function GrowthChart({ plan }: GrowthChartProps) {
               minTickGap={isCompactChart ? 22 : 8}
             />
             <YAxis
+              yAxisId="capital"
               stroke="hsl(var(--muted-foreground))"
               tickLine={false}
               axisLine={false}
               tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-              tickFormatter={(value) =>
-                isCompactChart ? formatCompactMoney(Number(value)) : formatMoney(Number(value))
-              }
+              tickFormatter={(value) => formatAxisMoney(Number(value), isCompactChart)}
               width={isCompactChart ? 54 : 92}
             />
-            <Tooltip content={<ChartTooltip />} />
-            {chartLines.map((line) => (
-              <Line
-                key={line.dataKey}
-                type="monotone"
-                dataKey={line.dataKey}
-                name={line.label}
-                stroke={line.color}
-                strokeWidth={3}
-                dot={{ r: 4, strokeWidth: 2, fill: 'hsl(var(--background))' }}
-                activeDot={{ r: 6, strokeWidth: 2 }}
+            {contributionAxisVisible && (
+              <YAxis
+                yAxisId="contribution"
+                orientation="right"
+                stroke="hsl(var(--muted-foreground))"
+                tickLine={false}
+                axisLine={false}
+                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                tickFormatter={(value) => formatAxisMoney(Number(value), isCompactChart)}
+                width={isCompactChart ? 48 : 80}
               />
-            ))}
-          </LineChart>
+            )}
+            <Tooltip
+              content={<ChartTooltip isRealMoneyMode={isRealMoneyMode} />}
+              cursor={<CrosshairCursor />}
+            />
+
+            {capitalLines.map((line, index) =>
+              visibleSeries[index === 0 ? 'capital' : 'invested'] ? (
+              <React.Fragment key={line.dataKey}>
+                <Area
+                  type="monotone"
+                  yAxisId={line.yAxisId}
+                  dataKey={isRealMoneyMode ? line.realDataKey : line.dataKey}
+                  stroke="none"
+                  fill={line.fill}
+                  fillOpacity={1}
+                />
+                <Line
+                  type="monotone"
+                  yAxisId={line.yAxisId}
+                  dataKey={isRealMoneyMode ? line.realDataKey : line.dataKey}
+                  name={line.label}
+                  stroke={line.color}
+                  strokeWidth={3}
+                  dot={{ r: 4, strokeWidth: 2, fill: 'hsl(var(--background))' }}
+                  activeDot={{ r: 6, strokeWidth: 2 }}
+                />
+              </React.Fragment>
+              ) : null,
+            )}
+
+            {visibleSeries.contribution && (
+              <Line
+                type="monotone"
+                yAxisId={contributionLine.yAxisId}
+                dataKey={isRealMoneyMode ? contributionLine.realDataKey : contributionLine.dataKey}
+                name={contributionLine.label}
+                stroke={contributionLine.color}
+                strokeWidth={2.5}
+                strokeDasharray="7 6"
+                dot={{ r: 3, strokeWidth: 2, fill: 'hsl(var(--background))' }}
+                activeDot={{ r: 5, strokeWidth: 2 }}
+              />
+            )}
+          </ComposedChart>
         </ResponsiveContainer>
       </div>
 
       <div className="growth-chart__legend">
-        {chartLines.map((line) => (
+        {capitalLines
+          .filter((_, index) => visibleSeries[index === 0 ? 'capital' : 'invested'])
+          .map((line) => (
           <div key={line.dataKey} className="growth-chart__legend-item">
             <span
               className="growth-chart__legend-swatch"
@@ -167,6 +466,16 @@ export function GrowthChart({ plan }: GrowthChartProps) {
             <span>{line.label}</span>
           </div>
         ))}
+        {visibleSeries.contribution && (
+          <div className="growth-chart__legend-item">
+            <span
+              className="growth-chart__legend-swatch growth-chart__legend-swatch--dashed"
+              style={{ backgroundColor: contributionLine.color }}
+            />
+            <span>Ежемесячный взнос</span>
+            <Badge variant="outline">{isRealMoneyMode ? 'в сегодняшних деньгах' : 'номинально'}</Badge>
+          </div>
+        )}
       </div>
     </Card>
   );

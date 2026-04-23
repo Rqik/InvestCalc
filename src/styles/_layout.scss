@@ -111,15 +111,11 @@
     text-decoration: none;
   }
 
-  &__mark {
-    display: grid;
+  &__logo {
     width: 34px;
     height: 34px;
-    place-items: center;
-    border-radius: calc(var(--radius) - 2px);
-    color: hsl(var(--primary-foreground));
-    background: hsl(var(--primary));
-    font-size: 0.82rem;
+    flex: 0 0 auto;
+    display: block;
   }
 
   &__actions {
@@ -245,43 +241,20 @@
 .help-card {
   scroll-margin-top: 92px;
 
-  &__list {
+  &__insights {
     display: grid;
-    gap: 0;
-    margin: 0;
-
-    div {
-      display: grid;
-      grid-template-columns: minmax(130px, 0.32fr) minmax(0, 1fr);
-      gap: 18px;
-      padding: 14px 0;
-      border-top: 1px solid hsl(var(--border));
-    }
-
-    dt {
-      color: hsl(var(--foreground));
-      font-weight: 800;
-    }
-
-    dd {
-      margin: 0;
-      color: hsl(var(--muted-foreground));
-    }
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
 
-  &__example-grid {
+  &__warning {
+    margin: 6px 0 14px;
+  }
+
+  &__comparison-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
-
-    span {
-      min-width: 0;
-      padding: 14px;
-      border: 1px solid hsl(var(--border));
-      border-radius: var(--radius);
-      background: hsl(var(--muted) / 0.46);
-      color: hsl(var(--muted-foreground));
-    }
   }
 
   &__qa {
@@ -300,6 +273,245 @@
 
     p {
       color: hsl(var(--muted-foreground));
+    }
+  }
+}
+
+.help-card__insight {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--muted) / 0.22);
+
+  &--good {
+    background:
+      linear-gradient(180deg, hsl(146 42% 98%) 0%, hsl(146 38% 96%) 100%),
+      hsl(var(--card));
+    border-color: hsl(146 38% 52% / 0.2);
+  }
+
+  &--warning {
+    background:
+      linear-gradient(180deg, hsl(34 100% 98%) 0%, hsl(30 100% 96%) 100%),
+      hsl(var(--card));
+    border-color: hsl(28 88% 56% / 0.18);
+  }
+
+  &--danger {
+    background:
+      linear-gradient(180deg, hsl(0 100% 98%) 0%, hsl(0 80% 96%) 100%),
+      hsl(var(--card));
+    border-color: hsl(0 72% 60% / 0.18);
+  }
+}
+
+.help-card__insight-topline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.help-card__insight-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.help-card__insight-title,
+.help-card__insight-description {
+  margin: 0;
+}
+
+.help-card__insight-title {
+  min-width: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.help-card__insight-description {
+  color: hsl(var(--muted-foreground));
+  line-height: 1.6;
+}
+
+.comparison-card {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--muted) / 0.34);
+  box-shadow: none;
+
+  &--current {
+    border-color: hsl(var(--primary) / 0.34);
+    background:
+      linear-gradient(180deg, hsl(var(--primary) / 0.08) 0%, hsl(var(--muted) / 0.28) 100%),
+      hsl(var(--card));
+  }
+
+  &__topline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__title-wrap {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  &__title,
+  &__description,
+  &__adjustment,
+  &__current-note {
+    margin: 0;
+  }
+
+  &__title {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  &__description,
+  &__adjustment,
+  &__current-note {
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__description {
+    line-height: 1.5;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+
+    div {
+      min-width: 0;
+      padding: 12px 13px;
+      border-radius: var(--radius);
+      border: 1px solid hsl(var(--border));
+      background: hsl(var(--background));
+    }
+
+    span,
+    strong {
+      display: block;
+    }
+
+    span {
+      margin-bottom: 6px;
+      color: hsl(var(--muted-foreground));
+      font-size: 0.84rem;
+    }
+
+    strong {
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__goal {
+    &--positive {
+      color: hsl(146 56% 42%);
+    }
+
+    &--negative {
+      color: hsl(28 88% 56%);
+    }
+  }
+
+  &__actions {
+    margin-top: 2px;
+  }
+
+  &__actions [data-slot='button'] {
+    width: 100%;
+  }
+
+  &__current-note {
+    font-size: 0.9rem;
+  }
+}
+
+:root[data-theme='dark'] {
+  .help-card__insight {
+    background:
+      linear-gradient(180deg, hsl(223 26% 15%) 0%, hsl(223 28% 12%) 100%),
+      hsl(var(--card));
+    border-color: hsl(218 24% 21%);
+
+    &--good {
+      background:
+        linear-gradient(180deg, hsl(152 32% 17%) 0%, hsl(154 28% 12%) 100%),
+        hsl(var(--card));
+      border-color: hsl(146 38% 52% / 0.18);
+    }
+
+    &--warning {
+      background:
+        linear-gradient(180deg, hsl(26 34% 17%) 0%, hsl(24 30% 12%) 100%),
+        hsl(var(--card));
+      border-color: hsl(28 88% 56% / 0.16);
+    }
+
+    &--danger {
+      background:
+        linear-gradient(180deg, hsl(0 28% 17%) 0%, hsl(0 24% 12%) 100%),
+        hsl(var(--card));
+      border-color: hsl(0 72% 60% / 0.16);
+    }
+  }
+
+  .help-card__insight-index {
+    background: hsl(223 26% 11%);
+    border-color: hsl(218 24% 21%);
+  }
+
+  .comparison-card {
+    background:
+      linear-gradient(180deg, hsl(223 26% 15%) 0%, hsl(223 28% 12%) 100%),
+      hsl(var(--card));
+    border-color: hsl(218 24% 21%);
+
+    &--current {
+      border-color: hsl(208 56% 72% / 0.32);
+      background:
+        linear-gradient(180deg, hsl(218 30% 18%) 0%, hsl(223 28% 12%) 100%),
+        hsl(var(--card));
+    }
+
+    &__stats div {
+      background: hsl(223 26% 11%);
+      border-color: hsl(218 24% 21%);
+    }
+
+    &__goal {
+      &--positive {
+        color: hsl(146 56% 66%);
+      }
+
+      &--negative {
+        color: hsl(28 88% 66%);
+      }
     }
   }
 }

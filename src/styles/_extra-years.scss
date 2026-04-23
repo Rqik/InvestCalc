@@ -1,3 +1,5 @@
+@use './effects' as effects;
+
 .extra-years-panel {
   &__grid {
     display: grid;
@@ -7,10 +9,39 @@
 }
 
 .wait-card {
+  position: relative;
   padding: 20px;
   border-radius: var(--radius);
   border: 1px solid hsl(var(--border));
   background: hsl(var(--card));
+  overflow: hidden;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+
+  &--good {
+    border-color: hsl(146 38% 52% / 0.68);
+    background:
+      linear-gradient(180deg, hsl(146 42% 96%) 0%, hsl(146 34% 99%) 100%),
+      hsl(var(--card));
+    box-shadow: 0 6px 18px hsl(146 38% 52% / 0.07);
+
+    .wait-card__period-note {
+      color: hsl(146 46% 34%);
+    }
+  }
+
+  &--excellent {
+    @include effects.gold-shimmer-border();
+
+    border-color: hsl(45 78% 56% / 0.8);
+    background:
+      linear-gradient(180deg, hsl(45 100% 94%) 0%, hsl(45 92% 98%) 100%),
+      hsl(var(--card));
+    box-shadow: 0 8px 20px hsl(45 78% 56% / 0.12);
+
+    .wait-card__period-note {
+      color: hsl(40 82% 42%);
+    }
+  }
 
   &__years,
   &__value,
@@ -43,5 +74,36 @@
 
   &__hint + &__hint {
     margin-top: 8px;
+  }
+}
+
+:root[data-theme='dark'] {
+  .wait-card {
+    background: hsl(var(--card));
+    box-shadow: 0 10px 24px hsl(0 0% 0% / 0.14);
+
+    &--good {
+      border-color: hsl(146 46% 54% / 0.42);
+      background:
+        linear-gradient(180deg, hsl(152 34% 17%) 0%, hsl(154 28% 12%) 100%),
+        hsl(var(--card));
+      box-shadow: 0 10px 24px hsl(146 60% 18% / 0.16);
+
+      .wait-card__period-note {
+        color: hsl(146 56% 68%);
+      }
+    }
+
+    &--excellent {
+      border-color: hsl(45 92% 62% / 0.46);
+      background:
+        linear-gradient(180deg, hsl(39 40% 17%) 0%, hsl(34 34% 12%) 100%),
+        hsl(var(--card));
+      box-shadow: 0 10px 26px hsl(40 85% 40% / 0.13);
+
+      .wait-card__period-note {
+        color: hsl(45 94% 72%);
+      }
+    }
   }
 }

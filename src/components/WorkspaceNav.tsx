@@ -122,7 +122,7 @@ export function WorkspaceNav({ isRetirement = false }: WorkspaceNavProps) {
               scrollToSection('methodology');
             }}
           >
-            Методика
+            Как читать
           </Button>
           <Button
             className={getItemClassName('examples')}
@@ -133,7 +133,7 @@ export function WorkspaceNav({ isRetirement = false }: WorkspaceNavProps) {
               scrollToSection('examples');
             }}
           >
-            Примеры
+            Сравнение
           </Button>
           <Button
             className={getItemClassName('faq')}

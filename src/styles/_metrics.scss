@@ -1,3 +1,5 @@
+@use './effects' as effects;
+
 .results-panel {
   &__grid {
     display: grid;
@@ -12,6 +14,7 @@
   border-radius: var(--radius);
   border: 1px solid hsl(var(--border));
   background: hsl(var(--card));
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 
   &--accent {
     border-color: hsl(var(--primary));
@@ -22,6 +25,42 @@
     .metric-card__hint {
       color: hsl(var(--primary-foreground) / 0.72);
     }
+  }
+
+  &--excellent {
+    @include effects.gold-shimmer-border();
+
+    border-color: hsl(45 78% 56% / 0.38);
+    background:
+      linear-gradient(180deg, hsl(45 100% 93%) 0%, hsl(45 92% 97%) 100%),
+      hsl(var(--card));
+    box-shadow:
+      0 8px 20px hsl(45 78% 56% / 0.16),
+      0 0 0 1px hsl(48 95% 72% / 0.28);
+  }
+
+  &--good {
+    border-color: hsl(146 38% 52% / 0.7);
+    background:
+      linear-gradient(180deg, hsl(146 42% 95%) 0%, hsl(146 34% 98%) 100%),
+      hsl(var(--card));
+    box-shadow: 0 6px 18px hsl(146 38% 52% / 0.08);
+  }
+
+  &--warning {
+    border-color: hsl(26 92% 54% / 0.84);
+    background:
+      linear-gradient(180deg, hsl(28 100% 95%) 0%, hsl(28 100% 98%) 100%),
+      hsl(var(--card));
+    box-shadow: 0 6px 18px hsl(26 92% 54% / 0.1);
+  }
+
+  &--danger {
+    border-color: hsl(0 73% 58% / 0.72);
+    background:
+      linear-gradient(180deg, hsl(0 100% 97%) 0%, hsl(0 100% 99%) 100%),
+      hsl(var(--card));
+    box-shadow: 0 6px 18px hsl(0 73% 58% / 0.08);
   }
 
   &__label,
@@ -45,5 +84,59 @@
 
   &__hint {
     color: hsl(var(--muted-foreground));
+  }
+}
+
+:root[data-theme='dark'] {
+  .metric-card {
+    background: hsl(var(--card));
+    box-shadow: 0 10px 24px hsl(0 0% 0% / 0.16);
+
+    &--accent {
+      background:
+        linear-gradient(180deg, hsl(214 34% 18%) 0%, hsl(222 34% 13%) 100%),
+        hsl(var(--card));
+      border-color: hsl(209 48% 68% / 0.34);
+      color: hsl(210 40% 98%);
+
+      .metric-card__label,
+      .metric-card__hint {
+        color: hsl(210 30% 88% / 0.74);
+      }
+    }
+
+    &--excellent {
+      border-color: hsl(45 92% 62% / 0.42);
+      background:
+        linear-gradient(180deg, hsl(39 40% 17%) 0%, hsl(34 34% 12%) 100%),
+        hsl(var(--card));
+      box-shadow:
+        0 10px 26px hsl(40 85% 40% / 0.14),
+        0 0 0 1px hsl(46 86% 64% / 0.16);
+    }
+
+    &--good {
+      border-color: hsl(146 48% 54% / 0.45);
+      background:
+        linear-gradient(180deg, hsl(152 34% 17%) 0%, hsl(154 28% 12%) 100%),
+        hsl(var(--card));
+      box-shadow: 0 10px 24px hsl(146 60% 18% / 0.18);
+    }
+
+    &--warning {
+      border-color: hsl(28 88% 58% / 0.5);
+      background:
+        linear-gradient(180deg, hsl(24 38% 17%) 0%, hsl(22 32% 12%) 100%),
+        hsl(var(--card));
+      box-shadow: 0 10px 24px hsl(28 78% 18% / 0.16);
+    }
+
+    &--danger {
+      border-color: hsl(0 72% 60% / 0.48);
+      background:
+        linear-gradient(180deg, hsl(0 34% 17%) 0%, hsl(0 28% 12%) 100%),
+        hsl(var(--card));
+      box-shadow: 0 10px 24px hsl(0 64% 18% / 0.16);
+    }
   }
 }

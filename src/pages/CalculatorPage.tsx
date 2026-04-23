@@ -38,6 +38,11 @@ export function CalculatorPage({
     scenarios.resetScenarioDraft();
   };
 
+  const handleApplyExample = (nextInputs: Inputs) => {
+    setInputs(nextInputs);
+    scenarios.resetScenarioDraft();
+  };
+
   return (
     <AppLayout
       activePage={activePage}
@@ -69,7 +74,7 @@ export function CalculatorPage({
           </div>
 
           <div id="growth-chart">
-            <GrowthChart plan={finance.yearlyPlan} />
+            <GrowthChart plan={finance.yearlyPlan} inflationRate={inputs.inflationRate} />
           </div>
 
           <WorkspaceSummary inputs={inputs} />
@@ -100,7 +105,11 @@ export function CalculatorPage({
             />
           </div>
 
-          <HelpPanels />
+          <HelpPanels
+            inputs={inputs}
+            snapshot={finance}
+            onApplyExample={handleApplyExample}
+          />
         </>
       }
     />

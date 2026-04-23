@@ -2,7 +2,12 @@ import {
   EXTRA_YEARS_TO_COMPARE,
   MONTHS_IN_YEAR,
 } from '../constants/defaults';
-import type { ExtraYearProjection, Inputs, YearRow } from '../types/finance';
+import type {
+  ExtraYearProjection,
+  FinanceSnapshot,
+  Inputs,
+  YearRow,
+} from '../types/finance';
 import { formatDuration } from './format';
 import {
   getIndexedContribution,
@@ -140,10 +145,37 @@ export function getRequiredAnnualReturn(inputs: Inputs) {
   return (low + high) / 2;
 }
 
+export function buildFinanceSnapshot(inputs: Inputs): FinanceSnapshot {
+  const totalMonths = getTotalMonths(inputs);
+  const isDurationInvalid = totalMonths <= 0;
+  const projectedCapital = getFutureValue(inputs);
+  const realProjectedCapital = getRealValue(projectedCapital, inputs);
+  const requiredContribution = getRequiredMonthlyContribution(inputs);
+  const requiredReturn = getRequiredAnnualReturn(inputs);
+  const yearlyPlan = buildYearlyPlan(inputs);
+  const totalInvested = getTotalInvested(inputs);
+  const investmentProfit = projectedCapital - totalInvested;
+  const goalGap = projectedCapital - inputs.targetCapital;
+
+  return {
+    totalMonths,
+    isDurationInvalid,
+    projectedCapital,
+    realProjectedCapital,
+    requiredContribution,
+    requiredReturn,
+    totalInvested,
+    investmentProfit,
+    goalGap,
+    yearlyPlan,
+  };
+}
+
 export function buildYearlyPlan(inputs: Inputs): YearRow[] {
   const plan: YearRow[] = [];
   let balance = inputs.initialCapital;
   let totalInvested = inputs.initialCapital;
+  let realTotalInvested = inputs.initialCapital;
   const monthlyRate = getMonthlyRate(inputs.annualReturn);
   const monthlyInflationRate = getMonthlyInflationRate(inputs.inflationRate ?? 0);
   const totalMonths = getTotalMonths(inputs);
@@ -167,6 +199,10 @@ export function buildYearlyPlan(inputs: Inputs): YearRow[] {
       balance += contribution;
       contributions += contribution;
       totalInvested += contribution;
+      realTotalInvested +=
+        monthlyInflationRate === 0
+          ? contribution
+          : contribution / Math.pow(1 + monthlyInflationRate, monthIndex + 1);
     }
 
     const duration = getNormalizedDuration(monthsBeforePeriod + monthsInPeriod);
@@ -182,6 +218,7 @@ export function buildYearlyPlan(inputs: Inputs): YearRow[] {
       startBalance,
       contributions,
       totalInvested,
+      realTotalInvested,
       growth: balance - startBalance - contributions,
       profit: balance - totalInvested,
       endBalance: balance,
