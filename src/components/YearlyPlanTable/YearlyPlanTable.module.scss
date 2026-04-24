@@ -1,1 +1,181 @@
-﻿/* Component styles are owned by YearlyPlanTable. */
+@use '../../styles/media' as media;
+
+.yearlyPlan {
+  &__summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(140px, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  &__summaryChip {
+    padding: 16px 18px;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+  }
+
+  &__summaryChipLabel,
+  &__summaryChipValue {
+    display: block;
+  }
+
+  &__summaryChipLabel {
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__summaryChipValue {
+    margin-top: 8px;
+    font-size: 1.1rem;
+    overflow-wrap: anywhere;
+  }
+
+  &__tableWrap {
+    overflow-x: auto;
+    max-width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+    scrollbar-color: hsl(var(--muted-foreground) / 0.42) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  &__tableHead,
+  &__tableBody {
+    display: table-header-group;
+  }
+
+  &__tableBody {
+    display: table-row-group;
+  }
+
+  &__tableRow {
+    border-top: 1px solid hsl(var(--border));
+
+    &--hoverable {
+      &:hover {
+        background: hsl(var(--muted) / 0.5);
+      }
+    }
+  }
+
+  &__tableCell,
+  &__tableHeadCell {
+    padding: 16px 18px;
+    text-align: left;
+    white-space: nowrap;
+
+    &--sticky {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: hsl(var(--card));
+      box-shadow: 1px 0 0 hsl(var(--border));
+    }
+  }
+
+  &__tableHeadCell {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.9rem;
+    background: hsl(var(--muted));
+
+    &--sticky {
+      z-index: 2;
+      background: hsl(var(--muted));
+    }
+  }
+
+  &__mobileList {
+    display: grid;
+    gap: 12px;
+  }
+
+  &__mobileCard {
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+  }
+
+  &__mobileTopline {
+    display: grid;
+    gap: 6px;
+  }
+
+  &__mobilePeriod,
+  &__mobileTotal {
+    overflow-wrap: anywhere;
+  }
+
+  &__mobilePeriod {
+    font-size: 0.96rem;
+    line-height: 1.2;
+  }
+
+  &__mobileTotal {
+    font-size: 1.18rem;
+    line-height: 1.15;
+  }
+
+  &__mobileStats {
+    display: grid;
+    gap: 0;
+    margin: 0;
+  }
+
+  &__mobileStat {
+    display: grid;
+    gap: 4px;
+    padding: 10px 0;
+    border-top: 1px solid hsl(var(--border));
+
+    &--first {
+      border-top: 0;
+      padding-top: 0;
+    }
+  }
+
+  &__mobileStatTerm,
+  &__mobileStatValue {
+    margin: 0;
+  }
+
+  &__mobileStatTerm {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.82rem;
+  }
+
+  &__mobileStatValue {
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+
+  @include media.media-desktop {
+    &__summary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @include media.media-laptop {
+    &__summary {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @include media.media-mobile {
+    &__tableWrap {
+      margin-inline: -2px;
+    }
+
+    &__mobileCard {
+      padding: 14px;
+    }
+  }
+}

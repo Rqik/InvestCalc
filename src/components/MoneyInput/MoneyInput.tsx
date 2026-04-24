@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { formatInputNumber, parseFormattedNumber } from '@/utils/format';
 import type { MoneyInputProps } from './MoneyInput.types';
+import styles from './MoneyInput.module.scss';
 
 export function MoneyInput({ label, value, hint, onChange }: MoneyInputProps) {
   const [draftValue, setDraftValue] = React.useState(() => formatInputNumber(value));
@@ -30,10 +31,10 @@ export function MoneyInput({ label, value, hint, onChange }: MoneyInputProps) {
   };
 
   return (
-    <Label className="form-field">
-      <span className="form-field__label">{label}</span>
+    <Label className={styles.formField}>
+      <span className={styles.formField__label}>{label}</span>
       <Input
-        className="form-field__input"
+        className={styles.formField__input}
         type="text"
         inputMode="numeric"
         maxLength={18}
@@ -54,7 +55,7 @@ export function MoneyInput({ label, value, hint, onChange }: MoneyInputProps) {
         }}
         onBlur={(event) => commitValue(event.target.value)}
       />
-      <small className="form-field__hint">{hint}</small>
+      <small className={styles.formField__hint}>{hint}</small>
     </Label>
   );
 }

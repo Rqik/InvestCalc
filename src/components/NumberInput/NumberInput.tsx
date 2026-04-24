@@ -2,6 +2,7 @@ import React from 'react';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import type { NumberInputProps } from './NumberInput.types';
+import styles from './NumberInput.module.scss';
 
 function formatNumberValue(value: number) {
   return Number.isFinite(value) ? String(value) : '';
@@ -51,10 +52,10 @@ export function NumberInput({
   };
 
   return (
-    <Label className="form-field">
-      <span className="form-field__label">{label}</span>
+    <Label className={styles.formField}>
+      <span className={styles.formField__label}>{label}</span>
       <Input
-        className="form-field__input"
+        className={styles.formField__input}
         type="number"
         min={min}
         max={max}
@@ -76,7 +77,7 @@ export function NumberInput({
         }}
         onBlur={(event) => commitValue(event.target.value)}
       />
-      <small className="form-field__hint">{hint}</small>
+      <small className={styles.formField__hint}>{hint}</small>
     </Label>
   );
 }

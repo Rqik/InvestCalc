@@ -1,1 +1,44 @@
-﻿/* Component styles are owned by ThemeToggle. */
+@use '../../styles/media' as media;
+
+.themeToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 0 12px;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.32);
+  }
+
+  &__icon {
+    display: grid;
+    width: 20px;
+    height: 20px;
+    place-items: center;
+    color: var(--brand);
+    font-size: 1rem;
+  }
+
+  @include media.media-tablet {
+    &__label {
+      display: none;
+    }
+  }
+}

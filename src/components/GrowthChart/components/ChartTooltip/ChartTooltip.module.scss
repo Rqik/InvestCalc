@@ -1,1 +1,49 @@
-/* Component styles are owned by ChartTooltip. */
+.tooltip {
+  display: grid;
+  gap: 8px;
+  min-width: 210px;
+  max-width: min(260px, calc(100vw - 48px));
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--popover));
+  color: hsl(var(--popover-foreground));
+  box-shadow: var(--shadow);
+
+  &__title,
+  &__row {
+    display: block;
+  }
+
+  &__title {
+    display: grid;
+    gap: 4px;
+  }
+
+  &__mode {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  &__row {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.9rem;
+  }
+
+  &__dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 8px;
+    border-radius: 999px;
+  }
+}
+
+:global(:root[data-theme='dark']) {
+  .tooltip {
+    background: hsl(223 30% 12%);
+    border-color: hsl(218 24% 24%);
+    box-shadow: 0 12px 28px hsl(0 0% 0% / 0.3);
+  }
+}

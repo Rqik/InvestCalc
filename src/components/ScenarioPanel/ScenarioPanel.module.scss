@@ -1,1 +1,355 @@
-﻿/* Component styles are owned by ScenarioPanel. */
+@use '../../styles/media' as media;
+
+.scenarioPanel {
+  &__header {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  &__heading {
+    display: grid;
+    gap: 6px;
+  }
+
+  &__titleRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__counter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    font-size: 0.78rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  &__creator {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: stretch;
+
+    :global([data-slot='button']) {
+      width: 100%;
+    }
+  }
+
+  &__nameInput {
+    width: 100%;
+    min-height: 40px;
+    border: 1px solid hsl(var(--input));
+    border-radius: var(--radius);
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    padding: 0 12px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus {
+      border-color: hsl(var(--ring));
+      box-shadow: 0 0 0 2px hsl(var(--ring) / 0.16);
+    }
+  }
+
+  &__list {
+    display: grid;
+    gap: 8px;
+    max-height: 258px;
+    overflow: auto;
+    padding-right: 2px;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.42) transparent;
+    scrollbar-width: thin;
+  }
+
+  &__empty {
+    padding: 18px;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--muted) / 0.32);
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__warning {
+    margin: 0 0 14px;
+  }
+}
+
+.scenarioCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    background: hsl(var(--accent));
+    border-color: hsl(var(--border));
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.32);
+  }
+
+  &--active {
+    border-color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.06);
+  }
+
+  &__content {
+  }
+
+  &__topline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+
+  &__title {
+    display: block;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+  }
+
+  &__meta {
+    display: block;
+    color: hsl(var(--muted-foreground));
+    overflow-wrap: anywhere;
+  }
+
+  &__state {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 3px 8px;
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    font-size: 0.72rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  &__date {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+}
+
+.scenarioInspector {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted) / 0.32);
+
+  &__topline {
+    display: grid;
+    gap: 14px;
+  }
+
+  &__titleWrap {
+    display: grid;
+    gap: 4px;
+  }
+
+  &__eyebrow,
+  &__detailTerm {
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__eyebrow {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__highlights {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  &__highlight {
+    padding: 13px 14px;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--background));
+  }
+
+  &__highlightLabel,
+  &__highlightValue {
+    display: block;
+  }
+
+  &__highlightLabel {
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 7px;
+  }
+
+  &__highlightValue {
+    overflow-wrap: anywhere;
+  }
+
+  &__details {
+    display: grid;
+    gap: 0;
+    margin: 0;
+  }
+
+  &__detailRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 0;
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  &__detailValue {
+    margin: 0;
+    color: hsl(var(--foreground));
+    font-weight: 800;
+    text-align: right;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+
+    :global([data-slot='button']) {
+      width: 100%;
+    }
+  }
+
+  &__delete {
+    margin-top: 0;
+  }
+}
+
+@include media.media-tablet {
+  .scenarioPanel {
+    &__header {
+      align-items: start;
+    }
+
+    &__creator {
+      grid-template-columns: 1fr;
+    }
+
+    &__list {
+      max-height: none;
+      overflow: visible;
+    }
+  }
+
+  .scenarioCard {
+    grid-template-columns: 1fr;
+
+    &__topline {
+      flex-wrap: wrap;
+    }
+
+    &__date {
+      white-space: normal;
+    }
+  }
+}
+
+@include media.media-mobile {
+  .scenarioPanel {
+    &__creator {
+      gap: 10px;
+    }
+
+    &__titleRow {
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+
+  .scenarioCard {
+    padding: 14px;
+    border-radius: var(--radius);
+
+    &__meta {
+      font-size: 0.82rem;
+    }
+  }
+
+  .scenarioInspector {
+    padding: 14px;
+    border-radius: var(--radius);
+
+    &__details {
+      font-size: 0.82rem;
+    }
+
+    &__detailRow {
+      display: grid;
+      gap: 4px;
+    }
+
+    &__detailValue {
+      text-align: left;
+    }
+  }
+}
+
+@include media.media-desktop {
+  .scenarioInspector {
+    &__highlights {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@include media.media-laptop {
+  .scenarioInspector {
+    &__actions {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .scenarioCard {
+    grid-template-columns: 1fr;
+    align-items: start;
+
+    &__date {
+      justify-self: start;
+    }
+  }
+}

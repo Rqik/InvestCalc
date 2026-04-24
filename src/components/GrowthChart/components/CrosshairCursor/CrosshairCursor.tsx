@@ -1,4 +1,6 @@
+import { cn } from '@/lib/utils';
 import type { CrosshairCursorProps } from './CrosshairCursor.types';
+import styles from './CrosshairCursor.module.scss';
 
 function CrosshairCursor({ points, viewBox }: CrosshairCursorProps) {
   if (!viewBox || !points?.length) {
@@ -16,13 +18,13 @@ function CrosshairCursor({ points, viewBox }: CrosshairCursorProps) {
   }
 
   return (
-    <g className="growth-chart__crosshair" pointerEvents="none">
+    <g className={styles.crosshair} pointerEvents="none">
       <line
         x1={x}
         y1={viewBoxY}
         x2={x}
         y2={viewBoxY + viewBoxHeight}
-        className="growth-chart__crosshair-line"
+        className={styles.crosshair__line}
       />
       {uniqueY.map((y) => (
         <line
@@ -31,7 +33,7 @@ function CrosshairCursor({ points, viewBox }: CrosshairCursorProps) {
           y1={y}
           x2={viewBoxX + viewBoxWidth}
           y2={y}
-          className="growth-chart__crosshair-line growth-chart__crosshair-line--horizontal"
+          className={cn(styles.crosshair__line, styles['crosshair__line--horizontal'])}
         />
       ))}
     </g>

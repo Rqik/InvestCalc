@@ -1,1 +1,21 @@
-/* Component styles are owned by Card. */
+@use '../../../styles/media' as media;
+
+.ui-card {
+  max-width: 100%;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-panel);
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  box-shadow: var(--shadow);
+  padding: 24px;
+
+  @include media.media-tablet {
+    padding: 18px;
+    border-radius: var(--radius-panel);
+  }
+
+  @include media.media-mobile {
+    padding: 14px;
+    border-radius: var(--radius-panel);
+  }
+}

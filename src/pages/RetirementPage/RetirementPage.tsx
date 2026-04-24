@@ -10,6 +10,7 @@ import { useRetirementPlan } from '@/hooks/useRetirementPlan';
 import { AppLayout } from '@/layouts/AppLayout';
 import type { RetirementInputs } from '@/types/retirement';
 import type { RetirementPageProps } from './RetirementPage.types';
+import styles from './RetirementPage.module.scss';
 
 export function RetirementPage({
   activePage,
@@ -40,13 +41,13 @@ export function RetirementPage({
       )}
       content={(
         <>
-          <div id="retirement-results">
+          <div id="retirement-results" className={styles.retirementPage__section}>
             <RetirementResultsGrid inputs={inputs} plan={plan} />
           </div>
-          <div id="retirement-timeline">
+          <div id="retirement-timeline" className={styles.retirementPage__section}>
             <RetirementTimeline inputs={inputs} plan={plan} />
           </div>
-          <div id="retirement-advice">
+          <div id="retirement-advice" className={styles.retirementPage__section}>
             <RetirementAdvicePanel inputs={inputs} plan={plan} />
           </div>
         </>

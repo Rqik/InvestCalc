@@ -19,6 +19,7 @@ import {
   normalizeRetirementAge,
 } from '@/utils/normalize';
 import type { RetirementInputPanelProps } from './RetirementInputPanel.types';
+import styles from './RetirementInputPanel.module.scss';
 
 export function RetirementInputPanel({
   inputs,
@@ -37,9 +38,9 @@ export function RetirementInputPanel({
   };
 
   return (
-    <Card as="section" className="input-panel retirement-input">
-      <CardHeader className="input-panel__header">
-        <div>
+    <Card as="section" className={styles.inputPanel}>
+      <CardHeader className={styles.inputPanel__header}>
+        <div className={styles.inputPanel__headerContent}>
           <CardTitle>Ваш план</CardTitle>
           <CardDescription>
             Заполните возраст, цель по допдоходу и текущий темп накоплений.
@@ -47,9 +48,9 @@ export function RetirementInputPanel({
         </div>
       </CardHeader>
 
-      <div className="input-panel__grid">
-        <fieldset className="input-panel__group">
-          <legend>Возраст и горизонт</legend>
+      <div className={styles.inputPanel__grid}>
+        <fieldset className={styles.inputPanel__group}>
+          <legend className={styles.inputPanel__legend}>Возраст и горизонт</legend>
           <NumberInput
             label="Год рождения"
             value={inputs.birthYear}
@@ -60,7 +61,7 @@ export function RetirementInputPanel({
             onChange={(value) => update('birthYear', normalizeBirthYear(value))}
           />
           {!isBirthYearValid && (
-            <Alert className="input-panel__warning" variant="warning">
+            <Alert className={styles.inputPanel__warning} variant="warning">
               <AlertDescription>
                 Проверьте год рождения: расчету нужен реалистичный возраст.
               </AlertDescription>
@@ -85,7 +86,7 @@ export function RetirementInputPanel({
             onChange={(value) => update('planningAge', normalizePlanningAge(value))}
           />
           {!isRetirementPeriodValid && (
-            <Alert className="input-panel__warning" variant="warning">
+            <Alert className={styles.inputPanel__warning} variant="warning">
               <AlertDescription>
                 Возраст планирования должен быть больше возраста выхода на пенсию.
               </AlertDescription>
@@ -93,8 +94,8 @@ export function RetirementInputPanel({
           )}
         </fieldset>
 
-        <fieldset className="input-panel__group">
-          <legend>Деньги</legend>
+        <fieldset className={styles.inputPanel__group}>
+          <legend className={styles.inputPanel__legend}>Деньги</legend>
           <MoneyInput
             label="Желаемый допдоход в месяц"
             value={inputs.desiredMonthlyIncome}
@@ -115,8 +116,8 @@ export function RetirementInputPanel({
           />
         </fieldset>
 
-        <fieldset className="input-panel__group">
-          <legend>Допущения</legend>
+        <fieldset className={styles.inputPanel__group}>
+          <legend className={styles.inputPanel__legend}>Допущения</legend>
           <NumberInput
             label="Ожидаемая доходность, %"
             value={inputs.annualReturn}
@@ -147,7 +148,7 @@ export function RetirementInputPanel({
         </fieldset>
       </div>
 
-      <div className="input-panel__footer">
+      <div className={styles.inputPanel__footer}>
         <Button variant="outline" type="button" onClick={onReset}>
           Сбросить к значениям по умолчанию
         </Button>

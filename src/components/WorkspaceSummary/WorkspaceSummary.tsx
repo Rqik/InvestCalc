@@ -1,10 +1,11 @@
-﻿import { formatDuration, formatMoney, formatPercent } from '@/utils/format';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { formatDuration, formatMoney, formatPercent } from '@/utils/format';
 import type { WorkspaceSummaryProps } from './WorkspaceSummary.types';
+import styles from './WorkspaceSummary.module.scss';
 
 export function WorkspaceSummary({ inputs }: WorkspaceSummaryProps) {
   return (
-    <Card as="section" className="workspace-panel">
+    <Card as="section" className={styles.workspacePanel}>
       <CardHeader>
         <CardTitle>Картина плана</CardTitle>
         <CardDescription>
@@ -13,24 +14,28 @@ export function WorkspaceSummary({ inputs }: WorkspaceSummaryProps) {
         </CardDescription>
       </CardHeader>
 
-      <div className="workspace-panel__grid">
-        <Card className="workspace-panel__chip">
-          <span className="workspace-panel__chip-label">Горизонт</span>
-          <strong className="workspace-panel__chip-value">
+      <div className={styles.workspacePanel__grid}>
+        <Card className={styles.workspacePanel__chip}>
+          <span className={styles.workspacePanel__chipLabel}>Горизонт</span>
+          <strong className={styles.workspacePanel__chipValue}>
             {formatDuration(inputs.years, inputs.months)}
           </strong>
         </Card>
-        <Card className="workspace-panel__chip">
-          <span className="workspace-panel__chip-label">Ежемесячный взнос</span>
-          <strong className="workspace-panel__chip-value">{formatMoney(inputs.monthlyContribution)}</strong>
+        <Card className={styles.workspacePanel__chip}>
+          <span className={styles.workspacePanel__chipLabel}>Ежемесячный взнос</span>
+          <strong className={styles.workspacePanel__chipValue}>
+            {formatMoney(inputs.monthlyContribution)}
+          </strong>
         </Card>
-        <Card className="workspace-panel__chip">
-          <span className="workspace-panel__chip-label">Инфляция</span>
-          <strong className="workspace-panel__chip-value">{formatPercent(inputs.inflationRate)}</strong>
+        <Card className={styles.workspacePanel__chip}>
+          <span className={styles.workspacePanel__chipLabel}>Инфляция</span>
+          <strong className={styles.workspacePanel__chipValue}>
+            {formatPercent(inputs.inflationRate)}
+          </strong>
         </Card>
-        <Card className="workspace-panel__chip">
-          <span className="workspace-panel__chip-label">Индексация взноса</span>
-          <strong className="workspace-panel__chip-value">
+        <Card className={styles.workspacePanel__chip}>
+          <span className={styles.workspacePanel__chipLabel}>Индексация взноса</span>
+          <strong className={styles.workspacePanel__chipValue}>
             {formatPercent(inputs.contributionGrowthRate)}
           </strong>
         </Card>
@@ -38,5 +43,3 @@ export function WorkspaceSummary({ inputs }: WorkspaceSummaryProps) {
     </Card>
   );
 }
-
-

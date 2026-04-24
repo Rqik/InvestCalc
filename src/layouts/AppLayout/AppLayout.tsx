@@ -1,6 +1,7 @@
 import { PageSwitcher } from '@/components/PageSwitcher';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import type { AppLayoutProps } from './AppLayout.types';
+import styles from './AppLayout.module.scss';
 
 export function AppLayout({
   hero,
@@ -15,10 +16,10 @@ export function AppLayout({
   const brandMarkSrc = `${import.meta.env.BASE_URL}brand-mark.svg`;
 
   return (
-    <main className="app">
-      <header className="app-header">
+    <main className={styles.app}>
+      <header className={styles.appHeader}>
         <a
-          className="app-header__brand"
+          className={styles.appHeader__brand}
           href="#calculator"
           aria-label="InvestCalc"
           onClick={(event) => {
@@ -26,31 +27,29 @@ export function AppLayout({
             onPageChange('calculator');
           }}
         >
-          <img className="app-header__logo" src={brandMarkSrc} alt="" aria-hidden="true" />
-          <span>InvestCalc</span>
+          <img className={styles.appHeader__logo} src={brandMarkSrc} alt="" aria-hidden="true" />
+          <span className={styles.appHeader__brandText}>InvestCalc</span>
         </a>
-        <div className="app-header__actions">
+        <div className={styles.appHeader__actions}>
           <PageSwitcher activePage={activePage} onChange={onPageChange} />
           <ThemeToggle theme={theme} onToggle={onThemeToggle} />
         </div>
       </header>
 
-      <section className="app__layout">
-        <div className="app__content">
-          <div className="app__hero">{hero}</div>
-          <div className="app__inline-nav">
-            {navigation}
-          </div>
-          <div className="app__workspace">
+      <section className={styles.app__layout}>
+        <div className={styles.app__content}>
+          <div className={styles.app__hero}>{hero}</div>
+          <div className={styles.app__inlineNav}>{navigation}</div>
+          <div className={styles.app__workspace}>
             {controls && (
-              <aside className="app__controls" aria-label="Входные параметры">
+              <aside className={styles.app__controls} aria-label="Входные параметры">
                 {controls}
               </aside>
             )}
-            <div className="app__main">{content}</div>
+            <div className={styles.app__main}>{content}</div>
           </div>
         </div>
-        <aside className="app__sidebar">{navigation}</aside>
+        <aside className={styles.app__sidebar}>{navigation}</aside>
       </section>
     </main>
   );

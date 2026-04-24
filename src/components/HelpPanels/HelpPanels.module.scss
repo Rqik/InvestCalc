@@ -1,1 +1,315 @@
-﻿/* Component styles are owned by HelpPanels. */
+@use '../../styles/media' as media;
+
+.helpPanels {
+  display: grid;
+  gap: 18px;
+
+  &__card {
+    scroll-margin-top: 92px;
+  }
+
+  &__insights {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  &__warning {
+    margin: 6px 0 14px;
+  }
+
+  &__comparisonGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  &__qa {
+    display: grid;
+    gap: 8px;
+  }
+
+  &__qaTitle,
+  &__qaText {
+    margin: 0;
+  }
+
+  &__qaTitle {
+    margin-top: 8px;
+    font-size: 1rem;
+  }
+
+  &__qaText {
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__insight {
+    display: grid;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    background: hsl(var(--muted) / 0.22);
+
+    &--good {
+      background:
+        linear-gradient(180deg, hsl(146 42% 98%) 0%, hsl(146 38% 96%) 100%),
+        hsl(var(--card));
+      border-color: hsl(146 38% 52% / 0.2);
+    }
+
+    &--warning {
+      background:
+        linear-gradient(180deg, hsl(34 100% 98%) 0%, hsl(30 100% 96%) 100%),
+        hsl(var(--card));
+      border-color: hsl(28 88% 56% / 0.18);
+    }
+
+    &--danger {
+      background:
+        linear-gradient(180deg, hsl(0 100% 98%) 0%, hsl(0 80% 96%) 100%),
+        hsl(var(--card));
+      border-color: hsl(0 72% 60% / 0.18);
+    }
+  }
+
+  &__insightTopline {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  &__insightIndex {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--background));
+    color: hsl(var(--muted-foreground));
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+
+  &__insightTitle,
+  &__insightDescription {
+    margin: 0;
+  }
+
+  &__insightTitle {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  &__insightDescription {
+    color: hsl(var(--muted-foreground));
+    overflow-wrap: anywhere;
+    line-height: 1.6;
+  }
+
+  &__comparisonCard {
+    display: grid;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    background: hsl(var(--muted) / 0.34);
+    box-shadow: none;
+
+    &--current {
+      border-color: hsl(var(--primary) / 0.34);
+      background:
+        linear-gradient(180deg, hsl(var(--primary) / 0.08) 0%, hsl(var(--muted) / 0.28) 100%),
+        hsl(var(--card));
+    }
+  }
+
+  &__comparisonCardTopline {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__comparisonCardTitleWrap {
+    display: grid;
+    gap: 6px;
+  }
+
+  &__comparisonCardTitle,
+  &__comparisonCardDescription,
+  &__comparisonCardAdjustment,
+  &__comparisonCardCurrentNote {
+    margin: 0;
+  }
+
+  &__comparisonCardTitle {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  &__comparisonCardDescription,
+  &__comparisonCardAdjustment,
+  &__comparisonCardCurrentNote {
+    color: hsl(var(--muted-foreground));
+    overflow-wrap: anywhere;
+  }
+
+  &__comparisonCardDescription {
+    line-height: 1.5;
+  }
+
+  &__comparisonCardStats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  &__comparisonCardStat {
+    padding: 12px 13px;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--background));
+  }
+
+  &__comparisonCardStatLabel,
+  &__comparisonCardStatValue {
+    display: block;
+  }
+
+  &__comparisonCardStatLabel {
+    margin-bottom: 6px;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.84rem;
+  }
+
+  &__comparisonCardStatValue {
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  &__comparisonCardGoal {
+    &--positive {
+      color: hsl(146 56% 42%);
+    }
+
+    &--negative {
+      color: hsl(28 88% 56%);
+    }
+  }
+
+  &__comparisonCardActions {
+    margin-top: 2px;
+
+    :global([data-slot='button']) {
+      width: 100%;
+    }
+  }
+
+  &__comparisonCardCurrentNote {
+    font-size: 0.9rem;
+  }
+
+  @include media.media-desktop {
+    &__insights,
+    &__comparisonGrid,
+    &__comparisonCardStats {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @include media.media-mobile {
+    &__insight,
+    &__comparisonCard {
+      padding: 14px;
+    }
+
+    &__insightTitle {
+      font-size: 0.96rem;
+    }
+
+    &__insightDescription,
+    &__comparisonCardDescription,
+    &__comparisonCardAdjustment,
+    &__comparisonCardCurrentNote {
+      font-size: 0.84rem;
+      line-height: 1.55;
+    }
+
+    &__comparisonCardTitle {
+      font-size: 0.96rem;
+    }
+  }
+}
+
+:global(:root[data-theme='dark']) {
+  .helpPanels {
+    &__insight {
+      background:
+        linear-gradient(180deg, hsl(223 26% 15%) 0%, hsl(223 28% 12%) 100%),
+        hsl(var(--card));
+      border-color: hsl(218 24% 21%);
+
+      &--good {
+        background:
+          linear-gradient(180deg, hsl(152 32% 17%) 0%, hsl(154 28% 12%) 100%),
+          hsl(var(--card));
+        border-color: hsl(146 38% 52% / 0.18);
+      }
+
+      &--warning {
+        background:
+          linear-gradient(180deg, hsl(26 34% 17%) 0%, hsl(24 30% 12%) 100%),
+          hsl(var(--card));
+        border-color: hsl(28 88% 56% / 0.16);
+      }
+
+      &--danger {
+        background:
+          linear-gradient(180deg, hsl(0 28% 17%) 0%, hsl(0 24% 12%) 100%),
+          hsl(var(--card));
+        border-color: hsl(0 72% 60% / 0.16);
+      }
+    }
+
+    &__insightIndex {
+      background: hsl(223 26% 11%);
+      border-color: hsl(218 24% 21%);
+    }
+
+    &__comparisonCard {
+      background:
+        linear-gradient(180deg, hsl(223 26% 15%) 0%, hsl(223 28% 12%) 100%),
+        hsl(var(--card));
+      border-color: hsl(218 24% 21%);
+
+      &--current {
+        border-color: hsl(208 56% 72% / 0.32);
+        background:
+          linear-gradient(180deg, hsl(218 30% 18%) 0%, hsl(223 28% 12%) 100%),
+          hsl(var(--card));
+      }
+    }
+
+    &__comparisonCardStats {
+      .helpPanels__comparisonCardStat {
+        background: hsl(223 26% 11%);
+        border-color: hsl(218 24% 21%);
+      }
+    }
+
+    &__comparisonCardGoal {
+      &--positive {
+        color: hsl(146 56% 66%);
+      }
+
+      &--negative {
+        color: hsl(28 88% 66%);
+      }
+    }
+  }
+}

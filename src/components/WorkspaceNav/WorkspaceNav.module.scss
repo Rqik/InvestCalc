@@ -1,1 +1,97 @@
-﻿/* Component styles are owned by WorkspaceNav. */
+@use '../../styles/media' as media;
+
+.workspaceNav {
+  display: grid;
+  align-content: center;
+  gap: 20px;
+  min-height: 100%;
+  width: min(100%, 164px);
+  margin: 0 auto;
+  padding: 40px 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+
+  &__group {
+    display: grid;
+    gap: 6px;
+  }
+
+  &__heading {
+    display: block;
+    margin-bottom: 6px;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: left;
+  }
+
+  &__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 40px;
+    border: 0;
+    border-radius: var(--radius);
+    padding: 9px 12px 9px 18px;
+    color: hsl(var(--muted-foreground));
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: left;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover,
+    &--active {
+      color: hsl(var(--accent-foreground));
+      background: hsl(var(--accent));
+    }
+
+    &--active {
+      color: hsl(var(--foreground));
+    }
+
+    &--active::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 10px;
+      bottom: 10px;
+      width: 3px;
+      border-radius: 999px;
+      background: hsl(var(--primary));
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px hsl(var(--ring) / 0.32);
+    }
+  }
+
+  @include media.media-desktop {
+    width: 100%;
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+    align-content: start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+
+    &__group {
+      gap: 8px;
+    }
+  }
+
+  @include media.media-tablet {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+}

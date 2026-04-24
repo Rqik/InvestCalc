@@ -1,1 +1,56 @@
-﻿/* Component styles are owned by RetirementTimeline. */
+@use '../../styles/media' as media;
+
+.retirementTimeline {
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  &__step {
+    padding: 18px;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+
+    &--active {
+      border-color: hsl(var(--primary));
+      background: hsl(var(--primary) / 0.06);
+    }
+  }
+
+  &__stepLabel,
+  &__stepValue,
+  &__stepText {
+    display: block;
+  }
+
+  &__stepLabel {
+    margin-bottom: 10px;
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__stepValue {
+    margin-bottom: 8px;
+    font-size: clamp(1.35rem, 2vw, 2rem);
+    line-height: 1.1;
+  }
+
+  &__stepText {
+    margin: 0;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.45;
+  }
+
+  @include media.media-desktop {
+    &__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @include media.media-tablet {
+    &__steps {
+      grid-template-columns: 1fr;
+    }
+  }
+}

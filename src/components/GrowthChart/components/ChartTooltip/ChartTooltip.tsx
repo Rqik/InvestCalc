@@ -1,5 +1,6 @@
-﻿import { formatMoney } from '@/utils/format';
+import { formatMoney } from '@/utils/format';
 import type { ChartTooltipProps, TooltipPayload } from './ChartTooltip.types';
+import styles from './ChartTooltip.module.scss';
 
 function formatTooltipValue(item: TooltipPayload) {
   return formatMoney(item.value ?? 0);
@@ -51,15 +52,15 @@ function ChartTooltip({
   }, []);
 
   return (
-    <div className="growth-chart__tooltip">
-      <strong className="growth-chart__tooltip-title">
+    <div className={styles.tooltip}>
+      <strong className={styles.tooltip__title}>
         {label}
-        <span className="growth-chart__tooltip-mode">{getTooltipTitle(isRealMoneyMode)}</span>
+        <span className={styles.tooltip__mode}>{getTooltipTitle(isRealMoneyMode)}</span>
       </strong>
       {uniquePayload.map((item) => (
-        <span key={item.dataKey} className="growth-chart__tooltip-row">
+        <span key={item.dataKey} className={styles.tooltip__row}>
           <span
-            className="growth-chart__tooltip-dot"
+            className={styles.tooltip__dot}
             style={getTooltipItemStyle(item)}
           />
           {item.name}: {formatTooltipValue(item)}

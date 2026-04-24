@@ -1,1 +1,37 @@
-﻿/* Component styles are owned by WorkspaceSummary. */
+@use '../../styles/media' as media;
+
+.workspacePanel {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: 14px;
+  }
+
+  &__chip {
+    padding: 16px 18px;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+  }
+
+  &__chipLabel,
+  &__chipValue {
+    display: block;
+  }
+
+  &__chipLabel {
+    color: hsl(var(--muted-foreground));
+  }
+
+  &__chipValue {
+    margin-top: 8px;
+    font-size: 1.1rem;
+    overflow-wrap: anywhere;
+  }
+
+  @include media.media-desktop {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

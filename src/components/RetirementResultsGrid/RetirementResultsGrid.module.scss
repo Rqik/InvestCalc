@@ -1,1 +1,36 @@
-﻿/* Component styles are owned by RetirementResultsGrid. */
+@use '../../styles/component-mixins' as component;
+@use '../../styles/media' as media;
+
+.retirementResults {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  @include media.media-desktop {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @include media.media-mobile {
+    &__grid {
+      gap: 10px;
+    }
+  }
+}
+
+@include component.stat-card-base('metric');
+@include component.stat-card-tones('metric');
+@include component.stat-card-dark-tones('metric');
+
+@include media.media-mobile {
+  @include component.stat-card-mobile('metric');
+}
+
+.metric {
+  &__hint {
+    line-height: 1.45;
+  }
+}

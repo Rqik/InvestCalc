@@ -1,7 +1,9 @@
-﻿import React from 'react';
-import { formatMoney } from '@/utils/format';
+import React from 'react';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
+import { cn } from '@/lib/utils';
+import { formatMoney } from '@/utils/format';
 import type { YearlyPlanTableProps } from './YearlyPlanTable.types';
+import styles from './YearlyPlanTable.module.scss';
 
 export function YearlyPlanTable({
   plan,
@@ -23,98 +25,140 @@ export function YearlyPlanTable({
   }, []);
 
   return (
-    <Card as="section" className="yearly-plan">
+    <Card as="section" className={styles.yearlyPlan}>
       <CardHeader>
         <CardTitle>План накоплений по годам</CardTitle>
         <CardDescription>
-          Таблица показывает пополнения, накопленную сумму вложений, прибыль и итог с
-          поправкой на инфляцию.
+          Таблица показывает пополнения, накопленную сумму вложений, прибыль и итог с поправкой на инфляцию.
         </CardDescription>
       </CardHeader>
 
-      <div className="yearly-plan__summary">
-        <Card className="yearly-plan__summary-chip">
-          <span className="yearly-plan__summary-chip-label">Цель</span>
-          <strong className="yearly-plan__summary-chip-value">{formatMoney(targetCapital)}</strong>
+      <div className={styles.yearlyPlan__summary}>
+        <Card className={styles.yearlyPlan__summaryChip}>
+          <span className={styles.yearlyPlan__summaryChipLabel}>Цель</span>
+          <strong className={styles.yearlyPlan__summaryChipValue}>
+            {formatMoney(targetCapital)}
+          </strong>
         </Card>
-        <Card className="yearly-plan__summary-chip">
-          <span className="yearly-plan__summary-chip-label">Итог по плану</span>
-          <strong className="yearly-plan__summary-chip-value">{formatMoney(projectedCapital)}</strong>
+        <Card className={styles.yearlyPlan__summaryChip}>
+          <span className={styles.yearlyPlan__summaryChipLabel}>Итог по плану</span>
+          <strong className={styles.yearlyPlan__summaryChipValue}>
+            {formatMoney(projectedCapital)}
+          </strong>
         </Card>
-        <Card className="yearly-plan__summary-chip">
-          <span className="yearly-plan__summary-chip-label">В сегодняшних деньгах</span>
-          <strong className="yearly-plan__summary-chip-value">{formatMoney(realProjectedCapital)}</strong>
+        <Card className={styles.yearlyPlan__summaryChip}>
+          <span className={styles.yearlyPlan__summaryChipLabel}>В сегодняшних деньгах</span>
+          <strong className={styles.yearlyPlan__summaryChipValue}>
+            {formatMoney(realProjectedCapital)}
+          </strong>
         </Card>
-        <Card className="yearly-plan__summary-chip">
-          <span className="yearly-plan__summary-chip-label">Разница с целью</span>
-          <strong className="yearly-plan__summary-chip-value">{formatMoney(goalGap)}</strong>
+        <Card className={styles.yearlyPlan__summaryChip}>
+          <span className={styles.yearlyPlan__summaryChipLabel}>Разница с целью</span>
+          <strong className={styles.yearlyPlan__summaryChipValue}>{formatMoney(goalGap)}</strong>
         </Card>
       </div>
 
       {isMobileCards ? (
-        <div className="yearly-plan__mobile-list">
+        <div className={styles.yearlyPlan__mobileList}>
           {plan.map((row) => (
-            <Card as="article" key={row.year} className="yearly-plan__mobile-card">
-              <div className="yearly-plan__mobile-topline">
-                <strong className="yearly-plan__mobile-period">{row.label}</strong>
-                <span className="yearly-plan__mobile-total">{formatMoney(row.endBalance)}</span>
+            <Card as="article" key={row.year} className={styles.yearlyPlan__mobileCard}>
+              <div className={styles.yearlyPlan__mobileTopline}>
+                <strong className={styles.yearlyPlan__mobilePeriod}>{row.label}</strong>
+                <span className={styles.yearlyPlan__mobileTotal}>
+                  {formatMoney(row.endBalance)}
+                </span>
               </div>
 
-              <dl className="yearly-plan__mobile-stats">
-                <div>
-                  <dt>Старт</dt>
-                  <dd>{formatMoney(row.startBalance)}</dd>
+              <dl className={styles.yearlyPlan__mobileStats}>
+                <div
+                  className={cn(
+                    styles.yearlyPlan__mobileStat,
+                    styles['yearlyPlan__mobileStat--first'],
+                  )}
+                >
+                  <dt className={styles.yearlyPlan__mobileStatTerm}>Старт</dt>
+                  <dd className={styles.yearlyPlan__mobileStatValue}>
+                    {formatMoney(row.startBalance)}
+                  </dd>
                 </div>
-                <div>
-                  <dt>Пополнения</dt>
-                  <dd>{formatMoney(row.contributions)}</dd>
+                <div className={styles.yearlyPlan__mobileStat}>
+                  <dt className={styles.yearlyPlan__mobileStatTerm}>Пополнения</dt>
+                  <dd className={styles.yearlyPlan__mobileStatValue}>
+                    {formatMoney(row.contributions)}
+                  </dd>
                 </div>
-                <div>
-                  <dt>Итого вложено</dt>
-                  <dd>{formatMoney(row.totalInvested)}</dd>
+                <div className={styles.yearlyPlan__mobileStat}>
+                  <dt className={styles.yearlyPlan__mobileStatTerm}>Итого вложено</dt>
+                  <dd className={styles.yearlyPlan__mobileStatValue}>
+                    {formatMoney(row.totalInvested)}
+                  </dd>
                 </div>
-                <div>
-                  <dt>Рост за период</dt>
-                  <dd>{formatMoney(row.growth)}</dd>
+                <div className={styles.yearlyPlan__mobileStat}>
+                  <dt className={styles.yearlyPlan__mobileStatTerm}>Рост за период</dt>
+                  <dd className={styles.yearlyPlan__mobileStatValue}>{formatMoney(row.growth)}</dd>
                 </div>
-                <div>
-                  <dt>Накопленная прибыль</dt>
-                  <dd>{formatMoney(row.profit)}</dd>
+                <div className={styles.yearlyPlan__mobileStat}>
+                  <dt className={styles.yearlyPlan__mobileStatTerm}>Накопленная прибыль</dt>
+                  <dd className={styles.yearlyPlan__mobileStatValue}>{formatMoney(row.profit)}</dd>
                 </div>
-                <div>
-                  <dt>Сегодняшние деньги</dt>
-                  <dd>{formatMoney(row.realEndBalance)}</dd>
+                <div className={styles.yearlyPlan__mobileStat}>
+                  <dt className={styles.yearlyPlan__mobileStatTerm}>Сегодняшние деньги</dt>
+                  <dd className={styles.yearlyPlan__mobileStatValue}>
+                    {formatMoney(row.realEndBalance)}
+                  </dd>
                 </div>
               </dl>
             </Card>
           ))}
         </div>
       ) : (
-        <div className="yearly-plan__table-wrap">
-          <table className="yearly-plan__table">
-            <thead>
-              <tr>
-                <th>Период</th>
-                <th>Старт</th>
-                <th>Пополнения</th>
-                <th>Итого вложено</th>
-                <th>Рост за период</th>
-                <th>Накопленная прибыль</th>
-                <th>Итог</th>
-                <th>Сегодняшние деньги</th>
+        <div className={styles.yearlyPlan__tableWrap}>
+          <table className={styles.yearlyPlan__table}>
+            <thead className={styles.yearlyPlan__tableHead}>
+              <tr className={styles.yearlyPlan__tableRow}>
+                <th
+                  className={cn(
+                    styles.yearlyPlan__tableHeadCell,
+                    styles['yearlyPlan__tableHeadCell--sticky'],
+                  )}
+                >
+                  Период
+                </th>
+                <th className={styles.yearlyPlan__tableHeadCell}>Старт</th>
+                <th className={styles.yearlyPlan__tableHeadCell}>Пополнения</th>
+                <th className={styles.yearlyPlan__tableHeadCell}>Итого вложено</th>
+                <th className={styles.yearlyPlan__tableHeadCell}>Рост за период</th>
+                <th className={styles.yearlyPlan__tableHeadCell}>Накопленная прибыль</th>
+                <th className={styles.yearlyPlan__tableHeadCell}>Итог</th>
+                <th className={styles.yearlyPlan__tableHeadCell}>Сегодняшние деньги</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={styles.yearlyPlan__tableBody}>
               {plan.map((row) => (
-                <tr key={row.year}>
-                  <td>{row.label}</td>
-                  <td>{formatMoney(row.startBalance)}</td>
-                  <td>{formatMoney(row.contributions)}</td>
-                  <td>{formatMoney(row.totalInvested)}</td>
-                  <td>{formatMoney(row.growth)}</td>
-                  <td>{formatMoney(row.profit)}</td>
-                  <td>{formatMoney(row.endBalance)}</td>
-                  <td>{formatMoney(row.realEndBalance)}</td>
+                <tr
+                  key={row.year}
+                  className={cn(
+                    styles.yearlyPlan__tableRow,
+                    styles['yearlyPlan__tableRow--hoverable'],
+                  )}
+                >
+                  <td
+                    className={cn(
+                      styles.yearlyPlan__tableCell,
+                      styles['yearlyPlan__tableCell--sticky'],
+                    )}
+                  >
+                    {row.label}
+                  </td>
+                  <td className={styles.yearlyPlan__tableCell}>{formatMoney(row.startBalance)}</td>
+                  <td className={styles.yearlyPlan__tableCell}>{formatMoney(row.contributions)}</td>
+                  <td className={styles.yearlyPlan__tableCell}>{formatMoney(row.totalInvested)}</td>
+                  <td className={styles.yearlyPlan__tableCell}>{formatMoney(row.growth)}</td>
+                  <td className={styles.yearlyPlan__tableCell}>{formatMoney(row.profit)}</td>
+                  <td className={styles.yearlyPlan__tableCell}>{formatMoney(row.endBalance)}</td>
+                  <td className={styles.yearlyPlan__tableCell}>
+                    {formatMoney(row.realEndBalance)}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -124,5 +168,3 @@ export function YearlyPlanTable({
     </Card>
   );
 }
-
-

@@ -1,11 +1,12 @@
 import { cn } from '@/lib/utils';
 import type { BadgeProps, BadgeVariant } from './Badge.types';
+import styles from './Badge.module.scss';
 
 const badgeVariantClasses: Record<BadgeVariant, string> = {
-  default: 'ui-badge--default',
-  secondary: 'ui-badge--secondary',
-  destructive: 'ui-badge--destructive',
-  outline: 'ui-badge--outline',
+  default: styles['ui-badge--default'],
+  secondary: styles['ui-badge--secondary'],
+  destructive: styles['ui-badge--destructive'],
+  outline: styles['ui-badge--outline'],
 };
 
 function badgeVariants({
@@ -15,7 +16,7 @@ function badgeVariants({
   variant?: BadgeVariant | null;
   className?: string;
 }) {
-  return cn('ui-badge', badgeVariantClasses[variant ?? 'default'], className);
+  return cn(styles['ui-badge'], badgeVariantClasses[variant ?? 'default'], className);
 }
 
 function Badge({ className, variant, ...props }: BadgeProps) {

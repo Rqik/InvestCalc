@@ -2,7 +2,7 @@
 
 ## Project Stack
 - React 18 + TypeScript + Vite.
-- Styling: Sass partials imported from `src/styles/main.scss`; Tailwind is not used.
+- Styling: CSS Modules + SCSS with nested BEM selectors; Tailwind is not used.
 - Charts: Recharts.
 - State is local React state; saved scenarios use `localStorage`.
 - Navigation uses URL hash values: `#calculator` and `#retirement`.
@@ -35,7 +35,11 @@
 - Preserve the current warm, encouraging UX tone, especially for retirement and long-term finance guidance.
 - Do not present financial projections as guarantees; describe them as estimates based on assumptions.
 - Prefer small, focused components over large mixed UI/business-logic files.
-- Keep styles in Sass partials and import new partials from `src/styles/main.scss`.
+- Use CSS Modules for component styles; each component owns its local `*.module.scss`.
+- Write SCSS with nested BEM selectors through `&`, keep the structure flat, and do not use cascade selectors.
+- A modifier may change only its own block or element. If another element changes, use that element's own modifier or a block modifier.
+- Do not style through HTML tags; styling must go through BEM classes or allowed state/data attributes.
+- Do not use global component partials for component appearance. Keep `src/styles/` only for global base, tokens, mixins, effects, and media helpers.
 
 ## Changelog
 - Update `CHANGELOG.md` for every meaningful change.

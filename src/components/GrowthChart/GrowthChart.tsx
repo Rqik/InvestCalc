@@ -14,9 +14,11 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { ChartTooltip } from '@/components/GrowthChart/components/ChartTooltip';
 import { CrosshairCursor } from '@/components/GrowthChart/components/CrosshairCursor';
+import { cn } from '@/lib/utils';
 import type { YearRow } from '@/types/finance';
 import { formatMoney } from '@/utils/format';
 import type { GrowthChartProps } from './GrowthChart.types';
+import styles from './GrowthChart.module.scss';
 
 const capitalLines = [
   {
@@ -61,10 +63,6 @@ function getYearlyMonthlyContribution(planRow: YearRow) {
   }
 
   return planRow.contributions / planRow.monthsInPeriod;
-}
-
-function getToggleClassName(isActive: boolean) {
-  return `growth-chart__toggle ${isActive ? 'growth-chart__toggle--active' : ''}`;
 }
 
 type VisibleSeries = 'capital' | 'invested' | 'contribution';
@@ -169,10 +167,10 @@ export function GrowthChart({ plan, inflationRate }: GrowthChartProps) {
   };
 
   return (
-    <Card as="section" className="growth-chart">
+    <Card as="section" className={styles.growthChart}>
       <CardHeader>
-        <div className="growth-chart__header">
-          <div className="growth-chart__heading">
+        <div className={styles.growthChart__header}>
+          <div className={styles.growthChart__heading}>
             <CardTitle>График роста по годам</CardTitle>
             <CardDescription>
               Можно скрывать отдельные линии, смотреть ежемесячный взнос и переключать
@@ -180,19 +178,22 @@ export function GrowthChart({ plan, inflationRate }: GrowthChartProps) {
             </CardDescription>
           </div>
 
-          <div className="growth-chart__controls">
-            <div className="growth-chart__series-toggles" aria-label="Показать линии графика">
+          <div className={styles.growthChart__controls}>
+            <div className={styles.growthChart__seriesToggles} aria-label="Показать линии графика">
               {(Object.keys(seriesLabels) as VisibleSeries[]).map((series) => (
                 <Button
                   key={series}
-                  className={getToggleClassName(visibleSeries[series])}
+                  className={cn(
+                    styles.growthChart__toggle,
+                    visibleSeries[series] && styles['growthChart__toggle--active']
+                  )}
                   variant={visibleSeries[series] ? 'secondary' : 'outline'}
                   size="sm"
                   type="button"
                   onClick={() => toggleSeries(series)}
                 >
                   <span
-                    className="growth-chart__toggle-dot"
+                    className={styles.growthChart__toggleDot}
                     style={{ backgroundColor: seriesToColorMap[series] }}
                   />
                   {seriesLabels[series]}
@@ -200,10 +201,13 @@ export function GrowthChart({ plan, inflationRate }: GrowthChartProps) {
               ))}
             </div>
 
-            <div className="growth-chart__mode-control">
-              <span className="growth-chart__mode-label">Режим графика</span>
+            <div className={styles.growthChart__modeControl}>
+              <span className={styles.growthChart__modeLabel}>Режим графика</span>
               <Button
-                className={getToggleClassName(isRealMoneyMode)}
+                className={cn(
+                  styles.growthChart__toggle,
+                  isRealMoneyMode && styles['growthChart__toggle--active']
+                )}
                 variant={isRealMoneyMode ? 'secondary' : 'outline'}
                 size="sm"
                 type="button"
@@ -216,7 +220,7 @@ export function GrowthChart({ plan, inflationRate }: GrowthChartProps) {
         </div>
       </CardHeader>
 
-      <div className="growth-chart__frame">
+      <div className={styles.growthChart__frame}>
         <ResponsiveContainer width="100%" height={isCompactChart ? 300 : 360}>
           <ComposedChart
             data={chartData}
@@ -227,11 +231,25 @@ export function GrowthChart({ plan, inflationRate }: GrowthChartProps) {
             }
           >
             <defs>
-              <linearGradient id="growth-total-fill" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                className={styles.growthChart__gradient}
+                id="growth-total-fill"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop offset="0%" stopColor="hsl(146 46% 42% / 0.22)" />
                 <stop offset="100%" stopColor="hsl(146 46% 42% / 0.02)" />
               </linearGradient>
-              <linearGradient id="growth-invested-fill" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                className={styles.growthChart__gradient}
+                id="growth-invested-fill"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop offset="0%" stopColor="hsl(var(--foreground) / 0.14)" />
                 <stop offset="100%" stopColor="hsl(var(--foreground) / 0.01)" />
               </linearGradient>
@@ -314,26 +332,31 @@ export function GrowthChart({ plan, inflationRate }: GrowthChartProps) {
         </ResponsiveContainer>
       </div>
 
-      <div className="growth-chart__legend">
+      <div className={styles.growthChart__legend}>
         {capitalLines
           .filter((_, index) => visibleSeries[index === 0 ? 'capital' : 'invested'])
           .map((line) => (
-            <div key={line.dataKey} className="growth-chart__legend-item">
+            <div key={line.dataKey} className={styles.growthChart__legendItem}>
               <span
-                className="growth-chart__legend-swatch"
+                className={styles.growthChart__legendSwatch}
                 style={{ backgroundColor: line.color }}
               />
-              <span>{line.label}</span>
+              <span className={styles.growthChart__legendLabel}>{line.label}</span>
             </div>
           ))}
         {visibleSeries.contribution && (
-          <div className="growth-chart__legend-item">
+          <div className={styles.growthChart__legendItem}>
             <span
-              className="growth-chart__legend-swatch growth-chart__legend-swatch--dashed"
+              className={cn(
+                styles.growthChart__legendSwatch,
+                styles['growthChart__legendSwatch--dashed']
+              )}
               style={{ backgroundColor: contributionLine.color }}
             />
-            <span>Ежемесячный взнос</span>
-            <Badge variant="outline">{isRealMoneyMode ? 'в сегодняшних деньгах' : 'номинально'}</Badge>
+            <span className={styles.growthChart__legendLabel}>Ежемесячный взнос</span>
+            <Badge variant="outline">
+              {isRealMoneyMode ? 'в сегодняшних деньгах' : 'номинально'}
+            </Badge>
           </div>
         )}
       </div>

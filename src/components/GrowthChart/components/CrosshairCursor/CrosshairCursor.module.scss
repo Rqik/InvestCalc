@@ -1,1 +1,23 @@
-/* Component styles are owned by CrosshairCursor. */
+.crosshair {
+  &__line {
+    stroke: hsl(var(--primary) / 0.34);
+    stroke-width: 1.5;
+    stroke-dasharray: 6 6;
+
+    &--horizontal {
+      stroke: hsl(var(--primary) / 0.24);
+    }
+  }
+}
+
+:global(:root[data-theme='dark']) {
+  .crosshair {
+    &__line {
+      stroke: hsl(208 86% 78% / 0.34);
+
+      &--horizontal {
+        stroke: hsl(208 86% 78% / 0.22);
+      }
+    }
+  }
+}

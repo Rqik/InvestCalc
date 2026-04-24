@@ -1,7 +1,8 @@
-﻿import { MAX_PLAN_YEARS } from '@/constants/limits';
-import { normalizeMonths, normalizeYears } from '@/utils/normalize';
 import { NumberInput } from '@/components/NumberInput';
+import { MAX_PLAN_YEARS } from '@/constants/limits';
+import { normalizeMonths, normalizeYears } from '@/utils/normalize';
 import type { DurationInputProps } from './DurationInput.types';
+import styles from './DurationInput.module.scss';
 
 export function DurationInput({ years, months, onChange }: DurationInputProps) {
   const handleYearsChange = (nextYears: number) => {
@@ -19,9 +20,9 @@ export function DurationInput({ years, months, onChange }: DurationInputProps) {
   };
 
   return (
-    <div className="duration-field">
-      <span className="duration-field__label">Срок</span>
-      <div className="duration-field__grid">
+    <div className={styles.durationField}>
+      <span className={styles.durationField__label}>Срок</span>
+      <div className={styles.durationField__grid}>
         <NumberInput
           label="Годы"
           value={years}
@@ -44,6 +45,3 @@ export function DurationInput({ years, months, onChange }: DurationInputProps) {
     </div>
   );
 }
-
-
-

@@ -1,1 +1,207 @@
-/* Component styles are owned by AppLayout. */
+@use '../../styles/media' as media;
+
+.app {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 16px 20px 48px 290px;
+
+  &__layout {
+    display: block;
+  }
+
+  &__sidebar,
+  &__content,
+  &__main,
+  &__hero {
+    display: grid;
+    gap: 24px;
+    align-content: start;
+  }
+
+  &__sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 30;
+    width: 248px;
+    height: 100vh;
+    padding: 16px 18px 16px 14px;
+    overflow-y: auto;
+    background: hsl(var(--background));
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        hsl(var(--foreground) / 0.03) 0%,
+        hsl(var(--border) / 0.18) 14%,
+        hsl(var(--foreground) / 0.16) 32%,
+        hsl(var(--foreground) / 0.34) 50%,
+        hsl(var(--foreground) / 0.16) 68%,
+        hsl(var(--border) / 0.18) 86%,
+        hsl(var(--foreground) / 0.03) 100%
+      );
+      box-shadow: 0 0 10px hsl(var(--foreground) / 0.06);
+    }
+  }
+
+  &__workspace {
+    display: grid;
+    grid-template-columns: minmax(300px, 388px) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  &__controls {
+    position: sticky;
+    top: 92px;
+    display: grid;
+    align-self: start;
+    height: fit-content;
+  }
+
+  &__main {
+  }
+
+  &__main > :global([id]) {
+    scroll-margin-top: 92px;
+  }
+
+  &__inlineNav {
+    display: none;
+  }
+
+  @include media.media-desktop {
+    padding-left: 20px;
+
+    &__layout {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    &__sidebar {
+      display: none;
+    }
+
+    &__inlineNav {
+      display: grid;
+    }
+
+    &__workspace {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    &__controls {
+      position: static;
+      top: auto;
+    }
+  }
+
+  @include media.media-tablet {
+    padding: 14px 10px 24px;
+
+    &__sidebar,
+    &__content,
+    &__main {
+      gap: 14px;
+    }
+
+    &__workspace {
+      gap: 14px;
+    }
+  }
+
+  @include media.media-mobile {
+    padding: 8px 6px 20px;
+  }
+}
+
+.appHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-panel);
+  background: hsl(var(--background) / 0.92);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+
+  &__brand,
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__brand {
+    color: hsl(var(--foreground));
+    font-size: 1.02rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  &__logo {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    display: block;
+  }
+
+  &__actions {
+    justify-content: flex-end;
+  }
+
+  &__brandText {
+    display: inline-block;
+  }
+
+  @include media.media-desktop {
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    &__actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  @include media.media-laptop {
+    position: static;
+  }
+
+  @include media.media-tablet {
+    align-items: stretch;
+    flex-direction: column;
+
+    &__actions {
+      display: grid;
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  @include media.media-mobile {
+    gap: 10px;
+    padding: 10px;
+
+    &__brand {
+      width: 100%;
+    }
+
+    &__actions {
+      grid-template-columns: minmax(0, 1fr) auto;
+      width: 100%;
+    }
+  }
+}

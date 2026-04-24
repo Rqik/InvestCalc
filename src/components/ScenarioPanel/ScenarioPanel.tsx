@@ -1,12 +1,19 @@
-﻿import type { KeyboardEvent } from 'react';
-import { MAX_SCENARIO_NAME_LENGTH } from '@/constants/limits';
-import { formatDuration, formatMoney, formatPercent, formatScenarioDate } from '@/utils/format';
+import type { KeyboardEvent } from 'react';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
+import { MAX_SCENARIO_NAME_LENGTH } from '@/constants/limits';
+import { cn } from '@/lib/utils';
+import {
+  formatDuration,
+  formatMoney,
+  formatPercent,
+  formatScenarioDate,
+} from '@/utils/format';
 import type { ScenarioPanelProps } from './ScenarioPanel.types';
+import styles from './ScenarioPanel.module.scss';
 
 export function ScenarioPanel({
   scenarioName,
@@ -22,7 +29,10 @@ export function ScenarioPanel({
   const selectedScenario =
     scenarios.find((scenario) => scenario.id === selectedScenarioId) ?? scenarios[0] ?? null;
 
-  const handleScenarioKeyDown = (event: KeyboardEvent<HTMLElement>, scenarioId: string) => {
+  const handleScenarioKeyDown = (
+    event: KeyboardEvent<HTMLElement>,
+    scenarioId: string,
+  ) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       onSelect(scenarioId);
@@ -30,12 +40,12 @@ export function ScenarioPanel({
   };
 
   return (
-    <Card as="section" className="scenario-panel">
-      <CardHeader className="scenario-panel__header">
-        <div className="scenario-panel__heading">
-          <div className="scenario-panel__title-row">
+    <Card as="section" className={styles.scenarioPanel}>
+      <CardHeader className={styles.scenarioPanel__header}>
+        <div className={styles.scenarioPanel__heading}>
+          <div className={styles.scenarioPanel__titleRow}>
             <CardTitle>Сценарии</CardTitle>
-            <Badge className="scenario-panel__counter" variant="secondary">
+            <Badge className={styles.scenarioPanel__counter} variant="secondary">
               {scenarios.length} {scenarios.length === 1 ? 'сценарий' : 'сценария'}
             </Badge>
           </div>
@@ -45,16 +55,16 @@ export function ScenarioPanel({
         </div>
       </CardHeader>
 
-      <div className="scenario-panel__creator">
+      <div className={styles.scenarioPanel__creator}>
         <Input
-          className="scenario-panel__name-input"
+          className={styles.scenarioPanel__nameInput}
           type="text"
           value={scenarioName}
           maxLength={MAX_SCENARIO_NAME_LENGTH}
           onChange={(event) => onScenarioNameChange(event.target.value)}
           placeholder="Название сценария"
         />
-        <div className="scenario-panel__actions">
+        <div className={styles.scenarioPanel__actions}>
           <Button variant="primary" type="button" onClick={onSave}>
             Сохранить
           </Button>
@@ -62,17 +72,17 @@ export function ScenarioPanel({
       </div>
 
       {storageError && (
-        <Alert className="scenario-panel__warning" variant="warning">
+        <Alert className={styles.scenarioPanel__warning} variant="warning">
           <AlertDescription>{storageError}</AlertDescription>
         </Alert>
       )}
 
       {scenarios.length === 0 ? (
-        <div className="scenario-panel__empty">
+        <div className={styles.scenarioPanel__empty}>
           Сохраните первый вариант, и он появится здесь для сравнения и повторной загрузки.
         </div>
       ) : (
-        <div className="scenario-panel__list" aria-label="Список сохраненных сценариев">
+        <div className={styles.scenarioPanel__list} aria-label="Список сохраненных сценариев">
           {scenarios.map((scenario) => {
             const isActive = scenario.id === selectedScenario?.id;
             const scenarioMonths = scenario.inputs.months ?? 0;
@@ -81,25 +91,25 @@ export function ScenarioPanel({
               <Card
                 as="article"
                 key={scenario.id}
-                className={`scenario-card ${isActive ? 'scenario-card--active' : ''}`}
+                className={cn(styles.scenarioCard, isActive && styles['scenarioCard--active'])}
                 role="button"
                 tabIndex={0}
                 onClick={() => onSelect(scenario.id)}
                 onKeyDown={(event) => handleScenarioKeyDown(event, scenario.id)}
               >
-                <div className="scenario-card__content">
-                  <div className="scenario-card__topline">
-                    <strong className="scenario-card__title">{scenario.name}</strong>
-                    <Badge className="scenario-card__state" variant="secondary">
+                <div className={styles.scenarioCard__content}>
+                  <div className={styles.scenarioCard__topline}>
+                    <strong className={styles.scenarioCard__title}>{scenario.name}</strong>
+                    <Badge className={styles.scenarioCard__state} variant="secondary">
                       {isActive ? 'Выбран' : 'Открыть'}
                     </Badge>
                   </div>
-                  <span className="scenario-card__meta">
+                  <span className={styles.scenarioCard__meta}>
                     {formatMoney(scenario.inputs.targetCapital)} за{' '}
                     {formatDuration(scenario.inputs.years, scenarioMonths)}
                   </span>
                 </div>
-                <time className="scenario-card__date" dateTime={scenario.createdAt}>
+                <time className={styles.scenarioCard__date} dateTime={scenario.createdAt}>
                   {formatScenarioDate(scenario.createdAt)}
                 </time>
               </Card>
@@ -109,60 +119,71 @@ export function ScenarioPanel({
       )}
 
       {selectedScenario && (
-        <Card as="section" className="scenario-inspector">
-          <div className="scenario-inspector__topline">
-            <div>
-              <span className="scenario-inspector__eyebrow">Выбранный сценарий</span>
-              <h3 className="scenario-inspector__title">{selectedScenario.name}</h3>
+        <Card as="section" className={styles.scenarioInspector}>
+          <div className={styles.scenarioInspector__topline}>
+            <div className={styles.scenarioInspector__titleWrap}>
+              <span className={styles.scenarioInspector__eyebrow}>Выбранный сценарий</span>
+              <h3 className={styles.scenarioInspector__title}>{selectedScenario.name}</h3>
             </div>
           </div>
 
-          <div className="scenario-inspector__highlights">
-            <div>
-              <span>Цель</span>
-              <strong>{formatMoney(selectedScenario.inputs.targetCapital)}</strong>
+          <div className={styles.scenarioInspector__highlights}>
+            <div className={styles.scenarioInspector__highlight}>
+              <span className={styles.scenarioInspector__highlightLabel}>Цель</span>
+              <strong className={styles.scenarioInspector__highlightValue}>
+                {formatMoney(selectedScenario.inputs.targetCapital)}
+              </strong>
             </div>
-            <div>
-              <span>Срок</span>
-              <strong>
-                {formatDuration(selectedScenario.inputs.years, selectedScenario.inputs.months ?? 0)}
+            <div className={styles.scenarioInspector__highlight}>
+              <span className={styles.scenarioInspector__highlightLabel}>Срок</span>
+              <strong className={styles.scenarioInspector__highlightValue}>
+                {formatDuration(
+                  selectedScenario.inputs.years,
+                  selectedScenario.inputs.months ?? 0,
+                )}
               </strong>
             </div>
           </div>
 
-          <dl className="scenario-inspector__details">
-            <div>
-              <dt>Стартовый капитал</dt>
-              <dd>{formatMoney(selectedScenario.inputs.initialCapital)}</dd>
+          <dl className={styles.scenarioInspector__details}>
+            <div className={styles.scenarioInspector__detailRow}>
+              <dt className={styles.scenarioInspector__detailTerm}>Стартовый капитал</dt>
+              <dd className={styles.scenarioInspector__detailValue}>
+                {formatMoney(selectedScenario.inputs.initialCapital)}
+              </dd>
             </div>
-            <div>
-              <dt>Ежемесячный взнос</dt>
-              <dd>{formatMoney(selectedScenario.inputs.monthlyContribution)}</dd>
+            <div className={styles.scenarioInspector__detailRow}>
+              <dt className={styles.scenarioInspector__detailTerm}>Ежемесячный взнос</dt>
+              <dd className={styles.scenarioInspector__detailValue}>
+                {formatMoney(selectedScenario.inputs.monthlyContribution)}
+              </dd>
             </div>
-            <div>
-              <dt>Доходность</dt>
-              <dd>{formatPercent(selectedScenario.inputs.annualReturn)}</dd>
+            <div className={styles.scenarioInspector__detailRow}>
+              <dt className={styles.scenarioInspector__detailTerm}>Доходность</dt>
+              <dd className={styles.scenarioInspector__detailValue}>
+                {formatPercent(selectedScenario.inputs.annualReturn)}
+              </dd>
             </div>
-            <div>
-              <dt>Инфляция</dt>
-              <dd>{formatPercent(selectedScenario.inputs.inflationRate)}</dd>
+            <div className={styles.scenarioInspector__detailRow}>
+              <dt className={styles.scenarioInspector__detailTerm}>Инфляция</dt>
+              <dd className={styles.scenarioInspector__detailValue}>
+                {formatPercent(selectedScenario.inputs.inflationRate)}
+              </dd>
             </div>
-            <div>
-              <dt>Индексация взноса</dt>
-              <dd>{formatPercent(selectedScenario.inputs.contributionGrowthRate)}</dd>
+            <div className={styles.scenarioInspector__detailRow}>
+              <dt className={styles.scenarioInspector__detailTerm}>Индексация взноса</dt>
+              <dd className={styles.scenarioInspector__detailValue}>
+                {formatPercent(selectedScenario.inputs.contributionGrowthRate)}
+              </dd>
             </div>
           </dl>
 
-          <div className="scenario-inspector__actions">
-            <Button
-              variant="secondary"
-              type="button"
-              onClick={() => onLoad(selectedScenario)}
-            >
+          <div className={styles.scenarioInspector__actions}>
+            <Button variant="secondary" type="button" onClick={() => onLoad(selectedScenario)}>
               Применить
             </Button>
             <Button
-              className="scenario-inspector__delete"
+              className={styles.scenarioInspector__delete}
               variant="destructive"
               type="button"
               onClick={() => onDelete(selectedScenario.id)}
@@ -175,6 +196,3 @@ export function ScenarioPanel({
     </Card>
   );
 }
-
-
-

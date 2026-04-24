@@ -1,1 +1,5 @@
-/* Component styles are owned by CalculatorPage. */
+.calculatorPage {
+  &__section {
+    display: block;
+  }
+}

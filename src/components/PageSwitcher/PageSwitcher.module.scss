@@ -1,1 +1,55 @@
-﻿/* Component styles are owned by PageSwitcher. */
+@use '../../styles/media' as media;
+
+.pageSwitcher {
+  display: inline-flex;
+  width: fit-content;
+  gap: 4px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    border: 0;
+    border-radius: var(--radius);
+    padding: 0 14px;
+    background: transparent;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+      color: hsl(var(--foreground));
+      background: hsl(var(--accent));
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px hsl(var(--ring) / 0.32);
+    }
+
+    &--active {
+      background: hsl(var(--accent));
+      color: hsl(var(--foreground));
+    }
+  }
+
+  @include media.media-tablet {
+    width: 100%;
+    gap: 4px;
+    padding: 4px;
+
+    &__button {
+      flex: 1;
+      padding: 10px 8px;
+      line-height: 1.2;
+    }
+  }
+}

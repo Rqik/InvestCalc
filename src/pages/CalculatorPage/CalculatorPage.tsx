@@ -15,6 +15,7 @@ import { useScenarios } from '@/hooks/useScenarios';
 import { AppLayout } from '@/layouts/AppLayout';
 import type { Inputs } from '@/types/finance';
 import type { CalculatorPageProps } from './CalculatorPage.types';
+import styles from './CalculatorPage.module.scss';
 
 export function CalculatorPage({
   activePage,
@@ -54,7 +55,7 @@ export function CalculatorPage({
       )}
       content={(
         <>
-          <div id="results">
+          <div id="results" className={styles.calculatorPage__section}>
             <ResultsGrid
               projectedCapital={finance.projectedCapital}
               realProjectedCapital={finance.realProjectedCapital}
@@ -66,7 +67,7 @@ export function CalculatorPage({
             />
           </div>
 
-          <div id="growth-chart">
+          <div id="growth-chart" className={styles.calculatorPage__section}>
             <GrowthChart plan={finance.yearlyPlan} inflationRate={inputs.inflationRate} />
           </div>
 
@@ -74,7 +75,7 @@ export function CalculatorPage({
 
           <ExtraYearsPanel extraYears={finance.extraYears} />
 
-          <div id="scenarios">
+          <div id="scenarios" className={styles.calculatorPage__section}>
             <ScenarioPanel
               scenarioName={scenarios.scenarioName}
               scenarios={scenarios.scenarios}
@@ -88,7 +89,7 @@ export function CalculatorPage({
             />
           </div>
 
-          <div id="yearly-plan">
+          <div id="yearly-plan" className={styles.calculatorPage__section}>
             <YearlyPlanTable
               plan={finance.yearlyPlan}
               targetCapital={inputs.targetCapital}

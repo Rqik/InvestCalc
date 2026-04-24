@@ -1,1 +1,138 @@
-﻿/* Component styles are owned by ExtraYearsPanel. */
+@use '../../styles/effects' as effects;
+@use '../../styles/media' as media;
+
+.extraYearsPanel {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  &__card {
+    position: relative;
+    padding: 20px;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+    overflow: hidden;
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+
+    &--good {
+      border-color: hsl(146 38% 52% / 0.68);
+      background:
+        linear-gradient(180deg, hsl(146 42% 96%) 0%, hsl(146 34% 99%) 100%),
+        hsl(var(--card));
+      box-shadow: 0 6px 18px hsl(146 38% 52% / 0.07);
+    }
+
+    &--excellent {
+      @include effects.gold-shimmer-border();
+
+      border-color: hsl(45 78% 56% / 0.8);
+      background:
+        linear-gradient(180deg, hsl(45 100% 94%) 0%, hsl(45 92% 98%) 100%),
+        hsl(var(--card));
+      box-shadow: 0 8px 20px hsl(45 78% 56% / 0.12);
+    }
+  }
+
+  &__cardYears,
+  &__cardValue,
+  &__cardHint {
+    display: block;
+  }
+
+  &__cardYears {
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  &__cardPeriodNote {
+    display: block;
+    color: hsl(var(--primary));
+    font-size: 0.86rem;
+    margin-top: 4px;
+
+    &--good {
+      color: hsl(146 46% 34%);
+    }
+
+    &--excellent {
+      color: hsl(40 82% 42%);
+    }
+  }
+
+  &__cardValue {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+  }
+
+  &__cardHint {
+    color: hsl(var(--muted-foreground));
+    line-height: 1.45;
+  }
+
+  &__cardHint + &__cardHint {
+    margin-top: 8px;
+  }
+
+  @include media.media-desktop {
+    &__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @include media.media-laptop {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @include media.media-mobile {
+    &__grid {
+      gap: 10px;
+    }
+
+    &__card {
+      padding: 14px;
+      border-radius: var(--radius);
+    }
+  }
+}
+
+:global(:root[data-theme='dark']) {
+  .extraYearsPanel {
+    &__card {
+      background: hsl(var(--card));
+      box-shadow: 0 10px 24px hsl(0 0% 0% / 0.14);
+
+      &--good {
+        border-color: hsl(146 46% 54% / 0.42);
+        background:
+          linear-gradient(180deg, hsl(152 34% 17%) 0%, hsl(154 28% 12%) 100%),
+          hsl(var(--card));
+        box-shadow: 0 10px 24px hsl(146 60% 18% / 0.16);
+      }
+
+      &--excellent {
+        border-color: hsl(45 92% 62% / 0.46);
+        background:
+          linear-gradient(180deg, hsl(39 40% 17%) 0%, hsl(34 34% 12%) 100%),
+          hsl(var(--card));
+        box-shadow: 0 10px 26px hsl(40 85% 40% / 0.13);
+      }
+    }
+
+    &__cardPeriodNote {
+      &--good {
+        color: hsl(146 56% 68%);
+      }
+
+      &--excellent {
+        color: hsl(45 94% 72%);
+      }
+    }
+  }
+}

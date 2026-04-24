@@ -8,6 +8,7 @@ import { MAX_RATE_PERCENT } from '@/constants/limits';
 import type { Inputs } from '@/types/finance';
 import { normalizeAnnualReturn, normalizeMoney } from '@/utils/normalize';
 import type { InputPanelProps } from './InputPanel.types';
+import styles from './InputPanel.module.scss';
 
 export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: InputPanelProps) {
   const update = <K extends keyof Inputs>(field: K, value: Inputs[K]) => {
@@ -18,9 +19,9 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
   };
 
   return (
-    <Card as="section" className="input-panel">
-      <CardHeader className="input-panel__header">
-        <div>
+    <Card as="section" className={styles.inputPanel}>
+      <CardHeader className={styles.inputPanel__header}>
+        <div className={styles.inputPanel__headerContent}>
           <CardTitle>Входные данные</CardTitle>
           <CardDescription>
             Меняйте цель, срок и допущения. Результаты, график и план по годам
@@ -29,9 +30,9 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
         </div>
       </CardHeader>
 
-      <div className="input-panel__grid">
-        <fieldset className="input-panel__group">
-          <legend>Цель и старт</legend>
+      <div className={styles.inputPanel__grid}>
+        <fieldset className={styles.inputPanel__group}>
+          <legend className={styles.inputPanel__legend}>Цель и старт</legend>
           <MoneyInput
             label="Цель по капиталу"
             value={inputs.targetCapital}
@@ -46,8 +47,8 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
           />
         </fieldset>
 
-        <fieldset className="input-panel__group">
-          <legend>Срок и взносы</legend>
+        <fieldset className={styles.inputPanel__group}>
+          <legend className={styles.inputPanel__legend}>Срок и взносы</legend>
           <MoneyInput
             label="Откладываете в месяц"
             value={inputs.monthlyContribution}
@@ -60,7 +61,7 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
             onChange={(duration) => onChange({ ...inputs, ...duration })}
           />
           {isDurationInvalid && (
-            <Alert className="input-panel__warning" variant="warning">
+            <Alert className={styles.inputPanel__warning} variant="warning">
               <AlertDescription>
                 Укажите срок больше нуля: например, 1 месяц или 1 год.
               </AlertDescription>
@@ -68,8 +69,8 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
           )}
         </fieldset>
 
-        <fieldset className="input-panel__group">
-          <legend>Допущения расчета</legend>
+        <fieldset className={styles.inputPanel__group}>
+          <legend className={styles.inputPanel__legend}>Допущения расчета</legend>
           <NumberInput
             label="Ожидаемая доходность, %"
             value={inputs.annualReturn}
@@ -100,7 +101,7 @@ export function InputPanel({ inputs, isDurationInvalid, onChange, onReset }: Inp
         </fieldset>
       </div>
 
-      <div className="input-panel__footer">
+      <div className={styles.inputPanel__footer}>
         <Button variant="outline" type="button" onClick={onReset}>
           Сбросить к значениям по умолчанию
         </Button>

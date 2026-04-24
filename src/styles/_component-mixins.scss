@@ -2,33 +2,32 @@
 
 @mixin stat-card-base($block) {
   .#{$block} {
-    min-width: 0;
     padding: 20px;
     border-radius: var(--radius);
     border: 1px solid hsl(var(--border));
     background: hsl(var(--card));
     transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 
-    &-label,
-    &-value,
-    &-hint {
+    &__label,
+    &__value,
+    &__hint {
       display: block;
     }
 
-    &-label {
+    &__label {
       color: hsl(var(--muted-foreground));
       margin-bottom: 14px;
       font-size: 0.875rem;
     }
 
-    &-value {
+    &__value {
       margin-bottom: 12px;
       font-size: clamp(1.45rem, 1.75rem, 2rem);
       line-height: 1.1;
       overflow-wrap: anywhere;
     }
 
-    &-hint {
+    &__hint {
       color: hsl(var(--muted-foreground));
     }
   }
@@ -39,17 +38,17 @@
     padding: 14px;
     border-radius: var(--radius);
 
-    &-label {
+    &__label {
       margin-bottom: 8px;
       font-size: 0.86rem;
     }
 
-    &-value {
+    &__value {
       font-size: 1.35rem;
       margin-bottom: 8px;
     }
 
-    &-hint {
+    &__hint {
       font-size: 0.82rem;
     }
   }
@@ -62,10 +61,10 @@
       background: hsl(var(--primary));
       color: hsl(var(--primary-foreground));
 
-      .#{$nested-block}-label,
-      .#{$nested-block}-hint {
-        color: hsl(var(--primary-foreground) / 0.72);
-      }
+        .#{$nested-block}__label,
+        .#{$nested-block}__hint {
+          color: hsl(var(--primary-foreground) / 0.72);
+        }
     }
 
     &--excellent {
@@ -119,8 +118,8 @@
         border-color: hsl(209 48% 68% / 0.34);
         color: hsl(210 40% 98%);
 
-        .#{$nested-block}-label,
-        .#{$nested-block}-hint {
+        .#{$nested-block}__label,
+        .#{$nested-block}__hint {
           color: hsl(210 30% 88% / 0.74);
         }
       }
@@ -169,16 +168,16 @@
     border: 1px solid hsl(var(--border));
     background: hsl(var(--card));
 
-    &-label,
-    &-value {
+    &__label,
+    &__value {
       display: block;
     }
 
-    &-label {
+    &__label {
       color: hsl(var(--muted-foreground));
     }
 
-    &-value {
+    &__value {
       margin-top: 8px;
       font-size: 1.1rem;
       overflow-wrap: anywhere;

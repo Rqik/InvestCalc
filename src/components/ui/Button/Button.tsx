@@ -2,22 +2,23 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cn } from '@/lib/utils';
 import type { ButtonProps, ButtonSize, ButtonVariant } from './Button.types';
+import styles from './Button.module.scss';
 
 const buttonVariantClasses: Record<ButtonVariant, string> = {
-  default: 'ui-button--default',
-  primary: 'ui-button--primary',
-  destructive: 'ui-button--destructive',
-  outline: 'ui-button--outline',
-  secondary: 'ui-button--secondary',
-  ghost: 'ui-button--ghost',
-  link: 'ui-button--link',
+  default: styles['ui-button--default'],
+  primary: styles['ui-button--primary'],
+  destructive: styles['ui-button--destructive'],
+  outline: styles['ui-button--outline'],
+  secondary: styles['ui-button--secondary'],
+  ghost: styles['ui-button--ghost'],
+  link: styles['ui-button--link'],
 };
 
 const buttonSizeClasses: Record<ButtonSize, string> = {
-  default: 'ui-button--default-size',
-  sm: 'ui-button--sm',
-  lg: 'ui-button--lg',
-  icon: 'ui-button--icon',
+  default: styles['ui-button--default-size'],
+  sm: styles['ui-button--sm'],
+  lg: styles['ui-button--lg'],
+  icon: styles['ui-button--icon'],
 };
 
 function buttonVariants({
@@ -30,7 +31,7 @@ function buttonVariants({
   className?: string;
 }) {
   return cn(
-    'ui-button',
+    styles['ui-button'],
     buttonVariantClasses[variant ?? 'default'],
     buttonSizeClasses[size ?? 'default'],
     className
@@ -40,6 +41,7 @@ function buttonVariants({
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
+
     return (
       <Comp
         data-slot="button"
@@ -50,6 +52,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
   }
 );
+
 Button.displayName = 'Button';
 
 export { Button, buttonVariants };

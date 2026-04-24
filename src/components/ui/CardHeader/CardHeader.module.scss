@@ -1,1 +1,6 @@
-/* Component styles are owned by CardHeader. */
+.ui-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  margin-bottom: 22px;
+}
