@@ -1,7 +1,24 @@
+@use './media' as media;
+@use './component-mixins' as component;
+
 .retirement-results {
-  .metric-card__hint {
+  .results-panel__grid {
+    @include media.media-desktop {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .retirement-results__metric-hint {
     line-height: 1.45;
   }
+}
+
+@include component.stat-card-base('retirement-results__metric');
+@include component.stat-card-tones('retirement-results__metric');
+@include component.stat-card-dark-tones('retirement-results__metric');
+
+@include media.media-mobile {
+  @include component.stat-card-mobile('retirement-results__metric');
 }
 
 .retirement-timeline {
@@ -44,6 +61,18 @@
     &--active {
       border-color: hsl(var(--primary));
       background: hsl(var(--primary) / 0.06);
+    }
+  }
+
+  @include media.media-desktop {
+    &__steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @include media.media-tablet {
+    &__steps {
+      grid-template-columns: 1fr;
     }
   }
 }
@@ -96,6 +125,18 @@
 
     &:hover {
       opacity: 0.82;
+    }
+  }
+
+  @include media.media-desktop {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @include media.media-mobile {
+    &__grid {
+      gap: 10px;
     }
   }
 }

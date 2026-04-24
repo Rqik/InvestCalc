@@ -1,3 +1,5 @@
+@use './media' as media;
+
 .growth-chart {
   &__header {
     display: grid;
@@ -144,6 +146,69 @@
       currentColor 0 8px,
       transparent 8px 13px
     ) !important;
+  }
+
+  @include media.media-desktop {
+    &__controls {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    &__series-toggles {
+      width: 100%;
+    }
+
+    &__mode-control {
+      justify-content: space-between;
+      flex-wrap: wrap;
+      width: 100%;
+      min-width: 0;
+    }
+  }
+
+  @include media.media-tablet {
+    &__toggle {
+      flex: 1 1 100%;
+      justify-content: center;
+    }
+  }
+
+  @include media.media-mobile {
+    &__frame {
+      min-height: 300px;
+      padding: 6px;
+    }
+
+    &__mode-control {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    &__series-toggles {
+      gap: 6px;
+    }
+
+    &__toggle {
+      width: 100%;
+    }
+
+    &__mode-label {
+      font-size: 0.78rem;
+    }
+
+    &__tooltip {
+      min-width: 0;
+      padding: 10px;
+    }
+
+    &__legend {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    &__legend-item {
+      font-size: 0.82rem;
+    }
   }
 }
 

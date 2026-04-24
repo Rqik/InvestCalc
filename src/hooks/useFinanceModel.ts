@@ -1,9 +1,9 @@
 import React from 'react';
-import type { Inputs } from '../types/finance';
+import type { Inputs } from '@/types/finance';
 import {
   buildFinanceSnapshot,
   buildExtraYearProjections,
-} from '../utils/calculations';
+} from '@/utils/calculations';
 
 export function useFinanceModel(inputs: Inputs) {
   return React.useMemo(() => {

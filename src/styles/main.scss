@@ -1,4 +1,5 @@
 @use './base';
+@use './media';
 @use './ui';
 @use './layout';
 @use './hero';
@@ -10,4 +11,3 @@
 @use './extra-years';
 @use './yearly-plan';
 @use './retirement';
-@use './responsive';

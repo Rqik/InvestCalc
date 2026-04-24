@@ -1,4 +1,4 @@
-# Yield Calculator MVP
+﻿# Yield Calculator MVP
 
 Приложение на `React + TypeScript + Vite` для расчета накоплений, ежемесячного взноса и ориентировочной доходности.
 

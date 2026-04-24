@@ -1,4 +1,4 @@
-import { MONTHS_IN_YEAR } from '../constants/defaults';
+import { MONTHS_IN_YEAR } from '@/constants/defaults';
 
 export function toRate(value: number) {
   return Math.max(0, value) / 100;

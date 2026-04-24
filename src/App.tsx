@@ -1,21 +1,11 @@
-import React from 'react';
-import { AppMeta } from './components/AppMeta';
-import { getHashForPage, getPageFromHash as getRoutePageFromHash } from './constants/routes';
-import { CalculatorPage } from './pages/CalculatorPage';
-import { RetirementPage } from './pages/RetirementPage';
-import type { AppPage } from './types/navigation';
-
-type ThemeMode = 'dark' | 'light';
-
-function getInitialTheme(): ThemeMode {
-  const savedTheme = window.localStorage.getItem('investcalc-theme');
-
-  if (savedTheme === 'dark' || savedTheme === 'light') {
-    return savedTheme;
-  }
-
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-}
+﻿import React from 'react';
+import { AppMeta } from '@/components/AppMeta';
+import { getHashForPage, getPageFromHash as getRoutePageFromHash } from '@/constants/routes';
+import { CalculatorPage } from '@/pages/CalculatorPage';
+import { RetirementPage } from '@/pages/RetirementPage';
+import type { AppPage } from '@/types/navigation';
+import type { ThemeMode } from '@/types/theme';
+import { getInitialTheme } from '@/utils/theme';
 
 function App() {
   const [activePage, setActivePage] = React.useState<AppPage>(
@@ -86,3 +76,4 @@ function App() {
 }
 
 export default App;
+

@@ -1,3 +1,5 @@
+@use './media' as media;
+
 .form-field {
   display: grid;
   gap: 8px;
@@ -30,6 +32,24 @@
     font-size: 0.8125rem;
     color: hsl(var(--muted-foreground));
     line-height: 1.35;
+  }
+
+  @include media.media-mobile {
+    gap: 6px;
+
+    &__label {
+      font-size: 0.88rem;
+    }
+
+    &__input {
+      min-height: 48px;
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+
+    &__hint {
+      font-size: 0.76rem;
+    }
   }
 }
 
@@ -126,6 +146,46 @@
     border: 1px solid hsl(var(--warning) / 0.24);
     font-size: 0.88rem;
   }
+
+  @include media.media-tablet {
+    position: static;
+    top: auto;
+    max-height: none;
+    padding-right: 0;
+    overflow: visible;
+
+    &::after {
+      display: none;
+    }
+
+    &__header {
+      display: grid;
+    }
+  }
+
+  @include media.media-mobile {
+    &__grid {
+      gap: 14px;
+    }
+
+    &__group {
+      padding: 12px;
+      border-radius: var(--radius);
+
+      legend {
+        font-size: 0.9rem;
+      }
+    }
+
+    &__header [data-slot='card-title'] {
+      font-size: 1.22rem;
+    }
+
+    &__header [data-slot='card-description'] {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  }
 }
 
 .duration-field {
@@ -144,5 +204,17 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     min-width: 0;
+  }
+
+  @include media.media-mobile {
+    gap: 6px;
+
+    &__label {
+      font-size: 0.88rem;
+    }
+
+    &__grid {
+      gap: 10px;
+    }
   }
 }

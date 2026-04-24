@@ -1,6 +1,6 @@
-import { DEFAULT_INPUTS, STORAGE_KEY } from '../constants/defaults';
-import { MAX_SCENARIO_NAME_LENGTH, MAX_SCENARIOS } from '../constants/limits';
-import type { Scenario } from '../types/finance';
+﻿import { DEFAULT_INPUTS, STORAGE_KEY } from '@/constants/defaults';
+import { MAX_SCENARIO_NAME_LENGTH, MAX_SCENARIOS } from '@/constants/limits';
+import type { Scenario } from '@/types/finance';
 import {
   normalizeAnnualReturn,
   normalizeMoney,

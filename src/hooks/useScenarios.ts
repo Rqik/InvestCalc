@@ -1,8 +1,8 @@
-import React from 'react';
-import { DEFAULT_INPUTS } from '../constants/defaults';
-import { MAX_SCENARIO_NAME_LENGTH, MAX_SCENARIOS } from '../constants/limits';
-import type { Inputs, Scenario } from '../types/finance';
-import { createScenarioName, loadScenarios, saveScenarios } from '../utils/storage';
+﻿import React from 'react';
+import { DEFAULT_INPUTS } from '@/constants/defaults';
+import { MAX_SCENARIO_NAME_LENGTH, MAX_SCENARIOS } from '@/constants/limits';
+import type { Inputs, Scenario } from '@/types/finance';
+import { createScenarioName, loadScenarios, saveScenarios } from '@/utils/storage';
 
 export function useScenarios(inputs: Inputs, onInputsChange: (inputs: Inputs) => void) {
   const initialLoadRef = React.useRef<ReturnType<typeof loadScenarios> | null>(null);

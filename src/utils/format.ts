@@ -1,4 +1,4 @@
-export function formatMoney(value: number) {
+﻿export function formatMoney(value: number) {
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
     currency: 'RUB',

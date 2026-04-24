@@ -1,5 +1,5 @@
-import { MONTHS_IN_YEAR } from '../constants/defaults';
-import type { RetirementAgeGroup, RetirementInputs, RetirementPlan } from '../types/retirement';
+import { MONTHS_IN_YEAR } from '@/constants/defaults';
+import type { RetirementAgeGroup, RetirementInputs, RetirementPlan } from '@/types/retirement';
 import { isBirthYearInRange } from './age';
 import { getMonthlyRateFromAnnual, projectMonthlyBalance, toRate } from './projection';
 

@@ -1,4 +1,4 @@
-import type { AppPage } from '../types/navigation';
+﻿import type { AppPage } from '@/types/navigation';
 
 export const APP_ROUTES: Array<{ id: AppPage; hash: string; label: string }> = [
   { id: 'calculator', hash: '#calculator', label: 'Калькулятор' },
@@ -33,3 +33,4 @@ export function getPageFromHash(hash: string): AppPage | null {
 
   return null;
 }
+

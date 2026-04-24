@@ -1,11 +1,11 @@
-import { MONTHS_IN_YEAR } from '../constants/defaults';
-import { MAX_MONEY, MAX_PLAN_YEARS } from '../constants/limits';
+﻿import { MONTHS_IN_YEAR } from '@/constants/defaults';
+import { MAX_MONEY, MAX_PLAN_YEARS } from '@/constants/limits';
 import type {
   ComparisonScenario,
   FinanceSnapshot,
   Inputs,
   MethodologyInsight,
-} from '../types/finance';
+} from '@/types/finance';
 import { buildFinanceSnapshot, getNormalizedDuration, getTotalMonths } from './calculations';
 import { formatDuration, formatMoney, formatPercent } from './format';
 

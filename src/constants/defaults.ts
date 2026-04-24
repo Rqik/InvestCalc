@@ -1,5 +1,5 @@
-import type { Inputs } from '../types/finance';
-import type { RetirementInputs } from '../types/retirement';
+﻿import type { Inputs } from '@/types/finance';
+import type { RetirementInputs } from '@/types/retirement';
 
 export const MONTHS_IN_YEAR = 12;
 export const STORAGE_KEY = 'yield-calculator-scenarios';
@@ -27,3 +27,4 @@ export const DEFAULT_RETIREMENT_INPUTS: RetirementInputs = {
   contributionGrowthRate: 5,
   planningAge: 88,
 };
+

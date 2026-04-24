@@ -1,13 +1,13 @@
-import {
+﻿import {
   EXTRA_YEARS_TO_COMPARE,
   MONTHS_IN_YEAR,
-} from '../constants/defaults';
+} from '@/constants/defaults';
 import type {
   ExtraYearProjection,
   FinanceSnapshot,
   Inputs,
   YearRow,
-} from '../types/finance';
+} from '@/types/finance';
 import { formatDuration } from './format';
 import {
   getIndexedContribution,

@@ -1,3 +1,5 @@
+@use './media' as media;
+
 .page-switcher {
   display: inline-flex;
   width: fit-content;
@@ -39,6 +41,18 @@
       color: hsl(var(--foreground));
     }
   }
+
+  @include media.media-tablet {
+    width: 100%;
+    gap: 4px;
+    padding: 4px;
+
+    &__button {
+      flex: 1;
+      padding: 10px 8px;
+      line-height: 1.2;
+    }
+  }
 }
 
 .theme-toggle {
@@ -75,5 +89,11 @@
     place-items: center;
     color: var(--brand);
     font-size: 1rem;
+  }
+
+  @include media.media-tablet {
+    &__label {
+      display: none;
+    }
   }
 }

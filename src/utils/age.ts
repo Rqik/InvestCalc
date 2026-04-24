@@ -1,4 +1,4 @@
-import { MAX_PERSON_AGE } from '../constants/limits';
+import { MAX_PERSON_AGE } from '@/constants/limits';
 
 export function getBirthYearRange(currentYear = new Date().getFullYear()) {
   return {

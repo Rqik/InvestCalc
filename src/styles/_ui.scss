@@ -1,3 +1,5 @@
+@use './media' as media;
+
 .ui-button {
   display: inline-flex;
   align-items: center;
@@ -123,6 +125,15 @@
     width: 2.25rem;
     min-width: 2.25rem;
     padding: 0;
+  }
+
+  @include media.media-mobile {
+    min-height: 46px;
+    min-width: 0;
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    white-space: normal;
+    line-height: 1.25;
   }
 }
 

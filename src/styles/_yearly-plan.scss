@@ -1,3 +1,6 @@
+@use './media' as media;
+@use './component-mixins' as component;
+
 .yearly-plan {
   &__summary {
     display: grid;
@@ -122,25 +125,28 @@
       overflow-wrap: anywhere;
     }
   }
+
+  @include media.media-desktop {
+    &__summary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @include media.media-laptop {
+    &__summary {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @include media.media-mobile {
+    &__table-wrap {
+      margin-inline: -2px;
+    }
+
+    &__mobile-card {
+      padding: 14px;
+    }
+  }
 }
 
-.summary-chip {
-  padding: 16px 18px;
-  border-radius: var(--radius);
-  border: 1px solid hsl(var(--border));
-  background: hsl(var(--card));
-
-  &__label,
-  &__value {
-    display: block;
-  }
-
-  &__label {
-    color: hsl(var(--muted-foreground));
-  }
-
-  &__value {
-    margin-top: 8px;
-    font-size: 1.1rem;
-  }
-}
+@include component.info-chip-base('yearly-plan__summary-chip');

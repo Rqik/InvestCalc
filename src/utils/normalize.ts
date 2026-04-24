@@ -5,7 +5,7 @@ import {
   MAX_RATE_PERCENT,
   MAX_RETIREMENT_AGE,
   MIN_RETIREMENT_AGE,
-} from '../constants/limits';
+} from '@/constants/limits';
 import { getBirthYearRange } from './age';
 
 export function clampNumber(value: number, min: number, max: number) {
