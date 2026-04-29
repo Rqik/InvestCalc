@@ -3,7 +3,6 @@
 .inputPanel {
   max-height: calc(100dvh - 92px);
   overflow-y: auto;
-  overflow-x: clip;
   padding-right: 10px;
   scrollbar-width: thin;
   scrollbar-color: hsl(var(--border)) transparent;

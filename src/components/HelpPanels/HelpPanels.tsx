@@ -14,7 +14,7 @@ function getInsightClassName(tone: MethodologyInsightTone) {
   return cn(styles.helpPanels__insight, styles[`helpPanels__insight--${tone}`]);
 }
 
-export function HelpPanels({ inputs, snapshot, onApplyExample }: HelpPanelsProps) {
+export function HelpPanels({ inputs, snapshot, onApplyExample, sectionRefs }: HelpPanelsProps) {
   const methodologyInsights = React.useMemo(
     () => buildMethodologyInsights(inputs, snapshot),
     [inputs, snapshot],
@@ -23,7 +23,7 @@ export function HelpPanels({ inputs, snapshot, onApplyExample }: HelpPanelsProps
 
   return (
     <section className={styles.helpPanels} aria-label="Справка по расчету">
-      <Card as="article" id="methodology" className={styles.helpPanels__card}>
+      <Card as="article" ref={sectionRefs.methodology} className={styles.helpPanels__card}>
         <CardHeader>
           <CardTitle>Как читается ваш расчет</CardTitle>
           <CardDescription>
@@ -61,7 +61,7 @@ export function HelpPanels({ inputs, snapshot, onApplyExample }: HelpPanelsProps
         )}
       </Card>
 
-      <Card as="article" id="examples" className={styles.helpPanels__card}>
+      <Card as="article" ref={sectionRefs.examples} className={styles.helpPanels__card}>
         <CardHeader>
           <CardTitle>Сравнение сценариев</CardTitle>
           <CardDescription>
@@ -153,7 +153,7 @@ export function HelpPanels({ inputs, snapshot, onApplyExample }: HelpPanelsProps
         )}
       </Card>
 
-      <Card as="article" id="faq" className={styles.helpPanels__card}>
+      <Card as="article" ref={sectionRefs.faq} className={styles.helpPanels__card}>
         <CardHeader>
           <CardTitle>FAQ</CardTitle>
           <CardDescription>

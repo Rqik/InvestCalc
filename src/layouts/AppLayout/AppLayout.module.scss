@@ -65,13 +65,6 @@
     height: fit-content;
   }
 
-  &__main {
-  }
-
-  &__main > :global([id]) {
-    scroll-margin-top: 92px;
-  }
-
   &__inlineNav {
     display: none;
   }

@@ -13,6 +13,7 @@ import { DEFAULT_INPUTS } from '@/constants/defaults';
 import { useFinanceModel } from '@/hooks/useFinanceModel';
 import { useScenarios } from '@/hooks/useScenarios';
 import { AppLayout } from '@/layouts/AppLayout';
+import { cn } from '@/lib/utils';
 import type { Inputs } from '@/types/finance';
 import type { CalculatorPageProps } from './CalculatorPage.types';
 import styles from './CalculatorPage.module.scss';
@@ -26,6 +27,33 @@ export function CalculatorPage({
   const [inputs, setInputs] = React.useState<Inputs>(DEFAULT_INPUTS);
   const finance = useFinanceModel(inputs);
   const scenarios = useScenarios(inputs, setInputs);
+  const resultsRef = React.useRef<HTMLDivElement>(null);
+  const growthChartRef = React.useRef<HTMLDivElement>(null);
+  const scenariosRef = React.useRef<HTMLDivElement>(null);
+  const yearlyPlanRef = React.useRef<HTMLDivElement>(null);
+  const methodologyRef = React.useRef<HTMLElement>(null);
+  const examplesRef = React.useRef<HTMLElement>(null);
+  const faqRef = React.useRef<HTMLElement>(null);
+  const helpPanelRefs = React.useMemo(
+    () => ({
+      methodology: methodologyRef,
+      examples: examplesRef,
+      faq: faqRef,
+    }),
+    [],
+  );
+  const sectionRefs = React.useMemo(
+    () => ({
+      results: resultsRef,
+      'growth-chart': growthChartRef,
+      scenarios: scenariosRef,
+      'yearly-plan': yearlyPlanRef,
+      methodology: methodologyRef,
+      examples: examplesRef,
+      faq: faqRef,
+    }),
+    [],
+  );
 
   const handleReset = () => {
     setInputs(DEFAULT_INPUTS);
@@ -44,7 +72,7 @@ export function CalculatorPage({
       onPageChange={onPageChange}
       onThemeToggle={onThemeToggle}
       hero={<AppHero />}
-      navigation={<WorkspaceNav />}
+      navigation={<WorkspaceNav sectionRefs={sectionRefs} />}
       controls={(
         <InputPanel
           inputs={inputs}
@@ -55,7 +83,7 @@ export function CalculatorPage({
       )}
       content={(
         <>
-          <div id="results" className={styles.calculatorPage__section}>
+          <div ref={resultsRef} className={styles.calculatorPage__section}>
             <ResultsGrid
               projectedCapital={finance.projectedCapital}
               realProjectedCapital={finance.realProjectedCapital}
@@ -67,7 +95,7 @@ export function CalculatorPage({
             />
           </div>
 
-          <div id="growth-chart" className={styles.calculatorPage__section}>
+          <div ref={growthChartRef} className={styles.calculatorPage__section}>
             <GrowthChart plan={finance.yearlyPlan} inflationRate={inputs.inflationRate} />
           </div>
 
@@ -75,7 +103,7 @@ export function CalculatorPage({
 
           <ExtraYearsPanel extraYears={finance.extraYears} />
 
-          <div id="scenarios" className={styles.calculatorPage__section}>
+          <div ref={scenariosRef} className={styles.calculatorPage__section}>
             <ScenarioPanel
               scenarioName={scenarios.scenarioName}
               scenarios={scenarios.scenarios}
@@ -89,7 +117,13 @@ export function CalculatorPage({
             />
           </div>
 
-          <div id="yearly-plan" className={styles.calculatorPage__section}>
+          <div
+            ref={yearlyPlanRef}
+            className={cn(
+              styles.calculatorPage__section,
+              styles['calculatorPage__section--scrollBoundary'],
+            )}
+          >
             <YearlyPlanTable
               plan={finance.yearlyPlan}
               targetCapital={inputs.targetCapital}
@@ -103,6 +137,7 @@ export function CalculatorPage({
             inputs={inputs}
             snapshot={finance}
             onApplyExample={handleApplyExample}
+            sectionRefs={helpPanelRefs}
           />
         </>
       )}

@@ -1,5 +1,12 @@
 .calculatorPage {
   &__section {
     display: block;
+    width: 100%;
+    max-width: 100%;
+    scroll-margin-top: 92px;
+
+    &--scrollBoundary {
+      contain: inline-size;
+    }
   }
 }

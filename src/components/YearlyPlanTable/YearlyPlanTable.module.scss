@@ -1,6 +1,12 @@
 @use '../../styles/media' as media;
 
 .yearlyPlan {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  inline-size: 100%;
+  max-inline-size: 100%;
+  contain: inline-size;
+
   &__summary {
     display: grid;
     grid-template-columns: repeat(4, minmax(140px, 1fr));
@@ -31,8 +37,12 @@
   }
 
   &__tableWrap {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    contain: inline-size;
     overflow-x: auto;
-    max-width: 100%;
+    overflow-y: hidden;
     border-radius: var(--radius);
     border: 1px solid hsl(var(--border));
     background: hsl(var(--card));
@@ -41,7 +51,9 @@
   }
 
   &__table {
-    width: 100%;
+    inline-size: max-content;
+    min-inline-size: 100%;
+    max-inline-size: none;
     border-collapse: collapse;
   }
 

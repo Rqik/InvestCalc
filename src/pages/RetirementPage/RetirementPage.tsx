@@ -21,6 +21,17 @@ export function RetirementPage({
   const [inputs, setInputs] = React.useState<RetirementInputs>(DEFAULT_RETIREMENT_INPUTS);
   const plan = useRetirementPlan(inputs);
   const isRetirementPeriodValid = inputs.planningAge > inputs.retirementAge;
+  const resultsRef = React.useRef<HTMLDivElement>(null);
+  const timelineRef = React.useRef<HTMLDivElement>(null);
+  const adviceRef = React.useRef<HTMLDivElement>(null);
+  const sectionRefs = React.useMemo(
+    () => ({
+      'retirement-results': resultsRef,
+      'retirement-timeline': timelineRef,
+      'retirement-advice': adviceRef,
+    }),
+    [],
+  );
 
   return (
     <AppLayout
@@ -29,7 +40,7 @@ export function RetirementPage({
       onPageChange={onPageChange}
       onThemeToggle={onThemeToggle}
       hero={<RetirementHero />}
-      navigation={<WorkspaceNav isRetirement />}
+      navigation={<WorkspaceNav isRetirement sectionRefs={sectionRefs} />}
       controls={(
         <RetirementInputPanel
           inputs={inputs}
@@ -41,13 +52,13 @@ export function RetirementPage({
       )}
       content={(
         <>
-          <div id="retirement-results" className={styles.retirementPage__section}>
+          <div ref={resultsRef} className={styles.retirementPage__section}>
             <RetirementResultsGrid inputs={inputs} plan={plan} />
           </div>
-          <div id="retirement-timeline" className={styles.retirementPage__section}>
+          <div ref={timelineRef} className={styles.retirementPage__section}>
             <RetirementTimeline inputs={inputs} plan={plan} />
           </div>
-          <div id="retirement-advice" className={styles.retirementPage__section}>
+          <div ref={adviceRef} className={styles.retirementPage__section}>
             <RetirementAdvicePanel inputs={inputs} plan={plan} />
           </div>
         </>
